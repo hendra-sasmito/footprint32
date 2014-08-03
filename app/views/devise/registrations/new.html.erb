@@ -1,0 +1,93 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% url = Footprint32::Application.routes.url_helpers %>
+      $('.auto_complete_cities').autocomplete({
+          minLength: 3,
+          source: "<%= url.autocomplete_city_name_cities_path(:json) %>",
+
+          select: function(event, ui) {
+            $('#real_city_id').val(ui.item.id);
+          }
+      });
+    });
+  </script>
+<% end %>
+
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text"><%= t('.sign_up', :default => "Sign up") %></div>
+      </div>
+      <div class="resource_container">
+        <div id="form-box">
+          <% resource.build_profile if resource.profile.nil? %>
+          <% resource.photo_albums.build if resource.photo_albums.empty? %>
+          <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
+            <%= devise_error_messages! %>
+            <%= f.fields_for :profile do |profile_form| %>
+              <div>
+                <%= profile_form.text_field :first_name, :validate => true, :placeholder => t('activerecord.attributes.profile.first_name') %>
+              </div>
+              <div>
+                <%= profile_form.text_field :last_name, :validate => true, :placeholder => t('activerecord.attributes.profile.last_name') %>
+              </div>
+              <div>
+                <%= profile_form.text_field :birthdate, :validate => true, :class => 'datepicker', :placeholder => t('activerecord.attributes.profile.birthdate') %>
+              </div>
+              <div>
+                <%= profile_form.label t('activerecord.attributes.profile.gender') %><br />
+                <%= profile_form.select(:gender, { t('activerecord.attributes.profile.male') => "M", t('activerecord.attributes.profile.female') => "F", t('activerecord.attributes.profile.unknown') => "U"}, {}) %>
+              </div>
+              <div>
+                <%= profile_form.label t('activerecord.attributes.profile.time_zone') %><br />
+                <%= profile_form.time_zone_select :time_zone, ActiveSupport::TimeZone.all, {}, :class => "timezone_select", :placeholder => t('activerecord.attributes.profile.time_zone') %>
+              </div>
+              <div>
+                <%= profile_form.label :language %><br />
+                <%= profile_form.select :language, options_for_select(LANGUAGES, I18n.locale), {}, :class => "language_select", :placeholder => t('activerecord.attributes.profile.language') %>
+              </div>
+              <div>
+                <%= profile_form.hidden_field :hometown_id, :id => "real_city_id" %>
+                <%= text_field_tag :term, params[:term], :class => "auto_complete_cities", :placeholder => "Hometown" %>
+              </div>
+            <% end %>
+            <div>
+              <%= f.email_field :email, :validate => true, :placeholder => t('activerecord.attributes.user.email') %>
+            </div>
+            <% if @user.password_required? %>
+            <div>
+              <%= f.password_field :password, :validate => true, :placeholder => t('activerecord.attributes.user.password') %>
+            </div>
+            <div>
+              <%= f.password_field :password_confirmation, :validate => true, :placeholder => t('activerecord.attributes.user.password_confirmation') %>
+            </div>
+            <% end %>
+            <%= f.fields_for :photo_albums do |photo_album_form| %>
+              <%= photo_album_form.hidden_field :name, :value => t('activerecord.attributes.photo_album.default_name') %>
+              <%= photo_album_form.hidden_field :description, :value => t('activerecord.attributes.photo_album.default_desc') %>
+              <%= photo_album_form.hidden_field :privacy, :value => 0 %>
+              <%= photo_album_form.hidden_field :default, :value => 1 %>
+            <% end %>
+
+            <%= t('.agreement_note')%> <%= link_to t('.data_use_policy'), help_terms_path, :class=>"general" %>, <%= t('.including_our')%> <%= link_to t('.cookie_use'), help_cookies_path, :class=>"general" %>.
+
+            <div>
+              <%= f.submit t('.sign_up', :default => "Sign up"), :class => "general-button" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <div class="resource_container">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

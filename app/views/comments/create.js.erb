@@ -1,0 +1,5 @@
+$("#comments_partial").before('<div id="flash_notice"><%= escape_javascript(flash.discard(:notice)) %></div>');
+$("#comments_partial").prepend("<%= escape_javascript(render(:partial => 'comments/comment', :object => @comment)) %>");
+$("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
+//$('#new_comment textarea').val('');
+$('#comment_content').val('');

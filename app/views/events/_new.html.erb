@@ -1,0 +1,17 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      
+    });
+  </script>
+<% end %>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Modal header</h3>
+</div>
+<div class="modal-body">
+  <%= render 'events/form' %>
+</div>
+<div class="modal-footer">
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+</div>

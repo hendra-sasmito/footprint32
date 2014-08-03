@@ -1,0 +1,33 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <% if @pending_friends.count > 0 %>
+        <div class="title_text"><%= t('.friend_request_title') %></div>
+        <div id="pending_friends_partial">
+          <%= render :partial => "search/friend_found", :locals => {:users => @pending_friends} %>
+        </div>
+        <div class="clear_float"></div>
+        <div id="paginator_pending_friends">
+          <%= paginate @pending_friends, :remote => true, :param_name => "pending_page", :theme => "default" %>
+        </div>
+      <% end %>
+
+      <% if @requested_friends.count > 0 %>
+        <div class="title_text"><%= t('.received_request_title') %></div>
+        <div id="requested_friends_partial">
+          <%= render :partial => "search/friend_found", :locals => {:users => @requested_friends} %>
+        </div>
+        <div class="clear_float"></div>
+        <div id="paginator_requested_friends">
+          <%= paginate @requested_friends, :remote => true, :param_name => "requested_page", :theme => "default" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>
+

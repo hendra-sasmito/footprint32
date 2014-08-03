@@ -1,0 +1,174 @@
+<% content_for :title, "#{@user.profile.full_name}" %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    var map;
+    var place_marker;
+    var place_icon;
+    var place_latitude;
+    var place_longitude;
+    var myLatlng;
+    var places = new Array();
+    var places_marker = new Array();
+    var info_windows = new Array();
+    var place_info = {};
+    var markerCluster;
+
+    function set_discover_size()
+    {
+      var windowWidth = $(window).width();
+      var windowHeight = $(window).height();
+      var discoverHeight = windowHeight - 100;
+      $('#discover').css({'width':windowWidth ,'height':discoverHeight });
+    }
+    function resize_map() {
+      set_discover_size();
+      google.maps.event.trigger(map, "resize");
+    };
+
+    function display_marker(place_info)
+    {
+      var index_marker = place_info["index"];
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      close_all_info_windows();
+      google.maps.event.trigger(places_marker[index_marker], 'click');
+    }
+
+    $(document).ready(function($) { // document ready
+
+      $('#hideshow').on('click', function(event) {
+        $('.stacked_view_box').toggle('show');
+      });
+
+      set_discover_size();
+
+      var resizeTimer;
+      $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize_map, 100);
+      });
+
+      place_latitude = 0;
+      place_longitude = 0;
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        place_info = {};
+        place_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(place_info);
+      });
+
+      myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+      var mapOptions = {
+        zoom: 15,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("discover"), mapOptions);
+      show_markers();
+
+    });
+    $(document).ajaxComplete(function(event, request) {
+      show_markers();
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        place_info = {};
+        place_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(place_info);
+      });
+    });
+    
+    function show_markers()
+    {
+      var i;
+      var bounds;
+      places = [];
+      info_windows.length = 0;
+
+      if ($('#fav_places_json').length)
+      {
+        var myVarsJSON = $("#fav_places_json").html(),
+        places = $.parseJSON(myVarsJSON);
+
+        clear_overlays();
+        for (i = 0; i < places.length; i++)
+        {
+            create_marker(places[i]);
+        }
+        markerCluster = new MarkerClusterer(map, places_marker);
+        bounds = new google.maps.LatLngBounds();
+        for(i = 0; i < places_marker.length; i++) {
+          bounds.extend(places_marker[i].getPosition());
+        }
+        map.fitBounds(bounds);
+      }
+    }
+    function clear_overlays() {
+      if (places_marker) {
+        for (i in places_marker) {
+          places_marker[i].setMap(null);
+        }
+      }
+      places_marker.length = 0;
+    }
+    function close_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].close();
+      }
+    }
+    function create_marker(place_info)
+    {
+      var contentString;
+      var infowindow;
+      var image;
+      var marker;
+      var latlng;
+
+      image = "/assets/images/marker-icon-small.png";
+      latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
+      marker = new google.maps.Marker({
+        position: latlng,
+        //map: map,
+        icon: image,
+        title: place_info["name"]
+      });
+
+      contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["street"] + '<br/>' + place_info["city"] + '<br/>' + place_info["region"] + ', ' + place_info["country"] + '<div class="infowindow_desc"><span class="wordwrap">' + place_info["desc"] + '</span></div></div></div>';
+      infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      infowindow.open(map,marker);
+      info_windows.push(infowindow);
+      places_marker.push(marker);
+    }
+
+
+  </script>
+
+<% end %>
+
+<div class="page-container-full">
+  <div id="header-map"><div id="discover"></div></div>
+  <%= render :partial => "shared/stacked_view_button" %>
+  <div class="stacked_view_box">
+    <div class="padding">
+      <div class="most_popular_places">
+        <span class="wordwrap padding-title"><%= @user.profile.full_name %> favorite places <%= render :partial => "shared/progress_indicator" %></span>
+        <div id="paginator">
+          <%= paginate @places, :remote => true, :theme => "slider" %>
+        </div>
+        <div class="place-found-wrapper">
+        <div class="places-found-dock">
+          <div id="favorite_places">
+            <%= render :partial => 'favorite_places/favorite_places', :locals => {:places => @places, :places_list => @places_list} %>
+          </div>
+        </div>
+        </div>
+        <div class="clear_float"></div>
+      </div>
+    </div>
+  </div>
+</div>

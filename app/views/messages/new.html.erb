@@ -1,0 +1,26 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function() { // document ready
+      $("#user_ids").tokenInput(
+        "<%= messages_get_recipient_url %>", { minChars: 3 }
+      );
+      });
+  </script>
+
+<% end %>
+
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text">New message</div>
+      </div>
+      <div class="resource_container">
+        <div class="general_box_section"><%= link_to fa_icon("envelope", :class => "cyancolor mediumsize") + " Inbox", messages_path, :class => "general" %></div>
+        <%= render 'form' %>
+      </div>
+    </div>
+  </div>
+</div>
+

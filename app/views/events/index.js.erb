@@ -1,0 +1,2 @@
+$('#events').html('<%= escape_javascript render(:partial => 'event_lists', :locals => { :events => @events, :user => @user }) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@events, :remote => true, :theme => "default").to_s) %>');

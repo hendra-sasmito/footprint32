@@ -1,0 +1,49 @@
+<% content_for :title, Footprint32::APP_NAME %>
+
+<div class="page-container">
+  <div id="content-full">
+    <div class="padding">
+      <div class="resource_container">
+        <div class="title_text"><span class="wordwrap"><%= @photo_album.name %></span> <%= render :partial => "shared/privacy_icon", :locals => {:privacy => @photo_album.privacy} %></div>
+      </div>
+
+      <div class="resource_container_blue">
+        <% if is_current_user(@user) %>
+          <%= link_to fa_icon("camera", :class => "whitecolor mediumsize") + " " + t(".add"), new_user_photo_album_photo_path(@user, @photo_album), :class=>"general_white" %>
+          <% if @photo_album.default != true %>
+            | <%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t(".edit"), edit_user_photo_album_path(@user, @photo_album), :class=>"general_white" %>
+            | <%= link_to fa_icon("trash-o", :class => "whitecolor mediumsize") + " " + t(".delete"), user_photo_album_path(@user, @photo_album), :confirm => t('.delete_confirmation'), :method => :delete, :class=>"general_white" %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="child_container">
+        <div class="album-desc desc_text_dark">
+          <span class="wordwrap"><%= @photo_album.description %></span>
+        </div>
+        <div class="small_text"><%= link_to t('.back'), user_photo_albums_path(@user), :class => "general" %></div>
+      
+        <%#*<div id="photo_description" style="display: none;">%>
+          <%# @photos.each do |photo| %>
+            <%#= render :partial => "photos/photo_description", :locals => {:photo => photo} %>
+          <%# end %>
+        <%#*</div>%>
+        <%#*<div id="mygallery" >%>
+          <%# if @photos.count > 0 %>
+            <%# @photos.each do |photo| %>
+              <%#= link_to image_tag(photo.image.url(:small)), photo.image.url(:original),
+                :class=>"fancybox-buttons", "data-fancybox-group"=>"button", :rel=>"gallery" %>
+            <%# end %>
+          <%# end %>
+        <%#*</div>%>
+        <div id="photo_album_partial">
+          <%= render :partial => 'photo_albums/photo_lists', :locals => { :photos => @photos } %>
+        </div>
+        <br/>
+        <div class="clear_float"></div>
+        <div id="paginator_photo_album">
+          <%= paginate @photos, :remote => true, :param_name => "photo_album_page", :theme => "default" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

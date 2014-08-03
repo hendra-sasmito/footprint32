@@ -1,0 +1,39 @@
+<div class="review_box">
+  <div class="review_box_user">
+    <div class="hidden_box_container">
+      <%= link_to image_tag(get_profile_photo_url(activity.user.profile_photo),
+        :class => "thumb_profile_pic"), user_profile_path(activity.user) %>
+    </div>
+  </div>
+  <div class="review_box_Body">
+    <div class="review_box_Message">
+      <% if !activity.target.photoable.nil? %>
+        <% if activity.target.photoable.class.to_s == "Place" %>
+          <%=h link_to activity.user.profile.full_name, user_profile_path(activity.user), :class => "general" %> added photo about <%=h link_to activity.target.photoable.name, place_path(activity.target.photoable), :class => "general" %>.<br/>
+        <% else %>
+          <%=h link_to activity.user.profile.full_name, user_profile_path(activity.user), :class => "general" %> added photo about <%=h link_to activity.target.photoable.name, city_path(activity.target.photoable), :class => "general" %>.<br/>
+        <% end %>
+      <% else %>
+        <%=h link_to activity.user.profile.full_name, user_profile_path(activity.user), :class => "general" %> added photo in <%=h link_to activity.target.photo_album.name, user_photo_album_path(activity.user, activity.target.photo_album), :class => "general" %> album.<br/>
+      <% end %>
+      <%= l(activity.created_at, :format => '%d %b %Y, %H:%M') %>
+      <% if is_current_user(activity.user) %>
+        <a href="#" data-dropdown="#dropdownphoto-<%= activity.target.id %>" class="right_div" ><%= fa_icon("gear", :class => "lightgraycolor mediumsize")%></a>
+        <div class="dropdown_container_menu">
+          <div id="dropdownphoto-<%= activity.target.id %>" class="dropdown dropdown-tip dropdown-relative dropdown-anchor-right">
+            <ul class="dropdown-menu">
+              <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to "Edit", edit_user_photo_album_photo_path(activity.target.creator, activity.target.photo_album, activity.target), :class => "general" %></div></li>
+              <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to "Delete", user_photo_album_photo_path(activity.target.creator, activity.target.photo_album, activity.target), :confirm => "Are you sure?", :method => :delete, :class => "general" %></div></li>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      <br/>
+      <%=h link_to(image_tag(activity.target.image.url(:small),
+        :class => "newsfeed_uploaded_pic"), activity.target.image.url(:original), :class=>"fancybox-buttons", "data-fancybox-group"=>"button", :rel=>"gallery") %>
+    </div>
+  </div>
+</div>
+<div id="photo_description" style="display: none;">
+  <%= render :partial => "photos/photo_description", :locals => {:photo => activity.target} %>
+</div>

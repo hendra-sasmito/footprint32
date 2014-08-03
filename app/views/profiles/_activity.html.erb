@@ -1,0 +1,11 @@
+<% if !activity.target.nil? %>
+  <% if activity.target_type == "Photo" %>
+    <%= render :partial => 'home/uploaded_photo', :locals => { :activity => activity } %>
+  <% elsif activity.target_type == "Review" %>
+    <%= render :partial => 'home/added_review', :locals => { :activity => activity } %>
+  <% elsif activity.target_type == "Event" %>
+    <%= render :partial => 'home/added_event', :locals => { :activity => activity } %>
+  <% elsif activity.target_type == "Comment" %>
+    <%= render :partial => 'home/get_comment', :locals => { :activity => activity } %>
+  <% end %>
+<% end %>

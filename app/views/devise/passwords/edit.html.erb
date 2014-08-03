@@ -1,0 +1,29 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+        <div class="resource_container_blue">
+          <div class="title_text"><%= t('.change_your_password', :default => 'Change your password') %></div>
+        </div>
+        <div class="resource_container">
+          <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+            <%= devise_error_messages! %>
+            <%= f.hidden_field :reset_password_token %>
+
+            <div><%= f.password_field :password, :placeholder => t('.new_password', :default => 'New password') %></div>
+
+            <div><%= f.password_field :password_confirmation, :placeholder => t('.confirm_new_password', :default => 'Confirm new password') %></div>
+
+            <div><%= f.submit t('.change_my_password', :default => 'Change my password'), :class => "general-button" %></div>
+          <% end %>
+        </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <div class="resource_container">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="comment_box">
+  <div id="comment_<%= comment.id %>">
+    <div class="comment_box_user">
+      <%=h link_to(image_tag(get_profile_photo_url(comment.user.profile_photo),
+          :class => "thumb_profile_pic"), user_profile_path(comment.user)) %>
+    </div>
+    <div class="comment_box_Body">
+      <%#*<div class="comment_box_Message">%>
+        <span class="wordwrap"><%=h link_to comment.user.profile.full_name, user_profile_path(comment.user), :class => "general" %></span><br/>
+        <%= l(comment.created_at, :format => '%d %b %Y, %H:%M') %>
+        <% if is_current_user(comment.user) %>
+          <a href="#" data-dropdown="#dropdown-<%= comment.id %>" ><%= fa_icon("gear", :class => "graycolor mediumsize")%></a>
+          <div class="dropdown_container_menu">
+            <div id="dropdown-<%= comment.id %>" class="dropdown dropdown-tip dropdown-relative">
+              <ul class="dropdown-menu">
+                <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to t(".edit"), edit_comment_path(comment), :class => "general" %></div></li>
+                <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to t(".delete"), comment_path(comment), :confirm => t('.delete_confirmation'), :method => :delete, :class => "general" %></div></li>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      <%#*</div>%>
+    </div>
+    <div class="clear_float"></div>
+    <div class="wordwrap"><%=h comment.content %></div>
+  </div>
+</div>

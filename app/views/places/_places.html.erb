@@ -1,0 +1,9 @@
+<% index = 0 %>
+<% places.each do |place| %>
+  <%= render :partial => "places/place_preview_small", :locals => {:place => place, :index => index} %>
+  <% index = index + 1 %>
+<% end %>
+<script id="my_vars_json" type="text/json">
+  <%= raw places_list.to_json %>
+</script>
+<%#= hidden_field_tag :item_type, result_type %>

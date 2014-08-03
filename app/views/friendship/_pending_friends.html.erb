@@ -1,0 +1,3 @@
+<% for friend in pending_friends %>
+  <%= render :partial => "search/friend_found", :locals => {:users => friend} %>
+<% end %>

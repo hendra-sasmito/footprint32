@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  share_review: false
+  share_event: false
+  share_photo: 
+
+two:
+  share_review: false
+  share_event: false
+  share_photo: 

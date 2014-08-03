@@ -1,0 +1,3 @@
+$('#place_partial').html('<%= escape_javascript render(:partial => "home/index", :locals => {:result => @result, :result_list => @result_list}) %>');
+
+$('#paginator_place').html('<%= escape_javascript(paginate(@result, :remote => true, :param_name => "place_page", :theme => "default", :theme => "slider").to_s) %>');

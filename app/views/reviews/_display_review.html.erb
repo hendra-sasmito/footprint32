@@ -1,0 +1,16 @@
+<div class="review_box_Body">
+  <div class="review_box_Message">
+    <span class="wordwrap"><%=h link_to review.creator.profile.full_name, user_profile_path(review.creator), :class => "general" %></span> <%= t('.review_about')%>
+    <% if review.reviewable.class.to_s == "Place" %>
+      <%= render :partial => "profiles/place_hover_info", :locals => {:place => review.reviewable, :type => "", :id => review.id} %>
+    <% else %>
+      <%= render :partial => "profiles/city_hover_info", :locals => {:city => review.reviewable, :type => "", :id => review.id} %>
+    <% end %>
+    <div class="small_text"><%= l(review.created_at, :format => '%d %b %Y, %H:%M') %></div>
+    <div class="wordwrap small_text"><%=h review.content %></div><br/>
+    <% review.review_photos.each do |review_photo| %>
+      <%= link_to image_tag(review_photo.image.url(:small), :class => "newsfeed_pic"), review_photo.image.url(:original),
+      :class=>"fancybox-simple" %>
+    <% end %>
+  </div>
+</div>

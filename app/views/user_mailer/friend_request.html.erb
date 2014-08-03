@@ -1,0 +1,18 @@
+Hello <%= @friend.profile.full_name %>,
+
+You have a new footprint32 friend request from <%= @user.profile.full_name %>.
+
+View <%= @user.profile.full_name %>'s profile:
+<%= @user_url %>
+<%= user_profile_url(@friend, :host => Footprint32::Application.config.HOST_NAME) %>
+
+Accept: <%= url_for(:host => Footprint32::Application.config.HOST_NAME,
+            :controller => "friendship",
+            :action => "accept",
+            :id => @user.id) %>
+Decline: <%= url_for(:host => Footprint32::Application.config.HOST_NAME,
+            :controller => "friendship",
+            :action => "decline",
+            :id => @user.id) %>
+
+Koedok

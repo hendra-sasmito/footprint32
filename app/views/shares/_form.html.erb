@@ -1,0 +1,23 @@
+<%= form_for([current_user, @share], :validate => true) do |f| %>
+  <%= render "shared/form_error_message", :target => @share %>
+
+  <div class="field">
+    <%= @share.provider %>
+  </div>
+  <div class="field">
+    <%= f.label :share_review %><br />
+    <%= f.select(:share_review, { "On" => true, "Off" => false}, {}) %>
+  </div>
+  <div class="field">
+    <%= f.label :share_event %><br />
+    <%= f.select(:share_event, { "On" => true, "Off" => false}, {}) %>
+  </div>
+  <div class="field">
+    <%= f.label :share_photo %><br />
+    <%= f.select(:share_photo, { "On" => true, "Off" => false}, {}) %>
+  </div>
+    
+  <div class="field">
+    <%= f.submit "Update", :class => "general-button btn" %> <%= link_to "Back", user_shares_path(current_user), :class => "general-button btn" %>
+  </div>
+<% end %>

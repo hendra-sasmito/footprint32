@@ -34,3 +34,11 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+db/migrate/20130511162357_devise_create_admin_users.rb
+
+log/*.*
+tmp/*.*
+solr/data/*.*
+solr/pid/*.*
+public/system/*.*

@@ -1,0 +1,5 @@
+$('#trips').html('<%= escape_javascript render(:partial => 'trips', :locals => {:trips => @trips}) %>');
+$('#paginator_trips').html('<%= escape_javascript(paginate(@trips, :param_name => "all_page", :remote => true, :theme => "default").to_s) %>');
+
+$('#my_trips').html('<%= escape_javascript render(:partial => 'trips', :locals => {:trips => @my_trips}) %>');
+$('#paginator_my_trips').html('<%= escape_javascript(paginate(@my_trips, :param_name => "my_page", :remote => true, :theme => "default").to_s) %>');

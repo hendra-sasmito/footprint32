@@ -1,0 +1,23 @@
+$('#place_partial').html('<%= escape_javascript render(:partial => "cities/places", :locals => {:places => @places, :places_list => @places_list}) %>');
+$('#paginator_place').html('<%= escape_javascript(paginate(@places, :remote => true, :param_name => "place_page", :theme => "default").to_s) %>');
+
+$('#reviews_partial').html('<%= escape_javascript render(:partial => 'reviews/reviews', :locals => {:reviews => @reviews}) %>');
+$('#paginator_review').html('<%= escape_javascript(paginate(@reviews, :remote => true, :param_name => "review_page", :theme => "default").to_s) %>');
+
+$('#friends_partial').html('<%= escape_javascript render(:partial => 'shared/liked_user', :locals => {:friends => @liked}) %>');
+$('#paginator_friend').html('<%= escape_javascript(paginate(@liked, :remote => true, :param_name => "friend_page", :theme => "default").to_s) %>');
+
+$('#visited_partial').html('<%= escape_javascript render(:partial => 'shared/visited', :locals => {:visited => @visitors}) %>');
+$('#paginator_visited').html('<%= escape_javascript(paginate(@visitors, :remote => true, :param_name => "visited_page", :theme => "default").to_s) %>');
+
+$(".review_photo").justifiedGallery({
+  'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+  'justifyLastRow':false,
+  'rowHeight':120,
+  'fixedHeight':false,
+  'captions':false,
+  'margins':1,
+  'onComplete': function(gallery) {
+    $(gallery).find("a").addClass('fancybox-simple');
+  }
+});

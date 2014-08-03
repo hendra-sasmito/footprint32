@@ -1,0 +1,21 @@
+<div class="item_float">
+  <div class="place-found-small">
+    <div class="place-photo-small">
+      <%=h link_to image_tag(place_small_photo(place), :class => ""), place_path(place) %><br/>
+    </div>
+      <div class="place-desc">
+        <div class="general_box">
+          <div class="break-word shorten_no_link small_text">
+            <%=h place.name %>
+          </div>
+          <% if !place.category.nil? %>
+            <div><%=h place.category.name %></div>
+          <% end %>
+          <%= fa_icon("comment", :class => "bluecolor smallsize hastip", :title => "Review") %> <%= place.reviews_count %>
+          <%= fa_icon("heart", :class => "redcolor smallsize hastip", :title => "Like") %> <%= place.favorite_places_count %>
+          <%= fa_icon("user", :class => "blackcolor smallsize hastip", :title => "Visitor") %> <%= place.visited_places_count %>
+          <span class="right_div"><%= link_to fa_icon("map-marker", :class => "cyancolor mediumsize"), "", :id => "show_on_map", :'data-index' => index, :class => "general show_on_map hastip", :title => "Show on map" %></span>
+        </div>
+      </div>
+    </div>
+  </div>

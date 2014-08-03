@@ -1,0 +1,47 @@
+<% @places.each do |place| %>
+  <div id="place_<%= place.id %>" class="disc-place-container">
+    <div class="disc-place-title">
+      <div class="disc-place-category item_float">
+        <%= image_tag("map-big.png") %>
+      </div>
+      <div class="disc-place-name bold_text">
+        <%= link_to place_path(place), :class => "title_text white_text hastip", :title => t('.tip') do %>
+          <span class="wordwrap"><%= place.name %></span>
+          <%#*<span class="contenthover_span"></span>%>
+        <% end %>
+      </div>
+      <div class="disc-place-category-name"><%= place.category.name if !place.category.nil? %></div>
+    </div>
+    <div class="disc-place-desc">
+      <div class="disc-place-desc-content-icon item_float"><%= image_tag("compass_24x24.png", :class => "hastip", :title => t(".address")) %></div>
+      <div class="disc-place-desc-place-map-info">
+        <%= place.street if place.street %><br/>
+        <%= place.city.region.name if place.city.region %> <%= place.postcode if place.postcode %><br/>
+        <%= place.country.name if place.country %><br/>
+      </div>
+      <div class="disc-place-desc-place-info-desc">
+        <div class="disc-place-desc-content-icon item_float"><%= image_tag("iphone_18x24.png", :class => "hastip", :title => t(".about")) %></div>
+        <div class="disc-place-desc-place-map-info">
+          <span class="wordwrap"><%= place.description if place.description %></span>
+        </div>
+      </div>
+    </div>
+    <div class="resource_container">
+      <div class="disc-place-stats">
+        <div class="disc-place-stats-item"><%= image_tag("comment_fill_24x21.png") %> <%= t('.review')%>
+        <div class="disc-place-stats-value"><%= place.reviews.count %></div></div>
+        <%# @users_like = place.liked_users.limit(5) %>
+        <div class="disc-place-stats-item"><%= image_tag("heart_fill_24x21.png") %> <%= t('.like')%>
+        <div class="disc-place-stats-value"><%= place.favorite_places_count %></div></div>
+        <div class="clear_float"></div>
+      </div>
+    </div>
+    <div class="resource_container">
+      <% place.photos.public_photo.limit(6).each do |photo| %>
+        <%= link_to image_tag(photo.image.url(:thumb), :class => "thumb_profile_pic imagedropshadow"), photo.image.url(:original),
+          :class=>"fancybox-simple" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+

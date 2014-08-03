@@ -1,0 +1,33 @@
+<% content_for :title, @country.name %>
+<div class="page-container">
+  <div id="content-full">
+    <div class="padding">
+      <div class="title_text"><%= @country.name %></div>
+
+      <%= t('.filter') %> :
+      <% ('A' .. 'Z').to_a.each do |letter| %>
+        <%= link_to letter, {:filter => letter}, :remote => true, :class => "general" %>
+      <% end %>
+      <%= link_to t(".all"), {:filter => "all"}, :remote => true, :class => "general" %>
+      <span class="right_div">
+      <%= link_to "Add new city", new_city_path(:country => @country.id), :class => "general-button" %>
+      </span>
+      <div class="general_container">
+        <div class="cities-found">
+          <div id="city_partial">
+            <%= render :partial => "cities/cities", :locals => {:cities => @cities} %>
+          </div>
+          <div class="clear_float"></div>
+          <div id="paginator_city">
+            <%= paginate @cities, :remote => true, :param_name => "page", :theme => "default" %>
+          </div>
+        </div>
+      </div>
+      <%= link_to t('.back'), countries_path, :class => "general" %>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+<% places = most_reviewed_places_in_a_week().all %>
+<% if !places.empty? %>
+  <%= render :partial => "shared/top_places_template", :locals => { :title => t('.title'), :icon => "review-big.png", :places => places } %>
+<% end %>

@@ -1,0 +1,33 @@
+<% if type == "" %>
+<%= link_to place.name, place_path(place), :class => "general hashtmltip", :rel => "#htmltip-#{type}-#{id}" %>
+<% else %>
+<%= link_to image_tag(place_thumb_photo(place),
+    :class => "small_pic "), place_path(place), :class => "hashtmltip", :rel => "#htmltip-#{type}-#{id}" %>
+<% end %>
+<div class="htmltipcontent" style="display:none;" id="htmltip-<%= type %>-<%= id %>">
+  <div class="infowindow small_text">
+    <div class="infowindow_image">
+      <%= link_to image_tag(place_thumb_photo(place),
+        :class => "photo_in_profile"), place_path(place) %>
+    </div>
+    <div class="infowindow_content2">
+      <div class="bold_text">
+        <%= link_to place.name, place_path(place), :class => "general" %>
+      </div>
+      <%= place.street %><br/>
+      <%= place.city.name %><br/>
+      <%= place.city.region.name if place.city.region %>, <%= place.city.country.name %><br/>
+      <div class="infowindow_desc">
+        <span class="break-word">
+          <%= place.description %>
+        </span>
+      </div>
+    <%#*</div>%>
+    <%#*<div class="general_box_section">%>
+      <%= fa_icon("comment", :class => "bluecolor mediumsize") %> <%= pluralize(place.reviews.size, "Review") %>
+      <%= fa_icon("heart", :class => "redcolor mediumsize") %> <%= pluralize(place.favorite_places_count, "Like") %>
+      <%= fa_icon("user", :class => "blackcolor mediumsize") %> <%= pluralize(place.visited_places_count, "Visitor") %>
+    </div>
+    <div class="clear_float"></div>
+  </div>
+</div>

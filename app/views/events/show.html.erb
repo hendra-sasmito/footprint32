@@ -1,0 +1,114 @@
+<% content_for :title, "#{@event.name}" %>
+<% content_for :head do %>
+  <meta property="og:url"    content="<%= request.original_url %>" />
+  <meta property="og:title"  content="<%= @event.name %>" />
+  <meta property="og:site_name"  content="www.koedok.com" />
+  <meta property="og:description"  content="<%= @event.description if @event.description %>" />
+  <% if @event.place.photos.count > 0 %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path(@event.place.photos.last.image.url(:original))) %>" />
+  <% else %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path('city.png')) %>" />
+  <% end %>
+  <meta property="fb:app_id"  content="<%= Footprint32::Application.config.FB_APP_ID %>" />
+  <meta property="og:type"  content="website" />
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% if @event.place %>
+        var map;
+        var place_marker;
+        var place_latitude = <%= @event.place.latitude %>;
+        var place_longitude = <%= @event.place.longitude %>;
+        var myLatlng;
+        var maininfowindow;
+
+        myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+        var mapOptions = {
+          zoom: 15,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        place_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(place_latitude, place_longitude),
+          map: map
+        });
+        var maincontentString = '<div class="infowindow"><div class="infowindow_image"><%= image_tag(place_thumb_photo(@event.place), :class => "photo_in_profile") %></div><div class="infowindow_content"><div class="bold_text"><%= link_to(@event.place.name, place_path(@event.place), :class => "general") %></div><%= @event.place.street %><br/><%= @event.place.city.name %><br/><%= @event.place.city.region.name if @event.place.city.region %>, <%= @event.place.city.country.name %><div class="infowindow_desc"><span class="wordwrap"><%= @event.place.description if @event.place.description %></span></div></div></div>';
+        
+        maininfowindow = new google.maps.InfoWindow({
+          content: maincontentString
+        });
+        google.maps.event.addListener(place_marker, 'click', function() {
+          maininfowindow.open(map, place_marker);
+        });
+      <% end %>
+    });
+  </script>
+<% end %>
+
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container">
+        <div class="title_text"><span class="wordwrap"><%= @event.name %></span></div>
+        <ul class="events-big">
+          <li>
+            <figure><strong><%= l(@event.date, :format => :date_only) %></strong><%= l(@event.date, :format => :month_only) %></figure>
+            <div class="event-desc-container small_text">
+              <div class="desc_text_light">
+                <%= t('.created')%> <span class="wordwrap"><%= link_to @user.profile.full_name, user_profile_path(@user), :class => "general" %></span><br/>
+                <%= l(@event.date, :format => '%d %b %Y, %H:%M') %><%= link_to(" #{t('.at')} " + @event.place.name, place_path(@event.place), :class => "general") if @event.place %>
+                <div class="general_container">
+                  <% if @event.place %>
+                    <%= render :partial => "shared/place_info", :locals => {:place => @event.place, :small_image => false} %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="event-desc wordwrap"><%= @event.description %></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <% if is_current_user(@user) %>
+        <div class="resource_container_blue small_text">
+          <%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t('.edit'), edit_user_event_path(@user, @event), :class => "general_white" %> |
+          <%= link_to fa_icon("trash-o", :class => "whitecolor mediumsize") + " " + t(".delete"), user_event_path(@user, @event), method: :delete, data: { confirm: t('.delete_confirmation') }, :class => "general_white" %>
+        </div>
+      <% end %>
+      <div class="resource_container">
+        <% if user_signed_in? %>
+          <div id="new_comment">
+            <%= render :partial => 'comments/form', :locals => {:commentable => @event} %>
+          </div>
+        <% end %>
+      </div>
+        <div id="added_comment"></div>
+        <div id="comments_partial">
+          <%= render :partial => 'comments/comments', :locals => {:comments => @comments} %>
+        </div>
+        <div id="paginator_comment">
+          <%= paginate @comments, :remote => true, :param_name => "comment_page", :theme => "default" %>
+        </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <%= render :partial => "shared/facebook_like", :locals => {:url => request.original_url} %>
+      <% if !@event.place.nil? %>
+        <div class="sidebar_container">
+          <div class="loc-desc">
+            <span class="wordwrap"><%= link_to @event.place.country.name, country_path(@event.place.country), :class => "general" %></span> -
+            <span class="wordwrap"><%= link_to @event.place.city.name, city_path(@event.place.city), :class => "general" %></span> -
+            <span class="light_blue_text wordwrap"><%= @event.place.city.region.name if @event.place.city.region %></span> -
+            <span class="wordwrap"><%= link_to @event.place.name, place_path(@event.place), :class => "general" %></span>
+            <div class="loc-desc desc_text_dark">
+              <div id="place_latitude"><%= t("activerecord.attributes.place.latitude")%> : <%= @event.place.latitude %></div>
+              <div id="place_longitude"><%= t("activerecord.attributes.place.longitude")%> : <%= @event.place.longitude %></div>
+            </div>
+          </div>
+          <div id="map"></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

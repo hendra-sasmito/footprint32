@@ -1,0 +1,20 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="title_text"><span class="wordwrap"><%= @user.profile.full_name%></span> <%= t('.title')%></div>
+        <div id="friends">
+          <%= render :partial => "search/friend_found", :locals => {:users => @users} %>
+        </div>
+        <div class="clear_float"></div>
+        <div id="paginator">
+          <%= paginate @users, :remote => true, :theme => "default" %>
+        </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>
+

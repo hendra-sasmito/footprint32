@@ -1,0 +1,115 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    var city_latitude;
+    var city_longitude;
+    var place_marker;
+    var map;
+    var myLatlng;
+    var place_icon;
+
+    $(document).ready(function(){
+      <% url = Footprint32::Application.routes.url_helpers %>
+
+      set_map_size();
+
+      function set_map_size()
+      {
+        var windowWidth = $(window).width() - 350;
+        var windowHeight = $(window).height();
+        var discoverHeight = windowHeight - 170;
+        $('#new_city_map').css({'width':windowWidth, 'height':discoverHeight });
+      }
+      function resize_map() {
+        set_map_size();
+        google.maps.event.trigger(map, "resize");
+      };
+
+      var resizeTimer;
+      $(window).resize(function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(resize_map, 100);
+      });
+      function placeMarker(location) {
+        place_marker.setPosition(location);
+        map.setCenter(location);
+        document.getElementById("city_latitude").value = location.lat();
+        document.getElementById("city_longitude").value = location.lng();
+      }
+      <% if @city.new_record? == true %>
+        city_latitude = 47.7818; //40.735383;
+        city_longitude = 9.61294; //73.984655;
+      <% else %>
+        city_latitude = <%= @city.latitude %>;
+        city_longitude = <%= @city.longitude %>;
+      <% end %>
+      document.getElementById("city_latitude").value = city_latitude;
+      document.getElementById("city_longitude").value = city_longitude;
+
+      myLatlng = new google.maps.LatLng(city_latitude, city_longitude);
+      var mapOptions = {
+        zoom: 10,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("new_city_map"), mapOptions);
+      
+      // add a draggable marker
+      place_marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        title: 'Drag me'
+      });
+
+      // Adding a drag event to the marker
+      google.maps.event.addListener(place_marker, 'dragend', function() {
+        var newlatlng = place_marker.getPosition();
+        map.panTo(newlatlng);
+        document.getElementById("city_latitude").value = newlatlng.lat();
+        document.getElementById("city_longitude").value = newlatlng.lng();
+      });
+
+      google.maps.event.addListener(map, 'click', function(event) {
+          placeMarker(event.latLng);
+      });
+    });
+  </script>
+
+
+<% end %>
+<div class="new_city_map left_div">
+  <div id="new_city_map"></div>
+</div>
+<div class="no_container left_div">
+<div class="map_form">
+<%= form_for([@city], :validate => true) do |f| %>
+  <%= render "shared/form_error_message", :target => @city %>
+
+  <div class="field">
+    <%= f.label t("activerecord.attributes.city.name") %><br />
+    <%= f.text_field :name, :validate => true, :placeholder => t("activerecord.attributes.city.name") %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.city.latitude") %><br />
+    <%= f.text_field :latitude, :placeholder => t("activerecord.attributes.city.latitude"), :readonly => "readonly" %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.city.longitude") %><br />
+    <%= f.text_field :longitude, :placeholder => t("activerecord.attributes.city.longitude"), :readonly => "readonly" %>
+  </div>
+  <div class="field">
+    <%= f.label :region %><br />
+    <% if @city.new_record? == true %>
+      <%= f.select :region_id, options_from_collection_for_select(@country.regions, "id", "name") %>
+    <% else %>
+      <%= f.select :region_id, options_from_collection_for_select(@country.regions, "id", "name", @city.region.id) %>
+    <% end %>
+  </div>
+  <%= f.hidden_field :country_id, :value => @country.id %>
+  <div class="actions">
+    <%= f.submit t(".submit"), :class => "general-button" %>
+  </div>
+<% end %>
+</div>
+</div>

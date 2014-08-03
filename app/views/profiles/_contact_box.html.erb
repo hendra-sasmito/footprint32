@@ -1,0 +1,44 @@
+<% if user_signed_in? and @user != current_user %>
+  <div class="sidebar_container">
+    <div class="info-section-content">
+      <% if friendship_status(current_user, @user) == 'not a friend' %>
+        <span class="wordwrap"><%=h @user.profile.full_name %></span> <%= t('.not_friend')%>
+        <br/>
+        <div class="button-container">
+          <%=h link_to t("add"), friendship_create_path(:id => @user), :method => :post,
+            :confirm =>
+            "#{t('.add_confirmation')} #{@user.profile.full_name}?", :class => "general-button" %>
+        </div>
+      <% end %>
+      <% if friendship_status(current_user, @user) == 'requested' %>
+        <span class="wordwrap"><%=h @user.profile.full_name %></span> <%= t('.be_friend')%>
+        <br/>
+        <div class="button-container">
+          <%=h link_to t(".accept"),
+            friendship_accept_path(:id => @user), :method => :post, :class => "general-button" %> /
+          <%=h link_to t(".decline"),
+            friendship_decline_path(:id => @user), :method => :post,
+            :confirm =>
+            "#{t('.decline_confirmation')} #{@user.profile.full_name}?", :class => "general-button" %>
+        </div>
+      <% end %>
+      <% if friendship_status(current_user, @user) == 'pending' %>
+        <%= t('.request_sent')%> <span class="wordwrap"><%=h @user.profile.full_name %></span>.
+        <br/>
+        <div class="button-container">
+          <%=h link_to t(".cancel"), friendship_cancel_path(:id => @user), :method => :post,
+            :confirm => "#{t('.cancel_confirmation')} #{@user.profile.full_name}?", :class => "general-button" %>
+        </div>
+      <% end %>
+      <% if friendship_status(current_user, @user) == 'accepted' %>
+        <span class="wordwrap"><%=h @user.profile.full_name %></span> <%= t('.is_friend')%>
+        <br/>
+        <div class="button-container">
+          <%=h link_to t(".breakup"),
+            friendship_delete_path(:id => @user), :method => :post,
+            :confirm => "#{t('.breakup_confirmation')} #{@user.profile.full_name}?", :class => "general-button" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

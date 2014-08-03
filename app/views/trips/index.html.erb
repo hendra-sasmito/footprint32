@@ -1,0 +1,79 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    var map;
+    var place_latitude = 0;
+    var place_longitude = 0;
+    var myLatlng;
+    
+    $(document).ready(function(){
+      $( "#trip_tabs" ).tabs();
+      
+      var trip_id;
+      $('.hor-zebra input:radio').click(function() {
+        trip_id = $(this).attr("id");
+        /*$.ajax({
+          type: "GET",
+          url: '<%= Footprint32::Application.config.HOST_NAME %>' + '/places/discover',
+          data: location,
+          success: function(data, textStatus, jqXHR) {
+            show_markers();
+          }
+        });*/
+      });
+
+      myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+      var mapOptions = {
+        zoom: 2,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      //map = new google.maps.Map(document.getElementById("trip_map"), mapOptions);
+    });
+
+
+  </script>
+<% end %>
+
+<div class="page-container">
+  <div id="content-fullwidth">
+    <div class="padding">
+      <div class="resource_container">
+        <div id="trip_tabs">
+          <ul>
+            <li><a href="#all_sr_tab">All Smart Rides</a></li>
+            <li><a href="#my_sr_tab">My Smart Rides</a></li>
+          </ul>
+          <div id="all_sr_tab">
+            <div class="left_div">
+              <div id="trips">
+                <%= render :partial => 'trips', :locals => { :trips => @trips } %>
+              </div>
+              <div id="paginator_trips">
+                <%= paginate @trips, :param_name => "all_page", :remote => true, :theme => "default" %>
+              </div>
+            </div>
+          </div>
+          <div id="my_sr_tab">
+            <div class="left_div">
+              <div id="my_trips">
+                <%= render :partial => 'trips', :locals => { :trips => @my_trips } %>
+              </div>
+              <div id="paginator_my_trips">
+                <%= paginate @my_trips, :param_name => "my_page", :remote => true, :theme => "default" %>
+              </div>
+              <%= link_to 'Upload New Datalog Trip', new_user_trip_path(@user), :class => "general-button" %>
+            </div>
+          </div>
+        </div>
+        <div class="clear_float"></div>
+      </div>
+
+      
+        
+      <div id="trip_map"></div>
+      <div class="clear_float"></div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,2 @@
+$('#city_partial').html('<%= escape_javascript render(:partial => "cities/cities", :locals => {:cities => @cities}) %>');
+$('#paginator_city').html('<%= escape_javascript(paginate(@cities, :remote => true, :param_name => "page", :theme => "default").to_s) %>');

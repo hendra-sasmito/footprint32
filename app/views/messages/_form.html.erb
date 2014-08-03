@@ -1,0 +1,24 @@
+<%= form_for(@message, :validate => true) do |f| %>
+  <%= render "shared/form_error_message", :target => @message %>
+
+  <div class="field">
+    <%= f.label :subject %><br />
+    <%= f.text_field :subject, :validate => true, :placeholder => "What is it about?" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :to %><br />
+    <%= text_field_tag :user_ids, {} %>
+  </div>
+
+  <div class="field">
+    <%= f.fields_for :conversation do |conversation| %>
+      <%= conversation.label :content %><br />
+      <%= conversation.text_area :content, :validate => true, :placeholder => "Write your message here" %>
+    <% end %>
+  </div>
+  <div class="right_div">
+    <%= f.submit "Send", :class => "general-button" %>
+  </div>
+  <div class="clear_float"></div>
+<% end %>

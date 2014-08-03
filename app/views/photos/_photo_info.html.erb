@@ -1,0 +1,61 @@
+<div class="title_text"><%= t('.title')%></div>
+<div class="loc-desc desc_text_dark">
+  <table class="hor-zebra">
+    <tbody>
+      <% if photo_exif.width.to_s != "" %>
+      <tr>
+        <td><%= t('.width')%></td>
+        <td><%= photo_exif.width.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.height.to_s != "" %>
+      <tr>
+        <td><%= t('.height')%></td>
+        <td><%= photo_exif.height.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.make.to_s != "" %>
+      <tr>
+        <td><%= t('.brand')%></td>
+        <td><%= photo_exif.make.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.model.to_s != "" %>
+      <tr>
+        <td><%= t('.model')%></td>
+        <td><%= photo_exif.model.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.model.to_s != "" %>
+      <tr>
+        <td><%= t('.exposure')%></td>
+        <td><%= photo_exif.exposure_time.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.f_number.to_s != "" %>
+      <tr>
+        <td><%= t('.f_stop')%></td>
+        <td><%= photo_exif.f_number.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.iso_speed_ratings.to_s != "" %>
+      <tr>
+        <td><%= t('.iso')%></td>
+        <td><%= photo_exif.iso_speed_ratings.to_s %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.date_time.to_s != "" %>
+      <tr>
+        <td><%= t('.date')%></td>
+        <td><%= l(photo_exif.date_time, :format => '%d %b %Y, %H:%M') %></td>
+      </tr>
+      <% end %>
+      <% if photo_exif.focal_length.to_s != "" %>
+      <tr>
+        <td><%= t('.focal')%></td>
+        <td><%= photo_exif.focal_length.to_s %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

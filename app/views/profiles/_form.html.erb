@@ -1,0 +1,101 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% url = Footprint32::Application.routes.url_helpers %>
+          
+      $('#photo_image').change(function() {
+        $('#new_photo').submit();
+      });
+
+      $('.auto_complete_cities').autocomplete({
+          minLength: 3,
+          source: "<%= url.autocomplete_city_name_cities_path(:json) %>",
+
+          select: function(event, ui) {
+            $('#real_city_id').val(ui.item.id);
+          }
+      });
+    });
+  </script>
+<% end %>
+
+<%= form_for(@profile, :url => user_profile_path(current_user)) do |f| %>
+  <%= render "shared/form_error_message", :target => @profile %>
+
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.first_name") %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.last_name") %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.birthdate") %><br />
+    <%#= f.date_select :birthdate %>
+    <%= f.text_field :birthdate, :class => 'datepicker', :placeholder => t(".birthdate_placeholder") %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.gender") %><br />
+    <div class="check_box_div"><%= f.radio_button :gender, "M" %></div> <%= t("activerecord.attributes.profile.male")%>
+    <div class="clear_float"></div>
+    <div class="check_box_div"><%= f.radio_button :gender, "F" %></div> <%= t("activerecord.attributes.profile.female")%>
+    <div class="clear_float"></div>
+    <div class="check_box_div"><%= f.radio_button :gender, "U" %></div> <%= t("activerecord.attributes.profile.unknown")%>
+    <div class="clear_float"></div>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.about") %><br />
+    <%= f.text_area :about %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.time_zone") %><br />
+    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.all %>
+  </div>
+  <div class="field">
+    <%= f.label t("activerecord.attributes.profile.language") %><br />
+    <%= f.select :language, options_for_select(LANGUAGES, I18n.locale), :class => "language_select" %>
+  </div>
+  <div class="field">
+    <% if !@profile.hometown_id.nil? %>
+      <%= f.label :hometown %> : <%= @profile.user.hometown.name %>, <%= @profile.user.hometown.country.name %><br/>
+      <%= f.hidden_field :hometown_id, :value => @profile.hometown_id, :id => "real_city_id" %>
+      <%= t('.wrong_city') %>
+    <% else %>
+      <%= f.hidden_field :hometown_id, :id => "real_city_id" %>
+    <% end %>
+    <%= text_field_tag :term, params[:term], :class => "auto_complete_cities", :placeholder => "Hometown" %>
+  </div>
+  <div class="actions">
+    <%= f.submit t('.submit'), :class => "general-button" %>
+  </div>
+
+<% end %>
+
+<div class="profile_photo_container">
+  <div class="profile_photo_image_container">
+  <div class="user_small_profile_photo">
+    <%= image_tag(get_user_small_profile_photo_url(current_user), :class => "imagedropshadow") %>
+  </div>
+  </div>
+  <a href="#" data-dropdown="#dropdown-profile" class="general-button"><%= t('.change_profile_photo') %></a>
+  <div id="dropdown-profile" class="dropdown dropdown-tip dropdown-relative">
+    <ul class="dropdown-menu">
+      <li>
+        <%= link_to t('.select'), profile_photo_show_photos_path(), :id => "show_photos" %>
+      </li>
+      <li>
+        <%= form_for([current_user, @photo_album, @photo], :url => profile_photo_create_path(), :method => :post, :html => { :multipart => true}) do |f| %>
+          <div class="field">
+            <%= hidden_field_tag :photo_album_id, @photo_album.id %>
+          </div>
+          <span class="btn_dropdown fileinput-button">
+            <span><%= t('.upload') %></span>
+            <%= f.file_field :image %>
+          </span>
+          <%= render :partial => "shared/progress_indicator" %>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>

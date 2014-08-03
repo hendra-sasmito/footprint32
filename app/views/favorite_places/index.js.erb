@@ -1,0 +1,2 @@
+$('#favorite_places').html('<%= escape_javascript render(:partial => 'favorite_places/favorite_places', :locals => {:places => @places, :places_list => @places_list}) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@places, :remote => true, :theme => "slider").to_s) %>');

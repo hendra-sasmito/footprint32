@@ -1,0 +1,3 @@
+$('#city_stats_id').html('<%= escape_javascript render(:partial => 'cities/city_stats', :locals => {:city => @city}) %>');
+$("#like").html("<%= escape_javascript render(:partial => 'favorite_cities/like_button', :locals => {:city => @city}) %>");
+$('#flash').html("<%= escape_javascript raw(flash_display) %>");

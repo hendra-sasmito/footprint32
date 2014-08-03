@@ -1,0 +1,17 @@
+<div class="review_box">
+  <div class="review_box_user">
+    <div class="hidden_box_container">
+    <%= link_to image_tag(get_profile_photo_url(activity.user.profile_photo),
+        :class => "thumb_profile_pic imagedropshadow"), user_profile_path(activity.user) %>
+      <%= render :partial => "shared/user_small_info_box", :locals => { :user => activity.user } %>
+    </div>
+  </div>
+  <div class="review_box_Body">
+    <div class="review_box_Message" >
+      <%= link_to activity.user.profile.full_name, user_profile_path(activity.user), :class => "general" %> added <%= link_to activity.target.place.name, activity.target.place, :class => "general" %> as <%= get_possesive_pronoun(activity.user.profile.gender) %> favorite place.<br/>
+      <abbr class="timeago" title="<%= activity.target.created_at.getutc.iso8601 %>">
+        <%= timeago_tag activity.target.created_at, :nojs => true %>
+      </abbr>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="hidden_info_box">
+  <div class="general_box">
+    <div class="general_box">
+      <div class="title_text white_text"><span class="wordwrap"><%= user.profile.full_name %></span></div>
+      <%= fa_icon("comment", :class => "graycolor mediumsize") %> <%= pluralize(user.reviews.size, t('.review')) %><br/>
+      <% if user.reviews_count > 0 %>
+      <div class="wordwrap"><%= t('.last_review')%>: "<%= user.reviews.last.content %>"</div><br/>
+      <% end %>
+      <%= link_to t(".profile"), user_profile_path(user), :class => "general-button" %>
+    </div>
+  </div>
+</div>

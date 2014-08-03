@@ -1,0 +1,27 @@
+<div class="place_info_container">
+  <% if small_image == true %>
+    <div class="place_page_image_thumb">
+      <%=h link_to image_tag(place_small_photo(place), :class => ""), place_path(place) %>
+    </div>
+  <% else %>
+    <div class="place_info_image">
+      <%=h link_to image_tag(place_small_photo(place), :class => ""), place_path(place) %>
+    </div>
+  <% end %>
+  <div class="place_page_info small_text">
+    <div class=""><span class="wordwrap"><%= link_to place.name, place_path(place), :class => "general" %></span></div>
+    <div class="desc_text_light"><%= link_to place.category.name, category_path(place.category), :class => "general" if !place.category.nil? %></div>
+    <div class="place_page_address">
+      <span class="wordwrap"><%= place.street %></span><br/>
+      <span class="wordwrap"><%= link_to place.city.name, city_path(place.city), :class => "general_grey" if place.city %></span> <span class="light_grey_text"><%= place.postcode if place.postcode %></span><br/>
+      <span class="light_grey_text wordwrap"><%= place.city.region.name if place.city.region %></span><br/>
+      <span class="wordwrap"><%= link_to place.country.name, country_path(place.country), :class => "general_grey" if place.country %></span><br/>
+    </div>
+    <div class="general_box_section">
+    <%= fa_icon("comment", :class => "bluecolor mediumsize") %> <%= pluralize(place.reviews.size, t('.review')) %>
+    <%= fa_icon("heart", :class => "redcolor mediumsize") %> <%= pluralize(place.favorite_places_count, t('.like')) %>
+    <%= fa_icon("user", :class => "blackcolor mediumsize") %> <%= pluralize(place.visited_places_count, t('.visitor')) %>
+    </div>
+  </div>
+  <div class="clear_float"></div>
+</div>

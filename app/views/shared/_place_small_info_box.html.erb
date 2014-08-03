@@ -1,0 +1,6 @@
+<div class="hidden_info_box">
+  <div class="general_box">
+    <%= render :partial => "shared/place_info", :locals => {:place => place, :small_image => true} %>
+    <%= link_to t(".more_info"), place_path(place), :class => "general-button right_div" %>
+  </div>
+</div>

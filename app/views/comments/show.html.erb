@@ -1,0 +1,47 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container">
+
+        <% if @commentable.class.name == "Event" %>
+          <div class="title_text"><%= link_to @commentable.name, user_event_path(@commentable.creator, @commentable), :class => "general" %></div>
+          <ul class="events-big">
+            <li>
+              <figure><strong><%= l(@commentable.date, :format => :date_only) %></strong><%= l(@commentable.date, :format => :month_only) %></figure>
+              <div class="event-desc-container">
+                <div class="desc_text_light">
+                  <%= t('.created')%> <span class="wordwrap"><%= link_to @commentable.creator.profile.full_name, user_profile_path(@commentable.creator), :class => "general" %></span><br/>
+                  <%= l(@commentable.date, :format => '%d %b %Y, %H:%M') %><%= link_to(" #{t('.at')} " + @commentable.place.name, place_path(@commentable.place), :class => "general") if @commentable.place %>
+                </div>
+                <div class="event-desc wordwrap"><%= @commentable.description %></div>
+              </div>
+            </li>
+          </ul>
+        <% elsif @commentable.class.name == "Photo" %>
+          <div class="comment_box_photo">
+            <%=h link_to(image_tag(@commentable.image.url(:thumb),
+            :class => "imagedropshadow"), user_photo_album_photo_path(@commentable.creator, @commentable.photo_album, @commentable)) %>
+          </div>
+          <div class="comment_box_photo_content">
+            <div class="desc_text_light">
+              <%= t('.created')%> <span class="wordwrap"><%= link_to @commentable.creator.profile.full_name, user_profile_path(@commentable.creator), :class => "general" %></span><br/>
+            </div>
+            <div class="desc_text_light"><%= l(@commentable.created_at, :format => '%d %b %Y, %H:%M') %></div>
+          </div>
+          <div class="clear_float"></div>
+          <div class="photo-desc wordwrap"><%= @commentable.description %></div>             
+        <% else %>
+        <% end %>
+      </div>
+      <div class="resource_container">
+        <%= render :partial => 'comments/comment', :locals => {:comment => @comment} %>
+        <%= link_to t('.back'), :back, :class => "general" %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>

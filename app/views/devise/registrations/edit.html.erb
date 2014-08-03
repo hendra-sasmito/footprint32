@@ -1,0 +1,47 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text"><%= t('.title', :resource => resource_class.model_name.human , :default => 'Edit #{resource_name.to_s.humanize} Account') %></div>
+      </div>
+      <div class="resource_container">
+        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+          <%= devise_error_messages! %>
+
+          <div><%= f.email_field :email, :placeholder => t('activerecord.attributes.user.email') %></div>
+
+          <div><%= f.password_field :password, :autocomplete => "off", :placeholder => t('activerecord.attributes.user.password') %><i>(<%= t('.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i></div>
+
+          <div><%= f.password_field :password_confirmation, :placeholder => t('activerecord.attributes.user.password_confirmation') %></div>
+
+          <div><%= f.password_field :current_password, :placeholder => t('activerecord.attributes.user.current_password') %><i>(<%= t('.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)</i></div>
+
+          <div><%= f.submit t('.update', :default => "Update"), :class => "general-button" %></div>
+        <% end %>
+      </div>
+      <div class="resource_container">
+        <%= link_to t(".back"), :back, :class => "general" %>
+
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <% if resource.authentications.count > 0 %>
+        <div class="resource_container">
+          <%= t('.you_can_login_with', :default => 'You can login using the following account') %>: <br/>
+          <% resource.authentications.each do |auth| %>
+            <% if auth.provider == "facebook" %>
+              <%= image_tag("facebook_32.png", :class =>"hastip", :title => "#{auth.provider}") %>
+            <% end %>
+            <% if auth.provider == "google_oauth2" %>
+              <%= image_tag("google_32.png", :class =>"hastip", :title => "#{auth.provider}") %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<% photos.each do |photo| %>
+  <div class="photo">
+    <%= link_to image_tag(photo.image.url(:thumb), :class => "imagedropshadow photo_in_profile"), photo.image.url(:original),
+      :class=>"fancybox-buttons", "data-fancybox-group"=>"button" %>
+  </div>
+<% end %>
+<div id="photo_description" style="display: none;">
+  <% @photos.each do |photo| %>
+    <%= render :partial => "photos/photo_description", :locals => {:photo => photo} %>
+  <% end %>
+</div>

@@ -1,0 +1,2 @@
+$('#visited_cities').html('<%= escape_javascript render :partial => 'visited_cities/visited_cities', :locals => {:cities => @cities, :cities_list => @cities_list} %>');
+$('#paginator').html('<%= escape_javascript(paginate(@cities, :remote => true, :theme => "slider").to_s) %>');

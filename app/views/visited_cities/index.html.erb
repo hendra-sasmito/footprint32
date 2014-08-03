@@ -1,0 +1,175 @@
+<% content_for :title, "#{@user.profile.full_name}" %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    var map;
+    var city_marker;
+    var city_icon;
+    var city_latitude;
+    var city_longitude;
+    var myLatlng;
+    var cities = new Array();
+    var cities_marker = new Array();
+    var info_windows = new Array();
+    var city_info = {};
+    var markerCluster;
+
+    function set_discover_size()
+    {
+      var windowWidth = $(window).width();
+      var windowHeight = $(window).height();
+      var discoverHeight = windowHeight - 100;
+      $('#discover').css({'width':windowWidth ,'height':discoverHeight });
+    }
+    function resize_map() {
+      set_discover_size();
+      google.maps.event.trigger(map, "resize");
+    };
+
+    function display_marker(city_info)
+    {
+      var index_marker = city_info["index"];
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      close_all_info_windows();
+      google.maps.event.trigger(cities_marker[index_marker], 'click');
+    }
+
+    $(document).ready(function($) { // document ready
+
+      $('#hideshow').on('click', function(event) {
+        $('.stacked_view_box').toggle('show');
+      });
+
+      set_discover_size();
+
+      var resizeTimer;
+      $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize_map, 100);
+      });
+
+      city_latitude = 0;
+      city_longitude = 0;
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        city_info = {};
+        city_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(city_info);
+      });
+
+      myLatlng = new google.maps.LatLng(city_latitude, city_longitude);
+      var mapOptions = {
+        zoom: 10,
+        minZoom: 2,
+        maxZoom: 10,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("discover"), mapOptions);
+      show_markers();
+
+    });
+    $(document).ajaxComplete(function(event, request) {
+      show_markers();
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        city_info = {};
+        city_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(city_info);
+      });
+    });
+    
+    function show_markers()
+    {
+      var i;
+      var bounds;
+      cities = [];
+      info_windows.length = 0;
+
+      if ($('#vis_cities_json').length)
+      {
+        var myVarsJSON = $("#vis_cities_json").html(),
+        cities = $.parseJSON(myVarsJSON);
+
+        clear_overlays();
+        for (i = 0; i < cities.length; i++)
+        {
+            create_marker(cities[i]);
+        }
+        markerCluster = new MarkerClusterer(map, cities_marker);
+        bounds = new google.maps.LatLngBounds();
+        for(i = 0; i < cities_marker.length; i++) {
+          bounds.extend(cities_marker[i].getPosition());
+        }
+        map.fitBounds(bounds);
+      }
+    }
+    function clear_overlays() {
+      if (cities_marker) {
+        for (i in cities_marker) {
+          cities_marker[i].setMap(null);
+        }
+      }
+      cities_marker.length = 0;
+    }
+    function close_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].close();
+      }
+    }
+    function create_marker(city_info)
+    {
+      var contentString;
+      var infowindow;
+      var image;
+      var marker;
+      var latlng;
+
+      image = "/assets/images/marker-icon-small.png";
+      latlng = new google.maps.LatLng(city_info["latitude"], city_info["longitude"]);
+      marker = new google.maps.Marker({
+        position: latlng,
+        //map: map,
+        icon: image,
+        title: city_info["name"]
+      });
+
+      contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + city_info["path"] + '"><img src="' + city_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + city_info["path"] + '">' + city_info["name"] + '</a></div>' + city_info["region"] + ', ' + city_info["country"] + '</div></div>';
+      infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      infowindow.open(map,marker);
+      info_windows.push(infowindow);
+      cities_marker.push(marker);
+    }
+
+
+  </script>
+
+<% end %>
+<div class="page-container-full">
+  <div id="header-map"><div id="discover"></div></div>
+  <%= render :partial => "shared/stacked_view_button" %>
+  <div class="stacked_view_box">
+    <div class="padding">
+      <div class="most_popular_places">
+        <span class="wordwrap padding-title"><%= @user.profile.full_name %> visited cities <%= render :partial => "shared/progress_indicator" %></span>
+        <div id="paginator">
+          <%= paginate @cities, :remote => true, :theme => "slider" %>
+        </div>
+        <div class="place-found-wrapper">
+        <div class="places-found-dock">
+          <div id="visited_cities">
+            <%= render :partial => 'visited_cities/visited_cities', :locals => {:cities => @cities, :cities_list => @cities_list} %>
+          </div>
+        </div>
+        </div>
+        <div class="clear_float"></div>
+      </div>
+    </div>
+  </div>
+</div>

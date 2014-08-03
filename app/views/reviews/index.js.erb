@@ -1,0 +1,2 @@
+$('#reviews_partial').html('<%= escape_javascript render(:partial => 'places/reviews', :locals => {:reviews => @reviews}) %>');
+$('#paginator_review').html('<%= escape_javascript(paginate(@reviews, :remote => true, :param_name => "page", :theme => "default").to_s) %>');

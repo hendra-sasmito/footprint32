@@ -1,0 +1,2 @@
+$('#photo_partial').html('<%= escape_javascript render(:partial => "cover_photo/photos", :locals => {:photos => @photos}) %>');
+$('#paginator_photo').html('<%= escape_javascript(paginate(@photos, :remote => true, :param_name => "photo_page", :theme => "default").to_s) %>');

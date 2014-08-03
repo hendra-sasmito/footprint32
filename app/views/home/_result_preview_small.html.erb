@@ -1,0 +1,33 @@
+<div class="item_float">
+  <div class="place-found-small">
+    <div class="place-photo-small">
+      <% if result.class.to_s == "Place" %>
+        <%=h link_to image_tag(place_small_photo(result), :class => ""), place_path(result) %><br/>
+      <% else %>
+        <%=h link_to image_tag(place_small_photo(result), :class => ""), city_path(result) %><br/>
+      <% end %>
+    </div>
+      <div class="place-desc">
+        <div class="general_box">
+          <div class="break-word shorten_no_link small_text">
+            <%=h result.name %>
+          </div>
+          <% if result.class.to_s == "Place" %>
+            <% if !result.category.nil? %>
+              <div><%=h result.category.name %></div>
+            <% end %>
+          <% end %>
+          <% if result.class.to_s == "Place" %>
+            <%= fa_icon("comment", :class => "bluecolor smallsize hastip", :title => "Review") %> <%= result.reviews.size %>
+            <%= fa_icon("heart", :class => "redcolor smallsize hastip", :title => "Like") %> <%= result.favorite_places_count %>
+            <%= fa_icon("user", :class => "blackcolor smallsize hastip", :title => "Visitor") %> <%= result.visited_places_count %>
+          <% else %>
+            <%= fa_icon("comment", :class => "bluecolor smallsize hastip", :title => "Review") %> <%= result.reviews.size %>
+            <%= fa_icon("heart", :class => "redcolor smallsize hastip", :title => "Like") %> <%= result.favorite_cities_count %>
+            <%= fa_icon("user", :class => "blackcolor smallsize hastip", :title => "Visitor") %> <%= result.visited_cities_count %>
+          <% end %>
+          <span class="right_div"><%= link_to fa_icon("map-marker", :class => "cyancolor mediumsize"), "", :id => "show_on_map", :'data-index' => index, :class => "general show_on_map hastip", :title => "Show on map" %></span>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,27 @@
+<% places.each do |place| %>
+
+<div class="item_float">
+  <div class="place-found">
+    <div class="place-photo">
+      <%=h link_to image_tag(place_small_photo(place), :class => ""), place_path(place) %><br/>
+    </div>
+    <div class="place-desc light_grey_text">
+      <div class="general_box">
+        <div class="break-word shorten_no_link">
+          <%=h place.name %>
+        </div>
+        <% if !place.category.nil? %>
+          <div class="general_box">
+            <%=h place.category.name %>
+          </div>
+        <% end %>
+        <span><%= fa_icon("comment", :class => "bluecolor mediumsize hastip", :title => t(".review")) %> <%= place.reviews.count %></span>
+        <span><%= fa_icon("heart", :class => "redcolor mediumsize hastip", :title => t(".like_this_place")) %> <%= place.favorite_places_count %></span>
+        <span><%= fa_icon("user", :class => "blackcolor mediumsize hastip", :title => t(".visited_this_place")) %> <%= place.visited_places_count %></span>
+      </div>
+    </div>
+    <%= render :partial => "shared/place_small_info_box", :locals => { :place => place } %>
+  </div>
+  
+</div>
+<% end %>

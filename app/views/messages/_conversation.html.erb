@@ -1,0 +1,14 @@
+<div class="comment_box">
+  <div class="comment_box_user" >
+    <%= link_to image_tag(get_profile_photo_url(conversation.sender.profile_photo),
+              :class => "thumb_profile_pic imagedropshadow"), user_profile_path(conversation.sender) %>
+  </div>
+  <div class="comment_box_Body">
+    <div class="comment_box_Message" >
+      <%= link_to conversation.sender.profile.full_name, user_profile_path(conversation.sender), :class => "general" %><br/>
+      <div class="desc_text_light"><%= l(conversation.created_at, :format => '%d %b %Y, %H:%M') %></div>
+      <%=h conversation.content %><br/>
+    </div>
+  </div>
+  <hr class="style"></hr>
+</div>

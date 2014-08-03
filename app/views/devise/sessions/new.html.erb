@@ -1,0 +1,100 @@
+<% content_for :title, Footprint32::APP_NAME %>
+
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function($) { // document ready
+      $('#user_remember_me').on('ifChecked', function(event){
+        $('#user_remember_me').attr('checked', true);
+      });
+      $('#user_remember_me').on('ifUnchecked', function(event){
+        $('#user_remember_me').attr('checked', false);
+      });
+
+      $('#nav').localScroll(800);
+
+	//.parallax(xPosition, speedFactor, outerHeight) options:
+	//xPosition - Horizontal position of the element
+	//inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
+	//outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
+	$('#intro').parallax("50%", 0.1);
+	$('#second').parallax("50%", 0.1);
+	$('.bg').parallax("50%", 0.4);
+	$('#third').parallax("50%", 0.3);
+    });
+  </script>
+
+<% end %>
+
+<%#*<div id="header"></div>%>
+<div class="page-container-full">
+  <div id="content-fullwidth">
+
+
+    <ul id="nav">
+      <li><a href="#intro" title="Share reviews"><%= fa_icon("globe", :class => "whitecolor largesize") %></a></li>
+      <li><a href="#second" title="Upload Photos"><%= fa_icon("camera", :class => "whitecolor largesize") %></a></li>
+      <li><a href="#third" title="Create events"><%= fa_icon("calendar", :class => "whitecolor largesize") %></a></li>
+    </ul>
+
+    <div id="intro">
+      <div class="story">
+        <div class="float-left">
+          <div class="session_text">
+            <%#= t('.intro') %>
+            <%#= t('.additional_text') %>
+            <p>Write reviews about your favorite places, your favorite cities or even city where you live ...<br/>
+            and share your awesome experiences to the world ... </p>
+          </div>
+          <div class="abs_form_box">
+            <div id="form-box">
+              <div class="title_text"><%= t('.sign_in', :default => "Sign in") %></div>
+              <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+                <div>
+                  <%= f.email_field :email, :placeholder => t('activerecord.attributes.user.email'), :class => "sidebar_input" %>
+                </div>
+                <div>
+                  <%= f.password_field :password, :placeholder => t('activerecord.attributes.user.password'), :class => "sidebar_input"  %>
+                </div>
+                <% if devise_mapping.rememberable? -%>
+                  <div class="check_box_container">
+                    <div class="check_box_div"><%= f.check_box :remember_me %></div><%= f.label t('activerecord.attributes.user.remember_me') %>
+                  </div>
+                <% end -%>
+                <div>
+                  <%= f.submit t('.sign_in', :default => "Sign in"), :class => "general-button" %>
+                </div>
+              <% end %>
+
+              <%= render "devise/shared/links" %>
+            </div>
+          </div>
+        </div>
+      </div> <!--.story-->
+    </div> <!--#intro-->
+
+    <div id="second">
+      <div class="story"><div class="bg"></div>
+        <div class="float-right">
+          <div class="session_text">
+          <h2>Photo album</h2>
+          <p>Upload your photos and tag the location. <br/>
+            See which places have you visited and which will be your next destination.</p>
+          </div>
+        </div>
+      </div> <!--.story-->
+
+    </div> <!--#second-->
+
+    <div id="third">
+      <div class="story">
+        <div class="float-left">
+          <div class="session_text">
+          <h2>Event</h2>
+          <p>Have an idea for an event in mind. <br/>
+            Just create it and let othe rpeople know your awesome event.</p>
+          </div>
+        </div>
+      </div> <!--.story-->
+    </div> <!--#third-->
+  </div>
+</div>

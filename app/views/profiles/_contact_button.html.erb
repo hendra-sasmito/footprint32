@@ -1,0 +1,26 @@
+<% if user_signed_in? and user != current_user %>
+<div class="contact-button">
+  <% if friendship_status(current_user, user) == 'not a friend' %>
+    <%=h link_to "Add as a friend",
+      friendship_create_path(:id => user), :method => :post,
+      :confirm =>
+      "Send friend request to #{user.profile.full_name}?", :class => "general-button" %>
+  <% end %>
+  <% if friendship_status(current_user, user) == 'requested' %>
+    <%=h link_to "Accept",
+      friendship_accept_path(:id => user), :method => :post, :class => "general-button" %>
+    <%=h link_to "Decline",
+      friendship_decline_path(:id => user), :method => :post,
+      :confirm =>
+      "Really decline friendship with #{user.profile.full_name}?", :class => "general-button" %>
+  <% end %>
+  <% if friendship_status(current_user, user) == 'pending' %>
+    <%=h link_to "Cancel Request", friendship_cancel_path(:id => user), :method => :post,
+      :confirm => "Really cancel friendship request with #{user.profile.full_name}?", :class => "general-button" %>
+  <% end %>
+  <% if friendship_status(current_user, user) == 'accepted' %>
+    <%=h link_to "Break up",
+      friendship_delete_path(:id => user), :method => :post, :class => "general-button" %>
+  <% end %>
+</div>
+<% end %>

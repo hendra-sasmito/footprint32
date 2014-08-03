@@ -1,0 +1,15 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text"><%= t('.title')%></div>
+      </div>
+      <div class="resource_container">
+        <%= render 'form' %>
+        <%= link_to t('.show'), review_path(@review), :class => "general" %> |
+        <%= link_to t(".delete"), review_path(@review), :confirm => t('.delete_confirmation'), :method => :delete, :class => "general" %>
+      </div>
+    </div>
+  </div>
+</div>

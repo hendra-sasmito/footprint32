@@ -1,0 +1,16 @@
+<table class="message">
+  <tr>
+    <th>User</th>
+    <th>Subject</th>
+    <th>Action</th>
+  </tr>
+  <% message_statuses.each do |message_status| %>
+    <% if message_status.status == MessageStatus::UNREAD %>
+      <tr class="unread">
+    <% else %>
+      <tr>
+    <% end %>
+    <%= render :partial => "messages/message", :locals => {:message_status => message_status} %>
+    </tr>
+  <% end %>
+</table>

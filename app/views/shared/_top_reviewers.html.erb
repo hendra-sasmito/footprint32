@@ -1,0 +1,16 @@
+<%#*<div class="info-box">%>
+<div class="info-box-title bold_text"><%= image_tag("review-big.png") %> <%= t('.title')%></div>
+<div class="info-box-content">
+  <div class="general_box">
+    <% top = top_reviewers() %>
+    <% top.each do |reviewer| %>
+        <div class="hidden_box_container left_menu">
+          <%=h link_to image_tag(get_profile_photo_url(reviewer.profile_photo),
+                  :class => "thumb_profile_pic imagedropshadow"), user_profile_path(reviewer) %>
+        <%= render :partial => "shared/reviewer_info_box", :locals => { :user => reviewer } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="clear_float"></div>
+</div>
+<%#*</div>%>

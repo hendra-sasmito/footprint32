@@ -1,0 +1,356 @@
+<% content_for :title, "#{@city.name}" %>
+<% content_for :head do %>
+  <meta property="og:url"    content="<%= request.original_url %>" />
+  <meta property="og:title"  content="<%= @city.name %>" />
+  <meta property="og:site_name"  content="www.koedok.com" />
+  <meta property="og:description"  content="<%= @city.region.name + " " if !@city.region.nil? %><%= @city.country.name if !@city.country.nil? %>" />
+  <% if !@city_cover_photo.nil? %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path(@city_cover_photo.image.url(:original))) %>" />
+  <% else %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path('city.png')) %>" />
+  <% end %>
+  <meta property="fb:app_id"  content="<%= Footprint32::Application.config.FB_APP_ID %>" />
+  <meta property="og:type"  content="website" />
+  <script type="text/javascript">
+    var map;
+    var place_marker;
+    var place_icon;
+    var place_latitude;
+    var place_longitude;
+    var myLatlng;
+    var places = new Array();
+    var places_marker = new Array();
+    var info_windows = new Array();
+    var place_info = {};
+
+
+
+    function set_discover_size()
+    {
+      var windowWidth = 900; //$(window).width() - 400;
+      /*if (windowWidth < 900)
+      {
+        windowWidth = 900;
+      }*/
+      var windowHeight = $(window).height();
+      var discoverHeight = windowHeight * 0.5;
+      $('#discover').css({'width':windowWidth,'height':discoverHeight });
+    }
+    function resize_map() {
+      set_discover_size();
+      google.maps.event.trigger(map, "resize");
+    };
+
+    function display_marker(place_info)
+    {
+      var index_marker = place_info["index"];
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      close_all_info_windows();
+      google.maps.event.trigger(places_marker[index_marker], 'click');
+    }
+    $(document).ready(function(){
+
+      /*$('#myModal').on('shown.bs.modal', function () {
+         alert('hi');
+         $(this).find('input:visible:first').focus().end().find('form').enableClientSideValidations();
+      });*/
+      set_discover_size();
+
+      var resizeTimer;
+      $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize_map, 100);
+      });
+      
+      /*$('#modal-window').on('shown', function () {
+        $(ClientSideValidations.selectors.forms).validate();
+      });*/
+
+      place_latitude = <%= @city.latitude %>;
+      place_longitude = <%= @city.longitude %>;
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        place_info = {};
+        place_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(place_info);
+      });
+
+      $("#CityEventCalendar").zabuto_calendar({
+        ajax: {
+          url: "<%= events_monthly_events_path(:id => @city.id, :type => @city.class.to_s) %>",
+          modal: true
+        }
+      });
+
+      myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+      var mapOptions = {
+        zoom: 10,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("discover"), mapOptions);
+      show_markers();
+
+    });
+    $(document).ajaxComplete(function(event, request) {
+      show_markers();
+
+      $('.show_on_map').on('click', function(event){
+        event.preventDefault();
+        place_info = {};
+        place_info["index"] = parseInt($(this).attr('data-index'));
+        display_marker(place_info);
+      });
+    });
+    $( document ).ajaxStop( function() {
+
+      /*$('#modal-window').on('shown.bs.modal', function () {
+        $(ClientSideValidations.selectors.forms).validate();
+      });*/
+      
+    });
+    function show_markers()
+    {
+      var i;
+      var bounds;
+      places = [];
+      info_windows.length = 0;
+
+      if ($('#my_city_places').length)
+      {
+        var myVarsJSON = $("#my_city_places").html(),
+        places = $.parseJSON(myVarsJSON);
+
+        clear_overlays();
+        for (i = 0; i < places.length; i++)
+        {
+            create_marker(places[i]);
+        }
+        if (places.length > 1)
+        {
+          bounds = new google.maps.LatLngBounds();
+          for(i = 0; i < places_marker.length; i++) {
+            bounds.extend(places_marker[i].getPosition());
+          }
+          map.fitBounds(bounds);
+        }
+      }
+    }
+    function clear_overlays() {
+      if (places_marker) {
+        for (i in places_marker) {
+          places_marker[i].setMap(null);
+        }
+      }
+      places_marker.length = 0;
+    }
+    function close_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].close();
+      }
+    }
+    function create_marker(place_info)
+    {
+      var contentString;
+      var infowindow;
+      var image;
+      var marker;
+      var latlng;
+
+      image = "/assets/images/marker-icon-small.png";
+      latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
+      marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: image
+      });
+
+      if (place_info["last_review"] != "")
+        contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["region"] + ', ' + place_info["country"] + '</div><div class="last_review">' + place_info["last_review"] + " ... " + '<a href="' + place_info["last_reviewer_path"] + '" class="italic">' + place_info["last_reviewer"] + '</a></div></div>';
+      else
+        contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["region"] + ', ' + place_info["country"] + '</div></div>';
+      infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      info_windows.push(infowindow);
+      places_marker.push(marker);
+    }
+    
+  </script>
+<% end %>
+
+<div class="page-container2">
+  <div class="left_div">
+    <div class="ads_box">
+      <%= render :partial => "ads" %>
+    </div>
+  </div>
+  <div class="left_div">
+    <div class="map_container"><div id="discover"></div></div>
+    <div class="parent_content">
+      <div class="center_screen">
+        <div class="no_container left_div">
+          <div class="calender_container">
+            <%= render :partial => "shared/facebook_like", :locals => {:url => request.original_url} %>
+            <div class="title_text">Event Calendar</div>
+            <div id="CityEventCalendar"></div>
+            <% if !@liked.empty? %>
+              <div class="no_container">
+                <div id="friends_partial">
+                  <%= render :partial => 'shared/liked_user', :locals => {:friends => @liked} %>
+                </div>
+                <div id="paginator_friend">
+                  <%= paginate @liked, :remote => true, :param_name => "friend_page", :theme => "default" %>
+                </div>
+              </div>
+            <% end %>
+            <% if !@visitors.empty? %>
+              <div class="no_container">
+                <div id="visited_partial">
+                  <%= render :partial => 'shared/visited', :locals => {:visited => @visitors} %>
+                </div>
+                <div id="paginator_visited">
+                  <%= paginate @visitors, :remote => true, :param_name => "visited_page", :theme => "default" %>
+                </div>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+        <div class="left_div">
+          <div class="page-content">
+            <div class="resource_container3 cityInfoContainer">
+              <div class="city_page_image">
+                <% if !@city_cover_photo.nil? %>
+                  <%= link_to image_tag(@city_cover_photo.image.url(:small)), @city_cover_photo.image.url(:original), :class=>"fancybox-buttons", "data-fancybox-group"=>"cover" %>
+                <% else %>
+                  <%= image_tag('city.png') %>
+                <% end %>
+              </div>
+              <div class="change_city_photo"><%= link_to "Upload photo", city_upload_photo_path(@city), :class => "general-button" %> </div>
+
+              <div class="city_page_info">
+                <div class="title_text white_text"><span class="wordwrap"><%= @city.name %></span></div>
+                <div class="city_page_address white_text">
+                  <span class="wordwrap"><%= @city.region.name if @city.region %></span><br/>
+                  <span class="wordwrap"><%= link_to @city.country.name, country_path(@city.country), :class => "general_white" %></span><br/>
+                </div>
+                <div class="right_div white_text">
+                  <div id="city_stats_id">
+                    <%= render :partial => "cities/city_stats", :locals => {:city => @city} %>
+                  </div>
+                </div>
+              </div>
+              <% if user_signed_in? %>
+
+                <div class="float_button small_text"><%= link_to fa_icon("map-marker", :class => "whitecolor mediumsize") + " " + t('.create_place'), new_place_path(:city => @city.id), :class => "general_white as_button" %></div>
+                <div class="float_button small_text"><%= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), :class => "general_white as_button" %></div>
+                <%#= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#modal-window', :class => "general_white as_button"} %>
+
+                <div class="float_button small_text"><%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t(".edit"), edit_city_path(@city), :class => "general_white as_button" %></div>
+                <div class="float_button small_text"><%= link_to fa_icon("ban", :class => "redcolor mediumsize") + " " + "Report problem", new_user_report_path(current_user, :type => @city.class.to_s, :id => @city.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#report-window', :class => "general_white as_button"} %></div>
+                <div class="float_button small_text"><span id="like"><%= render 'favorite_cities/like_button', :city => @city %></span></div>
+                <div class="float_button small_text">
+                  <span id="visited"><%= render 'visited_cities/checkin_button', :city => @city %></span>
+                </div>
+                               
+
+              <% end %>
+              <div class="clear_float"></div>
+            </div>
+
+
+            <div class="resource_container_blue small_text">
+              <%= link_to "Popular", {:type => "popular"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".accomodation"), {:type => "accomodation"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".shopping"), {:type => "shopping"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".sightseeing"), {:type => "sightseeing"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".eating"), {:type => "eating"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".sport"), {:type => "sport"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".health"), {:type => "health"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".bank"), {:type => "bank"}, :remote => true, :class => "general_white" %> |
+              <%= link_to t(".other"), {:type => "other"}, :remote => true, :class => "general_white" %>
+            </div>
+            <div class="resource_container">
+              <div class="places-found">
+                <div id="place_partial">
+                  <%= render :partial => 'cities/places', :locals => {:places => @places, :places_list => @places_list} %>
+                </div>
+                <div class="clear_float"></div>
+                <div id="paginator_place">
+                  <%= paginate @places, :remote => true, :param_name => "place_page", :theme => "default" %>
+                </div>
+              </div>
+            </div>
+            <div class="general_box"></div>
+
+            <div class="place-review">
+              <div class="resource_container">
+                <div class="title_text"><%= t('.review')%></div>
+                <% if user_signed_in? %>
+                  <div id="new_review">
+                    <%= render 'reviews/form' %>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="resource_container_white">
+                <div class="place_reviews small_text">
+                   <%= link_to fa_icon("sort-numeric-desc", :class => "cyancolor mediumsize") + " " + t(".recent"), {:sort => "recent"}, :remote => true, :class => "general" %>
+                   | <%= link_to fa_icon("heart", :class => "cyancolor mediumsize") + " " + t(".popular"), {:sort => "popular"}, :remote => true, :class => "general" %>
+                  <% if user_signed_in? %>
+                     | <%= link_to fa_icon("user", :class => "cyancolor mediumsize") + " " + t(".my_review"), {:sort => "myself"}, :remote => true, :class => "general" %>
+                  <% end %>
+                </div>
+              </div>
+              <%#= subscribe_to '/activities/new' %>
+              <div id="added_review"></div>
+              <div id="reviews_partial">
+                <%= render :partial => 'reviews/reviews', :locals => {:reviews => @reviews} %>
+              </div>
+              <div id="paginator_review">
+                <%= paginate @reviews, :remote => true, :param_name => "review_page", :theme => "default" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="newsfeed right_div">
+    <div id="new_newsfeed"></div>
+    <%#= render :partial => 'home/activity', :collection => @activities %>
+  </div>
+</div>
+
+<% if user_signed_in? %>
+<%#*<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">%>
+  <%#= render :partial => 'events/new' %>
+<%#*</div>%>
+
+<div id="report-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<% end %>
+
+<%#*<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>%>
+
+<%#= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#myModal', :class => "general_white as_button"} %>
+  
+<%#*<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">%>
+  <%#*<div class="modal-dialog">%>
+    <%#*<div class="modal-content">%>
+      <%#*<div class="modal-header">%>
+        <%#*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>%>
+        <%#*<h4 class="modal-title">Create Event</h4>%>
+      <%#*</div>%>
+      <%#*<div class="modal-body">%>
+        <%#= render :partial => 'events/form' %>
+      <%#*</div>%>
+      <%#*<div class="modal-footer">%>
+      <%#*</div>%>
+    <%#*</div>%>
+  <%#*</div>%>
+<%#*</div>%>

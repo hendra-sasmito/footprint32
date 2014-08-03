@@ -1,0 +1,83 @@
+<% if @review.new_record? == true %>
+
+  <%= nested_form_for(@review, :html => { :multipart => true }, :remote => true, :validate => true) do |f| %>
+    <%= render "shared/form_error_message", :target => @review %>
+
+    <div class="field">
+      <div class="field">
+        <% if @reviewable.class.to_s == "Place" %>
+          <%= f.text_area :content, :validate => true, :placeholder => t('.content_placeholder') %>
+        <% else %>
+          <%= f.text_area :content, :validate => true, :placeholder => t('.content_placeholder_city') %>
+        <% end %>
+      </div>
+    </div>
+    <%= f.hidden_field :reviewable_id, :value => @reviewable.id %>
+    <%= f.hidden_field :reviewable_type, :value => @reviewable.class.to_s %>
+    <%= f.hidden_field :creator_id, :value => current_user.id %>
+
+    <%#= hidden_field_tag :creator_id, current_user.id %>
+    <%#= hidden_field_tag :place_id, @place.id %>
+    <%= f.fields_for :review_photos do |photo| %>
+      <%= photo.file_field :image, :class => "filefield" %>
+      <%= photo.link_to_remove fa_icon("trash-o", :class => "cyancolor mediumsize") + " " + t(".remove_image"), :class => "general" %>
+    <% end %>
+    <div class="add_file"><%= f.link_to_add fa_icon("camera", :class => "cyancolor mediumsize") + " " + t(".add_image"), :review_photos, :class => "general" %></div>
+    <div class="right_div">
+      <%= f.submit :class => "general-button" %>
+    </div>
+    <div class="clear_float"></div>
+    <%= render :partial => "shared/progress_indicator" %>
+  <% end %>
+
+<% else %>
+
+  <%= nested_form_for(@review, :html => { :multipart => true }, :validate => true) do |f| %>
+    <% if @review.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+        <ul>
+        <% @review.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="edit_review_content break-word">
+      <%= @review.content %>
+    </div>
+
+    <div class="field">
+      <% if @reviewable.class.to_s == "Place" %>
+        <%= f.text_area :content, :validate => true, :placeholder => t('.content_placeholder') %>
+      <% else %>
+        <%= f.text_area :content, :validate => true, :placeholder => t('.content_placeholder_city') %>
+      <% end %>
+    </div>
+
+    <hr class="style"></hr>
+
+    <%#= hidden_field_tag :creator_id, current_user.id %>
+    <%#= hidden_field_tag :place_id, @place.id %>
+    <%= f.hidden_field :reviewable_id, :value => @reviewable.id %>
+    <%= f.hidden_field :reviewable_type, :value => @reviewable.class.to_s %>
+    <%= f.hidden_field :creator_id, :value => current_user.id %>
+    
+    <%= f.fields_for :review_photos do |photo| %>
+      <%= photo.file_field :image %>
+      <%#= photo.hidden_field :place_id, :value => @place.id %>
+      <%= image_tag(photo.object.image.url(:small), :class => "thumb_profile_pic imagedropshadow") %>
+      <%= photo.link_to_remove fa_icon("trash-o", :class => "cyancolor mediumsize") + " " + t(".remove_image"), :class => "general" %>
+    <% end %>
+    <div class="add_file">
+      <%= f.link_to_add fa_icon("camera", :class => "cyancolor mediumsize") + " " + t(".add_image"), :review_photos, :class => "general" %>
+    </div>
+    <div class="right_div">
+      <%= f.submit t('.submit'), :class => "general-button" %>
+    </div>
+    <div class="clear_float"></div>
+  <% end %>
+
+<% end %>

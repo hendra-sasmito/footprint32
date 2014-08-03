@@ -1,0 +1,21 @@
+<div class="activity hashtmltipwide small_text" rel="#htmltip-up-<%= activity.id %>">
+  <div class="review_box">
+    <div class="review_box_user">
+    <%=h image_tag(get_profile_photo_url(activity.user.profile_photo),
+          :class => "thumb_profile_pic") %>
+    </div>
+    
+    <% if !activity.target.photoable.nil? %>
+      <span class="wordwrap"><%=h activity.user.profile.full_name %></span> uploaded photo about <%= activity.target.photoable.name %>
+    <% else %>
+      <span class="wordwrap"><%=h activity.user.profile.full_name %></span> uploaded photo
+    <% end %>
+    <%#*<div class="light_grey_text">%>
+      <%#= l(activity.created_at, :format => '%d %b %Y, %H:%M') %>
+    <%#*</div>%>
+    
+  </div>
+</div>
+<div class="htmltipcontent" style="display:none;" id="htmltip-up-<%= activity.id %>">
+  <%= render :partial => "home/uploaded_photo", :locals => {:activity => activity} %>
+</div>

@@ -1,0 +1,2 @@
+$('#friends').html('<%= escape_javascript render(:partial => "search/friend_found", :locals => {:users => @users}) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@users, :remote => true, :theme => "default").to_s) %>');

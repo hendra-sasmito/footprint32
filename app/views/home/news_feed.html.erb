@@ -1,0 +1,96 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+      // When the document loads do everything inside here ...
+      $(document).ready(function(){
+        var total_pages = <%= @recent_reviews.num_pages %>;
+        var page = 2;
+
+        $(document).endlessScroll({
+          fireOnce: true,
+          fireDelay: 500,
+          loader: "<div class='loading'><div>",
+          ceaseFire: function(){
+              if (page > total_pages)
+                return true;
+              else
+                return false;
+	    },
+          callback: function(){
+            $.ajax({
+	          url: '/home/index'+'?page='+page,
+	          data: {
+	              last: $(this).attr('last')
+	          },
+	          dataType: 'script'
+	        });
+                page++;
+          }
+        });
+    });
+  </script>
+
+<% end %>
+
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+
+
+
+      <div class="main-content">
+      <%#= image_tag(@profile_image) %>
+      <%#= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), :class => "general" %>
+
+<%#*<div id="loading-indicator">%>
+ <%#= image_tag("loading.gif", :id => "loading-indicator") %>
+<%#*</div>%>
+
+      <%#= link_to "Share with facebook", share_with_facebook_url({ :url   => "http://www.footprint32.com",
+                                                           :title => "my Footprint",
+                                                           :images => {0 => "http://us.123rf.com/400wm/400/400/redkoala/redkoala1205/redkoala120500019/13707552-footprint-black.jpg"},
+                                                           :summary => "Pragmatic Ruby on Rails" }) %>
+
+      <%#= render :partial => 'home/activity', :collection => @activities %>
+      <%#*<div id='results_endless'></div>%>
+
+      <%# current_user.timeline.each(:egocentric) do |t| %>
+        <%#= t.inspect %>
+        <%#= t.created_at %>
+        <%#= t.user.profile.first_name %>
+        <%#= t.object %>
+        <%# if t.object.nil? %>
+          <%#*nil%>
+        <%# else %>
+          <%#*not nil%>
+        <%# end %>
+      <%# end %>
+
+      <% if @recent_photos.length > 0 %>
+      <div class="title_text"><%= t('.recent_friend_photo') %></div>
+      <div class="recent_friends_photos">
+        <div id="friends_photos_partial">
+          <%= render :partial => "home/recent_friends_photos", :locals => {:photos => @recent_photos} %>
+        </div>
+      </div>
+      <% end %>
+
+      <% if @recent_reviews.length > 0 %>
+      <div class="title_text"><%= t('.recent_friend_review') %></div>
+      <div id="friends_reviews_partial">
+        <%= render :partial => 'home/recent_friends_reviews', :locals => { :reviews => @recent_reviews } %>
+      </div>
+      <div id='results_endless'></div>
+      <% end %>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <%= render :partial => "shared/most_popular_places", :locals => {:places => @popular_places} %>
+
+      <%= render :partial => "shared/most_reviewed_places", :locals => {:places => @most_reviewed_places} %>
+    </div>
+  </div>
+</div>

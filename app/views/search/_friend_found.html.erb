@@ -1,0 +1,24 @@
+<% for user in users %>
+  <div class="friend-found">
+    <div class="general_box">
+      <div class="general_box_image">
+        <%=h link_to(image_tag(get_profile_photo_url(user.profile_photo),
+            :class => "thumb_profile_pic imagedropshadow"), user_profile_path(user)) %>
+      </div>
+      <div class="general_box_content">
+        <div class="general_box_text" >
+          <%#*<div class="resource_container">%>
+          <span class="wordwrap"><%=h link_to "#{user.profile.full_name}", user_profile_path(user), :class => "general title_text" %></span><br/>
+          <% if user.location != nil %>
+            <%= fa_icon("marker-map", :class => "graycolor mediumsize") %> <span class="wordwrap"><%= user.location.city.name %></span>
+          <% end %>
+          <%#*</div>%>
+          <%#*<div class="resource_container">%>
+          <%#= render :partial => 'profiles/contact_button', :locals => {:user => user} %>
+          <%#*</div>%>
+        </div>
+
+      </div>
+    </div>
+  </div>
+<% end %>

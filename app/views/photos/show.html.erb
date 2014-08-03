@@ -1,0 +1,156 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <meta property="og:url"    content="<%= request.original_url %>" />
+  <meta property="og:title"  content="<%= @photo.photo_album.name %>" />
+  <meta property="og:site_name"  content="www.koedok.com" />
+  <meta property="og:description"  content="<%= @photo.description if @photo.description %>" />
+  <meta property="og:image"  content="<%= URI.join(root_url, image_path(@photo.image.url(:original))) %>" />
+  <meta property="fb:app_id"  content="<%= Footprint32::Application.config.FB_APP_ID %>" />
+  <meta property="og:type"  content="website" />
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% if !@photoable.nil?  %>
+        var map;
+        var place_marker;
+        var place_latitude = <%= @photoable.latitude %>;
+        var place_longitude = <%= @photoable.longitude %>;
+        var myLatlng;
+        var maininfowindow;
+        var zoom;
+
+        <% if @photoable.class.to_s == "Place" %>
+          zoom = 15;
+        <% else %>
+          zoom = 10;
+        <% end %>
+
+        myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+        var mapOptions = {
+          zoom: zoom,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        place_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(place_latitude, place_longitude),
+          map: map
+        });
+        <% if @photoable.class.to_s == "Place" %>
+          var maincontentString = '<div class="infowindow"><div class="infowindow_image"><%= image_tag(place_thumb_photo(@photoable), :class => "photo_in_profile") %></div><div class="infowindow_content"><div class="bold_text"><%= link_to(@photoable.name, place_path(@photoable), :class => "general") %></div><%= @photoable.street %><br/><%= @photoable.city.name %><br/><%= @photoable.city.region.name if @photoable.city.region %>, <%= @photoable.city.country.name %><div class="infowindow_desc"><span class="wordwrap"><%= @photoable.description if @photoable.description %></span></div></div></div>';
+        <% else %>
+          var maincontentString = '<div class="infowindow"><div class="infowindow_image"><%= image_tag(place_thumb_photo(@photoable), :class => "photo_in_profile") %></div><div class="infowindow_content"><div class="bold_text"><%= link_to(@photoable.name, city_path(@photoable), :class => "general") %></div><%= @photoable.name %><br/><%= @photoable.region.name if @photoable.region %>, <%= @photoable.country.name %><div class="infowindow_desc"></div></div></div>';
+        <% end %>
+        maininfowindow = new google.maps.InfoWindow({
+          content: maincontentString
+        });
+        google.maps.event.addListener(place_marker, 'click', function() {
+          maininfowindow.open(map, place_marker);
+        });
+      <% end %>
+    });
+  </script>
+<% end %>
+
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div id="place-cover"><%= image_tag(@photo.image.url(:original), :class => "place-cover") %></div>
+      <div class="photo_button">
+        <% if is_current_user(@user) %>
+          <a href="#" data-dropdown="#dropdown-1" class="general-button right_menu"><%= fa_icon("gear", :class => "whitecolor mediumsize")%></a>
+        <% end %>
+      </div>
+      <div class="resource_container">
+        <% if user_signed_in? %>
+          <div class="title_text"><%= t('.comment')%></div>
+          <div id="new_comment">
+            <%= render :partial => 'comments/form', :locals => {:commentable => @photo} %>
+          </div>
+        <% end %>
+      </div>
+      <div id="added_comment"></div>
+      <div id="comments_partial">
+        <%= render :partial => 'comments/comments', :locals => {:comments => @comments} %>
+      </div>
+      <div id="paginator_comment">
+        <%= paginate @comments, :remote => true, :param_name => "comment_page", :theme => "default" %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <div class="sidebar_container">
+        <div class="loc-desc">
+          <%=h link_to(image_tag(get_profile_photo_url(@user.profile_photo),
+            :class => "thumb_profile_pic imagedropshadow"), user_profile_path(@user)) %>
+          <div class="photo_owner">
+            <span class="wordwrap"><%= link_to @user.profile.full_name, user_profile_path(@user), :class => "general" %></span><br/>
+            <div class="desc_text_light small_text"><%= l(@photo.created_at, :format => '%d %b %Y, %H:%M') %></div>
+            <div class="small_text"><%= t('.photo_album') %> : <span class="wordwrap"><%= link_to @photo.photo_album.name, user_photo_album_path(@user, @photo.photo_album), :class => "general" %></span></div>
+          </div>
+          <div class="clear_float"></div>
+          <% if user_signed_in? %>
+            <div class="small_text"><%= link_to fa_icon("ban", :class => "redcolor mediumsize") + " " + "Report problem", new_user_report_path(current_user, :type => @photo.class.to_s, :id => @photo.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#report-window'}, :class => "general" %></div>
+          <% end %>
+          <div class="loc-desc desc_text_dark">
+            <div class="wordwrap"><%= @photo.description %></div>
+          </div>
+        </div>
+      </div>
+
+      <% if !@photoable.nil? %>
+        <div class="sidebar_container">
+          <div class="loc-desc">
+            <% if @photoable.class.to_s == "Place" %>
+              <span class="wordwrap"><%= link_to @photoable.country.name, country_path(@photoable.country), :class => "general" %></span> -
+              <span class="light_blue_text wordwrap"><%= @photoable.city.region.name if @photoable.city.region %></span> -
+              <span class="wordwrap"><%= link_to @photoable.city.name, city_path(@photoable.city), :class => "general" %></span> -
+              <span class="wordwrap"><%= link_to @photoable.name, place_path(@photoable), :class => "general" %></span>
+            <% else %>
+              <span class="wordwrap"><%= link_to @photoable.country.name, country_path(@photoable.country), :class => "general" %></span> -
+              <span class="light_blue_text wordwrap"><%= @photoable.region.name if @photoable.region %></span> -
+              <span class="wordwrap"><%= link_to @photoable.name, city_path(@photoable), :class => "general" %></span>
+            <% end %>
+            <div class="loc-desc desc_text_dark">
+              <div id="place_latitude">Latitude : <%= @photoable.latitude %></div>
+              <div id="place_longitude">Longitude : <%= @photoable.longitude %></div>
+            </div>
+          </div>
+          <div id="map"></div>
+        </div>
+      <% end %>
+
+      <% if !@photo_exif.nil? %>
+        <div class="sidebar_container">
+          <div class="loc-desc">
+            <%= render :partial => "photos/photo_info", :locals => {:photo_exif => @photo_exif} %>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+
+    
+  </div>
+</div>
+
+<% if user_signed_in? %>
+  <div id="dropdown-1" class="dropdown dropdown-tip">
+    <ul class="dropdown-menu">
+      <li>
+        <% if @photo != @user.profile_photo %>
+          <%= link_to t('.profile'), set_as_profile_user_photo_album_photo_path(@user, @photo_album, @photo), :method => :post %>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to t('.edit'), edit_user_photo_album_photo_path(@user, @photo_album, @photo) %>
+      </li>
+      <li>
+        <%= link_to t('.delete'), user_photo_album_photo_path(@user, @photo_album, @photo), :confirm => t('.delete_confirmation'), :method => :delete %>
+      </li>
+    </ul>
+  </div>
+<% end %>
+
+<div id="report-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

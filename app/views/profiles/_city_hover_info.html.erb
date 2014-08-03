@@ -1,0 +1,24 @@
+<% if type == "" %>
+<%= link_to city.name, city_path(city), :class => "general hashtmltip", :rel => "#htmltip-#{type}-#{id}" %>
+<% else %>
+<%= link_to image_tag(place_thumb_photo(city),
+    :class => "small_pic "), city_path(city), :class => "hashtmltip", :rel => "#htmltip-#{type}-#{id}" %>
+<% end %>
+<div class="htmltipcontent" style="display:none;" id="htmltip-<%= type %>-<%= id %>">
+  <div class="infowindow small_text">
+    <div class="infowindow_image">
+      <%= link_to image_tag(place_thumb_photo(city),
+        :class => "photo_in_profile"), city_path(city) %>
+    </div>
+    <div class="infowindow_content2">
+      <div class="bold_text">
+        <%= link_to city.name, city_path(city), :class => "general" %>
+      </div>
+      <%= city.region.name if city.region %>, <%= city.country.name %><br/>
+      <%= fa_icon("comment", :class => "bluecolor mediumsize") %> <%= pluralize(city.reviews.size, "Review") %>
+      <%= fa_icon("heart", :class => "redcolor mediumsize") %> <%= pluralize(city.favorite_cities_count, "Like") %>
+      <%= fa_icon("user", :class => "blackcolor mediumsize") %> <%= pluralize(city.visited_cities_count, "Visitor") %>
+    </div>
+    <div class="clear_float"></div>
+  </div>
+</div>

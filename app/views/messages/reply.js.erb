@@ -1,0 +1,2 @@
+$("#new_added_conversation").html("<%= escape_javascript(render(:partial => 'messages/conversation', :locals => {:conversation => @new_conversation})) %>");
+$('#message_content').val('');

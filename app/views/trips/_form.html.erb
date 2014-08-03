@@ -1,0 +1,23 @@
+<%= simple_form_for([@user, @trip], :validate => true, :html => { :multipart => true }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <div class="field">
+      <%= f.input :name, :validate => true %>
+    </div>
+    <div class="field">
+      <%= f.input :description %>
+    </div>
+    <div class="field">
+      <%= f.label :privacy %><br />
+      <%= f.select( :privacy, { get_permission_name(Footprint32::PUBLIC) => 0, get_permission_name(Footprint32::FRIENDS) => 1, get_permission_name(Footprint32::PRIVATE) => 2}, {}, :class => "privacy_select") %>
+    </div>
+    <div class="field">
+      <%= f.file_field :datalog %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Upload", :class => "general-button btn" %>
+  </div>
+<% end %>

@@ -1,0 +1,23 @@
+<div class="event_info_container">
+  <div class="event_page_info small_text">
+    <div class="event_page_info_title"><span class="wordwrap"><%= link_to event.name, user_event_path(event.creator, event), :class => "general_white title_text" %></span></div>
+    <div class="general_box_section">
+      <div class="italic"><%= event.description %></div>
+    </div>
+    <div class="event_page_info_desc">
+      <div class=""><%= fa_icon("map-marker", :class => "whitecolor smallsize hastip fa-fw", :title => "Location") %>  <span class="wordwrap"><%= link_to event.place.name, place_path(event.place), :class => "general_white" %></span></div>
+      <div class=""><%= fa_icon("globe", :class => "whitecolor smallsize hastip fa-fw", :title => "City") %>  <span class="wordwrap"><%= link_to event.place.city.name, city_path(event.place.city), :class => "general_white" %></span></div>
+      <div class=""><%= fa_icon("calendar", :class => "whitecolor smallsize hastip fa-fw", :title => "Time") %>  <span class="wordwrap"><%= event.date.localtime.strftime("%d %b %Y %H:%S") %></span></div>
+    </div>
+  </div>
+  <% if small_image == true %>
+    <div class="place_page_image_thumb">
+      <%=h link_to image_tag(place_small_photo(event.place), :class => ""), place_path(event.place) %>
+    </div>
+  <% else %>
+    <div class="place_info_image">
+      <%=h link_to image_tag(place_small_photo(event.place), :class => ""), place_path(event.place) %>
+    </div>
+  <% end %>
+  <div class="clear_float"></div>
+</div>

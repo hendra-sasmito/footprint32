@@ -1,0 +1,18 @@
+<ul class="events">
+  <% events.each do |event| %>
+    <li>
+      <figure><strong><%= l(event.date, :format => :date_only) %></strong><%= l(event.date, :format => :month_only) %></figure>
+      <div class="event-desc-container">
+        <h3><span class="wordwrap"><%= link_to event.name, user_event_path(user, event), :class => "general" %></span></h3>
+        <div class="event-desc">
+          <%= render :partial => "shared/privacy_icon", :locals => {:privacy => event.privacy} %>  <%= l(event.date, :format => '%d %b %Y, %H:%M') %> <%= t('.at')%> <%= link_to(event.place.name, place_path(event.place.name), :class => "general") if event.place %>
+        </div>
+        <%= link_to fa_icon("calendar", :class => "cyancolor mediumsize") + " " + t('.details'), user_event_path(user, event), :class => "general" %>
+        <% if is_current_user(user) %>
+          | <%= link_to fa_icon("edit", :class => "cyancolor mediumsize") + " " + t('.edit'), edit_user_event_path(user, event), :class => "general" %>
+          | <%= link_to fa_icon("trash-o", :class => "cyancolor mediumsize") + " " + t('.delete'), user_event_path(user, event), method: :delete, data: { confirm: t('.delete_confirmation') }, :class => "general" %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

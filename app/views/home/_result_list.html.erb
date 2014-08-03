@@ -1,0 +1,8 @@
+<%# index = 0 %>
+<%# results.each do |result| %>
+  <%#= render :partial => "home/result_preview_small", :locals => {:result => result, :index => index} %>
+  <%# index = index + 1 %>
+<%# end %>
+<script id="my_vars_json" type="text/json">
+  <%= raw results_list.to_json %>
+</script>

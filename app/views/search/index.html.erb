@@ -1,0 +1,58 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content-full">
+    <div class="padding">
+      <div class="resource_container">
+        <%= t('.search_result_text') %> <%= @keyword %> :
+      </div>
+      <% if @term == "people" %>
+        <div class="resource_container">
+          <div class="title_text"><%= t('.friend_title') %></div>
+        </div>
+        <% if @users != nil %>
+          <div class="resource_container">
+            <div id="friends_partial">
+              <%= render :partial => "friend_found", :locals => {:users => @users} %>
+            </div>
+            <div class="clear_float"></div>
+            <div id="paginator_friend">
+              <%= paginate @users, :remote => true, :param_name => "people_page", :theme => "default" %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="resource_container">
+          <div class="title_text bold_text"><%= t('.city_title') %></div>
+        </div>
+        <% if @cities != nil %>
+          <div class="resource_container">
+            <div id="city_partial">
+              <%= render :partial => "cities/cities", :locals => {:cities => @cities} %>
+            </div>
+            <div class="clear_float"></div>
+            <div id="paginator_city">
+              <%= paginate @cities, :remote => true, :param_name => "city_page", :theme => "default" %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="places-found">
+          <div class="resource_container">
+            <div class="title_text bold_text"><%= t('.place_title') %></div>
+          </div>
+          <% if @places != nil %>
+            <div class="resource_container">
+              <div id="place_partial">
+                <%= render :partial => "place_found", :locals => {:places => @places} %>
+              </div>
+              <div class="clear_float"></div>
+              <div id="paginator_place">
+                <%= paginate @places, :remote => true, :param_name => "place_page", :theme => "default" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

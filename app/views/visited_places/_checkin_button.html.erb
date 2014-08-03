@@ -1,0 +1,14 @@
+<% if visited_place = VisitedPlace.find_by_place_id_and_user_id(place.id, current_user.id) %>
+  <%= form_for [current_user, visited_place], :url => user_visited_place_path(current_user, visited_place), :html => { :method => :delete }, :remote => true do |f| %>
+    <%= f.hidden_field :place_id, :value => place.id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    | <%= fa_icon("undo", :class => "whitecolor mediumsize") %><%= f.submit "Undo Checkin", :class=>"as_button" %>
+  <% end %>
+<% else %>
+<% new_visited_place = current_user.visited_places.new %>
+  <%= form_for ([current_user, new_visited_place]), :remote => true do |f| %>
+    <%= f.hidden_field :place_id, :value => place.id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    | <%= fa_icon("tag", :class => "whitecolor mediumsize") %><%= f.submit "Checkin", :class=>"as_button" %>
+  <% end %>
+<% end %>

@@ -1,0 +1,30 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text">
+          <%= @category.name %>
+          <% if !@current_place.nil? %>
+            (<span class="wordwrap"><%= link_to @current_place.city.name, city_path(@current_place.city), :class => "general_white" %></span>, <span class="wordwrap"><%= link_to @current_place.country.name, country_path(@current_place.country), :class => "general_white" %></span>)
+          <% end %>
+        </div>
+      </div>
+      <div class="resource_container">
+        <div id="places" class="places-list">
+          <%= render :partial => 'search/place_found', :locals => {:places => @places} %>
+        </div>
+        <div class="clear_float"></div>
+        <div id="paginator">
+          <%= paginate @places, :remote => true, :theme => "default" %>
+        </div>
+        <br/>
+        <%= link_to t('.back'), categories_path, :class => "general" %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>

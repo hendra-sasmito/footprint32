@@ -1,0 +1,15 @@
+<div class="hidden_info_box">
+  <div class="general_box">
+    <div class="title_text white_text break-word"><%= user.profile.full_name %></div>
+    <div class="general_box_section">
+      <% if user.location != nil %>
+        <div><%= fa_icon("marker-map", :class => "graycolor mediumsize") %> <span class="wordwrap"><%= user.location.city.name %></span></div>
+      <% end %>
+      <div>
+        <%#= image_tag("star-16-g.png") %> <%= user.total_votes.to_i %>
+        <%= fa_icon("comment", :class => "graycolor mediumsize") %> <%= pluralize(user.reviews.size, t('.review')) %>
+      </div>
+      <%= link_to t(".profile"), user_profile_path(user), :class => "general-button right_div" %>
+    </div>
+  </div>
+</div>

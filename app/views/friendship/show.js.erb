@@ -1,0 +1,5 @@
+$('#pending_friends_partial').html('<%= escape_javascript render(:partial => 'search/friend_found', :locals => {:users => @pending_friends}) %>');
+$('#paginator_pending_friends').html('<%= escape_javascript(paginate(@pending_friends, :remote => true, :param_name => "pending_page", :theme => "default").to_s) %>');
+
+$('#requested_friends_partial').html('<%= escape_javascript render(:partial => 'search/friend_found', :locals => {:users => @requested_friends}) %>');
+$('#paginator_requested_friends').html('<%= escape_javascript(paginate(@requested_friends, :remote => true, :param_name => "requested_page", :theme => "default").to_s) %>');

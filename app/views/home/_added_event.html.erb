@@ -1,0 +1,27 @@
+<div class="review_box">
+  <div class="review_box_user">
+    <div class="hidden_box_container">
+      <%=h link_to image_tag(get_profile_photo_url(activity.user.profile_photo),
+        :class => "thumb_profile_pic"), user_profile_path(activity.user) %>
+    </div>
+  </div>
+  <div class="review_box_Body">
+    <div class="review_box_Message">
+      <span class="wordwrap"><%=h link_to activity.target.creator.profile.full_name, user_profile_path(activity.target.creator), :class => "general" %></span> created an event.
+      <div class="small_text"><%= l(activity.target.created_at, :format => '%d %b %Y, %H:%M') %></div>
+      <% if is_current_user(activity.user) %>
+        <a href="#" data-dropdown="#dropdownevent-<%= activity.target.id %>" class="right_div" ><%= fa_icon("gear", :class => "lightgraycolor mediumsize")%></a>
+        <div class="dropdown_container_menu">
+          <div id="dropdownevent-<%= activity.target.id %>" class="dropdown dropdown-tip dropdown-relative dropdown-anchor-right">
+            <ul class="dropdown-menu">
+              <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to "Edit", edit_user_event_path(activity.target.creator, activity.target), :class => "general" %></div></li>
+              <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to "Delete", user_event_path(activity.target.creator, activity.target), :confirm => "Are you sure?", :method => :delete, :class => "general" %></div></li>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+      <%= render :partial => "shared/event_info", :locals => {:event => activity.target, :small_image => false} %>
+      <br/>
+    </div>
+  </div>
+</div>

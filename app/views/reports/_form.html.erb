@@ -1,0 +1,41 @@
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Report Problem</h3>
+</div>
+<%= form_for ([current_user, @report]) do |f| %>
+  <div class="modal-body">
+  
+    <%= f.hidden_field :reportable_id, :value => @reportable.id %>
+    <%= f.hidden_field :reportable_type, :value => @reportable.class.to_s %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+
+    <div class="field">
+      <%= f.label :reason %>
+    </div>
+    <div class="field">
+      <% if @reportable.class.to_s == "Place" %>
+        <%= f.select :reason, {"Duplicate" => Report::DUPLICATE, "Closed" => Report::CLOSED, "Don't exist" => Report::NOT_EXIST} %>
+      <% elsif @reportable.class.to_s == "City" %>
+        <%= f.select :reason, {"Duplicate" => Report::DUPLICATE, "Don't exist" => Report::NOT_EXIST} %>
+      <% else %>
+        <%= f.select :reason, {"Inappropriate" => Report::INAPPROPRIATE} %>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :comment %>
+    </div>
+    <div class="field">
+      <%= f.text_area :comment, :class => "modal_text_area" %>
+    </div>
+  
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Submit</button>
+  </div>
+<% end %>
+</div>
+</div>

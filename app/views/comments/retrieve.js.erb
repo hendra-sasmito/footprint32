@@ -1,0 +1,3 @@
+$('#comments_partial_<%= @commentable.id %>').html('<%= escape_javascript render(:partial => 'comments/comments_sidebar', :locals => {:comments => @comments}) %>');
+//$('#paginator_<%= @commentable.id %>').html('<%= escape_javascript(paginate(@comments, :remote => true, :param_name => "page", :theme => "default").to_s) %>');
+//alert("1");

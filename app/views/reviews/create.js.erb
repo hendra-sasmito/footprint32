@@ -1,0 +1,35 @@
+<%= remotipart_response do %>
+$("#reviews_partial").before('<div id="flash_notice"><%= escape_javascript(flash.discard(:notice)) %></div>');
+$("#reviews_partial").prepend("<%= escape_javascript(render(:partial => 'added_review', :locals => {:review => @review})) %>");
+$("#review_<%= @review.id %>").effect("highlight", {}, 3000);
+$('#new_review textarea').val('');
+reset_form_element( $('.filefield') );
+<%# if remotipart_submitted? %>
+  <%#*alert('submitted via remotipart')%>
+<%# else %>
+  <%#*alert('submitted via native jquery-ujs')%>
+<%# end %>
+<% end %>
+<%# publish_to "/reviews/new" do %>
+  //$("#reviews_partial").before('<div id="flash_notice"><%= escape_javascript(flash.discard(:notice)) %></div>');
+  //$("#reviews_partial").prepend("<%= escape_javascript(render(:partial => 'review', :object => @review)) %>");
+  //$("#review_<%= @review.id %>").effect("highlight", {}, 3000);
+<%# end %>
+
+<% if false %>
+<% publish_to "/activities/new" do %>
+  $("#new_newsfeed").prepend("<%= escape_javascript(render(:partial => 'home/activity', :locals => {:activity => @activity})) %>");
+<% end %>
+<% end %>
+
+$(".added_review_photo").justifiedGallery({
+  'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+  'justifyLastRow':false,
+  'rowHeight':120,
+  'fixedHeight':false,
+  'captions':false,
+  'margins':1,
+  'onComplete': function(gallery) {
+    $(gallery).find("a").addClass('fancybox-simple');
+  }
+});

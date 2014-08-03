@@ -1,0 +1,13 @@
+<div class="info-section-title title_text">Like</div>
+<div class="info-section-content">
+  <div class="general_box">
+    <% friends.each do |friend| %>
+      <div class="hidden_box_container left_menu">
+        <%=h link_to image_tag(get_profile_photo_url(friend.profile_photo),
+          :class => "small_pic "), user_profile_path(friend), :class => "hastip", :title => "#{friend.profile.full_name}" %>
+        <%#= render :partial => "shared/user_small_info_box", :locals => { :user => friend } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="clear_float"></div>
+</div>

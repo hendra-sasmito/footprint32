@@ -1,0 +1,134 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <meta property="og:url"    content="<%= request.original_url %>" />
+  <meta property="og:title"  content="<%= @review.reviewable.name %>" />
+  <meta property="og:site_name"  content="www.koedok.com" />
+  <meta property="og:description"  content="<%= @review.content %>" />
+  <% if @review.review_photos.count > 0 %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path(@review.review_photos.first.image.url(:original))) %>" />
+  <% elsif !@reviewable_photo.nil? %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path(@reviewable_photo.image.url(:original))) %>" />
+  <% else %>
+    <meta property="og:image"  content="<%= URI.join(root_url, image_path('city.png')) %>" />
+  <% end %>
+  <meta property="fb:app_id"  content="<%= Footprint32::Application.config.FB_APP_ID %>" />
+  <meta property="og:type"  content="website" />
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% if !@review.reviewable.nil?  %>
+        var map;
+        var place_marker;
+        var place_latitude = <%= @review.reviewable.latitude %>;
+        var place_longitude = <%= @review.reviewable.longitude %>;
+        var myLatlng;
+        var maininfowindow;
+        var zoom;
+
+        <% if @review.reviewable.class.to_s == "Place" %>
+          zoom = 15;
+        <% else %>
+          zoom = 10;
+        <% end %>
+
+        myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+        var mapOptions = {
+          zoom: zoom,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        place_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(place_latitude, place_longitude),
+          map: map
+        });
+        <% if @review.reviewable.class.to_s == "Place" %>
+          var maincontentString = '<div class="infowindow"><div class="infowindow_image"><%= image_tag(place_thumb_photo(@review.reviewable), :class => "photo_in_profile") %></div><div class="infowindow_content"><div class="bold_text"><%= link_to(@review.reviewable.name, place_path(@review.reviewable), :class => "general") %></div><%= @review.reviewable.street %><br/><%= @review.reviewable.city.name %><br/><%= @review.reviewable.city.region.name if @review.reviewable.city.region %>, <%= @review.reviewable.city.country.name %><div class="infowindow_desc"><span class="wordwrap"><%= @review.reviewable.description if @review.reviewable.description %></span></div></div></div>';
+        <% else %>
+          var maincontentString = '<div class="infowindow"><div class="infowindow_image"><%= image_tag(place_thumb_photo(@review.reviewable), :class => "photo_in_profile") %></div><div class="infowindow_content"><div class="bold_text"><%= link_to(@review.reviewable.name, city_path(@review.reviewable), :class => "general") %></div><%= @review.reviewable.name %><br/><%= @review.reviewable.region.name if @review.reviewable.region %>, <%= @review.reviewable.country.name %><div class="infowindow_desc"></div></div></div>';
+        <% end %>
+        maininfowindow = new google.maps.InfoWindow({
+          content: maincontentString
+        });
+        google.maps.event.addListener(place_marker, 'click', function() {
+          maininfowindow.open(map, place_marker);
+        });
+      <% end %>
+    });
+  </script>
+<% end %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container3 place_page_container">
+        <% if @review.reviewable.class.to_s == "Place" %>
+          <div class="place_page_image"><%= image_tag(place_small_photo(@review.reviewable), :class => "") %></div>
+          <div class="place_page_info">
+            <div class="title_text"><span class="wordwrap"><%= link_to @review.reviewable.name, place_path(@review.reviewable) %></span></div>
+            <div class="desc_text_light"><%= link_to @review.reviewable.category.name, category_path(@review.reviewable.category), :class => "general" if !@review.reviewable.category.nil? %></div>
+            <div class="place_page_address white_text">
+              <span class="wordwrap"><%= @review.reviewable.street %></span><br/>
+              <span class="wordwrap"><%= link_to @review.reviewable.city.name, city_path(@review.reviewable.city), :class => "general_white" if @review.reviewable.city %></span> <span class=""><%= @review.reviewable.postcode if @review.reviewable.postcode %></span><br/>
+              <span class="wordwrap"><%= @review.reviewable.city.region.name if @review.reviewable.city.region %></span><br/>
+              <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general_white" if @review.reviewable.country %></span><br/>
+            </div>
+            <div class="place_page_description light_grey_text small_text">
+              <span class="wordwrap"><%= @review.reviewable.description %></span>
+            </div>
+            <div class="right_div white_text">
+              <div id="place_stats_id">
+                <%= render :partial => "places/place_stats", :locals => {:place => @review.reviewable} %>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="city_page_image"><%= image_tag(place_small_photo(@review.reviewable), :class => "") %></div>
+
+          <div class="city_page_info">
+            <div class="title_text white_text"><span class="wordwrap"><%= link_to @review.reviewable.name, city_path(@review.reviewable) %></span></div>
+            <div class="city_page_address white_text">
+              <span class="wordwrap"><%= @review.reviewable.region.name if @review.reviewable.region %></span><br/>
+              <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general_white" %></span><br/>
+            </div>
+            <div class="right_div white_text">
+              <div id="city_stats_id">
+                <%= render :partial => "cities/city_stats", :locals => {:city => @review.reviewable} %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="clear_float"></div>
+      </div>
+      <div class="resource_container">
+        <%= render :partial => "reviews/review", :locals => {:review => @review} %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <% if !@review.reviewable.nil? %>
+        <div class="sidebar_container">
+          <div class="loc-desc">
+            <% if @review.reviewable.class.to_s == "Place" %>
+              <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general" %></span> -
+              <span class="light_blue_text wordwrap"><%= @review.reviewable.city.region.name if @review.reviewable.city.region %></span> -
+              <span class="wordwrap"><%= link_to @review.reviewable.city.name, city_path(@review.reviewable.city), :class => "general" %></span> -
+              <span class="wordwrap"><%= link_to @review.reviewable.name, place_path(@review.reviewable), :class => "general" %></span>
+            <% else %>
+              <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general" %></span> -
+              <span class="light_blue_text wordwrap"><%= @review.reviewable.region.name if @review.reviewable.region %></span> -
+              <span class="wordwrap"><%= link_to @review.reviewable.name, city_path(@review.reviewable), :class => "general" %></span>
+            <% end %>
+            <div class="loc-desc desc_text_dark">
+              <div id="place_latitude">Latitude : <%= @review.reviewable.latitude %></div>
+              <div id="place_longitude">Longitude : <%= @review.reviewable.longitude %></div>
+            </div>
+          </div>
+          <div id="map"></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

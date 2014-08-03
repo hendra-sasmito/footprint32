@@ -1,0 +1,3 @@
+<% if !places.empty? %>
+  <%= render :partial => "shared/list_places_template", :locals => { :title => t('.title'), :places => places } %>
+<% end %>

@@ -1,0 +1,29 @@
+<% reviews = current_user.friends_reviews.order("created_at DESC").limit(5) %>
+
+<% if !reviews.empty? %>
+<div class="info-box">
+<div class="info-box-title"><%= t('.title')%></div>
+<div class="info-box-content">
+    <% reviews = current_user.friends_reviews.order("created_at DESC").limit(5) %>
+    <% reviews.each do |review| %>
+      <div class="review_box">
+          <div class="review_box_user">
+              <%=h link_to image_tag(get_profile_photo_url(review.creator.profile_photo),
+                :class => "tiny_profile_pic imagedropshadow"), user_profile_path(review.creator) %>
+          </div>
+          <div class="review_box_Body_sidebar">
+            <div class="review_box_Message_small">
+              <span class="wordwrap"><%=h link_to review.creator.profile.full_name, user_profile_path(review.creator), :class => "general" %></span> - <%=h link_to review.place.name, place_path(review.place), :class => "general" %>
+              <br/>
+              <div class="wordwrap shorten"><%=h review.content %><br /></div>
+            </div>
+          </div>
+      </div>
+      <% if review != reviews.last %>
+        <hr class="style">
+      <% end %>
+    <% end %>
+  
+</div>
+</div>
+<% end %>

@@ -1,0 +1,2 @@
+$('#messages').html('<%= escape_javascript render(:partial => 'messages/messages', :locals => { :message_statuses => @message_statuses }) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@message_statuses, :remote => true, :theme => "default").to_s) %>');

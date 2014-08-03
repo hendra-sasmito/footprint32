@@ -1,0 +1,21 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text"><%= t('.title') %></div>
+      </div>
+      <div class="resource_container">
+        <%= render :partial => 'comments/comment', :locals => {:comment => @comment} %>
+        <%= render :partial => 'comments/form', :locals => {:commentable => @commentable} %>
+        <%= link_to t('.delete'), comment_path(@comment), method: :delete, data: { confirm: t('.delete_confirmation') }, :class => "general"  if is_current_user(@comment.user) %><br/>
+        <%= link_to t('.back'), :back, :class => "general" %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>
+

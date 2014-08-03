@@ -1,0 +1,11 @@
+<%- if @event.errors.any? %>
+  
+<%- else %>
+
+  <% if false %>
+  <% publish_to "/activities/new" do %>
+    $("#new_newsfeed").prepend("<%= escape_javascript(render(:partial => 'home/activity', :locals => {:activity => @activity})) %>");
+  <% end %>
+  <% end %>
+  $(window.location.replace("/users/<%= @event.creator.id %>/events/<%= @event.id %>"))
+<%- end %>

@@ -1,0 +1,13 @@
+<% reviews.each do |review| %>
+  <div class="review_box">
+    <div class="review_box_user">
+      <div class="hidden_box_container">
+        <%=h link_to image_tag(get_profile_photo_url(review.creator.profile_photo),
+            :class => "thumb_profile_pic imagedropshadow"), user_profile_path(review.creator) %>
+        <%#= render :partial => "shared/user_small_info_box", :locals => { :user => review.creator } %>
+      </div>
+    </div>
+    <%= render :partial => "reviews/display_review", :locals => {:review => review} %>
+  </div>
+<hr class="style"></hr>
+<% end %>

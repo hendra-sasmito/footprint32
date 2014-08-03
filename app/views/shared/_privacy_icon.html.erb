@@ -1,0 +1,7 @@
+<% if privacy == Footprint32::PRIVATE %>
+  <%= fa_icon("lock", :class => "hastip", :title => "#{get_permission_name(privacy)}") %>
+<% elsif privacy == Footprint32::FRIENDS %>
+  <%= fa_icon("users", :class => "hastip", :title => "#{get_permission_name(privacy)}") %>
+<% else %>
+  <%= fa_icon("globe", :class => "hastip", :title => "#{get_permission_name(privacy)}") %>
+<% end %>

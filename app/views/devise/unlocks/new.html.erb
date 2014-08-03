@@ -1,0 +1,28 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text"><%= t('.resend_unlock_instructions', :default => "Resend unlock instructions") %></div>
+      </div>
+      <div class="resource_container">
+        <%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
+          <%= devise_error_messages! %>
+          <div>
+            <%= f.email_field :email, :placeholder => t('activerecord.attributes.user.email') %>
+          </div>
+          <div>
+            <%= f.submit t('.resend_unlock_instructions', :default => "Resend unlock instructions"), :class => "general-button" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+      <div class="resource_container">
+        <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>

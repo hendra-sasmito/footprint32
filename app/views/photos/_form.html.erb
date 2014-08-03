@@ -1,0 +1,307 @@
+<div id="fileupload" class="image_add">
+  <%= form_for([@user, @photo_album, @photo], :html => { :multipart => true, :id => "fileupload" }) do |f| %>
+    <%= render "shared/form_error_message", :target => @photo %>
+
+    <% if @photo.new_record? == true %>
+
+      <div class="row fileupload-buttonbar">
+        <div class="span7">
+          <!-- The fileinput-button span is used to style the file input field as button -->
+          <span class="btn btn-success fileinput-button general-button">
+            <i class="icon-plus icon-white"></i>
+            <span><%= t('.add') %></span>
+            <%= f.file_field :image, :multiple => true, :name => 'photo[image]' %>
+          </span>
+          <button type="submit" class="btn btn-primary start fileinput-button general-button submit_button">
+            <i class="icon-upload icon-white"></i>
+            <span><%= t('.upoad_all') %></span>
+          </button>
+        </div>
+        <div class="span5">
+          <!-- The global progress bar -->
+          <div class="progress progress-success progress-striped active fade">
+            <div class="bar" style="width:0%;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- The loading indicator is shown during image processing -->
+      <div class="fileupload-loading"></div>
+      <br/>
+      <!-- The table listing the files available for upload/download -->
+      <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+      </table>
+
+    <% else %>
+      <div class="field">
+        <%= f.label t('activerecord.attributes.photo.description') %><br />
+        <%= f.text_area :description %>
+      </div>
+      <div class="field">
+        <%= f.label t('activerecord.attributes.photo.photo_album') %><br />
+        <%= f.hidden_field :photo_album_id, :id => "real_photo_album_id" %>
+        <div class="field_additional">
+          <div class="place_page_image_small">
+            <%= image_tag(get_album_cover(@photo.photo_album), :class => "imagedropshadow") %>
+          </div>
+          <div class="place_page_desc_pad">
+            <div class="title_text"><span class="wordwrap"><%= @photo.photo_album.name %></span></div>
+            <%= @photo.photo_album.description %>
+          </div>
+          <div class="clear_float"></div>
+        </div>
+        <%= autocomplete_field_tag 'photo_album', '', autocomplete_photo_album_name_user_photo_albums_path(@user), :id_element => "#real_photo_album_id", :placeholder => t('.album_placeholder') %>
+      </div>
+      <div class="field">
+        <%= f.label t('activerecord.attributes.photo.place') %><br />
+
+        <% if !@photo_album.albumable.nil? %>
+          <div class="field_additional">
+            <div class="place_page_image_small">
+              <%= image_tag(place_thumb_photo(@photo.photoable), :class => "imagedropshadow") %>
+            </div>
+            <div class="place_page_desc_pad">
+              <div class="title_text"><span class="wordwrap"><%= @photo.photoable.name %></span></div>
+              <% if @photo.photoable.class.to_s == "Place" %>
+                <span class="wordwrap"><%= @photo.photoable.city.name %></span>
+                <span class="wordwrap"><%= @photo.photoable.city.region.name if @photo.photoable.city.region %></span>, <span class="wordwrap"><%= @photo.photoable.country.name %></span>
+              <% else %>
+                <span class="wordwrap"><%= @photo.photoable.region.name if @photo.photoable.region %></span>, <span class="wordwrap"><%= @photo.photoable.country.name %></span>
+              <% end %>
+            </div>
+            <div class="clear_float"></div>
+          </div>
+        <% else %>
+          <% if !@photo.photoable.nil? %>
+            <div class="field_additional">
+              <div class="place_page_image_small">
+                <%= image_tag(place_thumb_photo(@photo.photoable), :class => "imagedropshadow") %>
+              </div>
+              <div class="place_page_desc_pad">
+                <div class="title_text"><span class="wordwrap"><%= @photo.photoable.name %></span></div>
+                <% if @photo.photoable.class.to_s == "Place" %>
+                  <span class="wordwrap"><%= @photo.photoable.city.name %></span>
+                  <span class="wordwrap"><%= @photo.photoable.city.region.name if @photo.photoable.city.region %></span>, <span class="wordwrap"><%= @photo.photoable.country.name %></span>
+                <% else %>
+                  <span class="wordwrap"><%= @photo.photoable.region.name if @photo.photoable.region %></span>, <span class="wordwrap"><%= @photo.photoable.country.name %></span>
+                <% end %>
+              </div>
+              <div class="clear_float"></div>
+            </div>
+            <span class="auto">
+              <%= hidden_field_tag :photoable_id, @photo.photoable.id %>
+              <%= hidden_field_tag :photoable_type, @photo.photoable.class.to_s %>
+              <%= text_field_tag :term, params[:term], :class => "auto_complete_places_cities", :placeholder => t('.place_placeholder') %>
+            </span>
+          <% else %>
+            <span class="auto">
+              <%= hidden_field_tag :photoable_id, "" %>
+              <%= hidden_field_tag :photoable_type, "" %>
+              <%= text_field_tag :term, params[:term], :class => "auto_complete_places_cities", :placeholder => t('.place_placeholder') %>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="actions">
+        <%= f.submit t(".submit"), :class => "general-button" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<div id="progress">
+  <div class="bar" style="width: 0%;"></div>
+</div>
+
+<script>
+  var fileUploadErrors = {
+  maxFileSize: 'File is too big',
+  minFileSize: 'File is too small',
+  acceptFileTypes: 'Filetype not allowed',
+  maxNumberOfFiles: 'Max number of files exceeded',
+  uploadedBytes: 'Uploaded bytes exceed file size',
+  emptyResult: 'Empty file upload result'
+  };
+</script>
+
+<!-- The template to display files available for upload -->
+<% temp = 1 %>
+<script id="template-upload" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-upload fade">
+    <td class="preview"><span class="fade"></span></td>
+    <td class="name"><span>{%=file.name%}</span></td>
+    <td class="title"><label><%= t('activerecord.attributes.photo.description')%>: <%= text_field_tag 'description' %></label></td>
+    <% if params[:controller] == "places" %>
+      <%= hidden_field_tag :photoable_id, @place.id %>
+      <%= hidden_field_tag :photoable_type, @place.class.to_s %>
+    <% elsif params[:controller] == "cities" %>
+      <%= hidden_field_tag :photoable_id, @city.id %>
+      <%= hidden_field_tag :photoable_type, @city.class.to_s %>
+    <% else %>
+      <td class="title">
+        <% if !@photo_album.albumable.nil? %>
+          <%= hidden_field_tag :photoable_id, @photo_album.albumable.id %>
+          <%= hidden_field_tag :photoable_type, @photo_album.albumable.class.to_s %>
+        <% else %>
+          <span class="auto">
+            <%= hidden_field_tag :photoable_id, "" %>
+            <%= hidden_field_tag :photoable_type, "" %>
+            <label><%= t('activerecord.attributes.photo.place')%>:
+            <%= text_field_tag :term, params[:term], :class => "auto_complete_places_cities", :required => true %></label>
+        </span>
+        <% end %>
+      </td>
+    <% end %>
+    <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+    {% if (file.error) { %}
+    <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+    {% } else if (o.files.valid && !i) { %}
+    <td>
+      <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
+    </td>
+    <td class="start">{% if (!o.options.autoUpload) { %}
+      <button class="btn btn-primary">
+        <i class="icon-upload icon-white"></i>
+        <span>{%=locale.fileupload.start%}</span>
+      </button>
+      {% } %}</td>
+    {% } else { %}
+    <td colspan="2"></td>
+    {% } %}
+    <td class="cancel">{% if (!i) { %}
+      <button class="btn btn-warning">
+        <i class="icon-ban-circle icon-white"></i>
+        <span>{%=locale.fileupload.cancel%}</span>
+      </button>
+      {% } %}</td>
+    <% temp = temp + 1 %>
+  </tr>
+  {% } %}
+
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+      {% if (file.error) { %}
+        <td></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else { %}
+        <td class="preview">{% if (file.thumbnail_url) { %}
+          <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+          {% } %}</td>
+        <td class="name">
+          <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+        </td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td colspan="2"></td>
+      {% } %}
+      <td class="delete">
+        <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+          <i class="icon-trash icon-white"></i>
+          <span>{%=locale.fileupload.destroy%}</span>
+        </button>
+        <%#*<input type="checkbox" name="delete" value="1">%>
+      </td>
+    </tr>
+  {% } %}
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+      // Initialize the jQuery File Upload widget:
+      // Demo settings:
+        $('#fileupload').fileupload( {
+            options: {
+              // The regular expression for the types of images to load:
+              // matched against the file type:
+              loadImageFileTypes: /^image\/(gif|jpeg|png|tiff|tif)$/,
+              // The maximum file size of images to load:
+              loadImageMaxFileSize: 15000000 //, // 500MB
+              // The maximum width of resized images:
+              //imageMaxWidth: 1920,
+              // The maximum height of resized images:
+              //imageMaxHeight: 1080,
+              // Define if resized images should be cropped or only scaled:
+              //imageCrop: false,
+              // Disable the resize image functionality by default:
+              //disableImageResize: true,
+              // The maximum width of the preview images:
+              //previewMaxWidth: 80,
+              // The maximum height of the preview images:
+              //previewMaxHeight: 80,
+              // Defines the preview orientation (1-8) or takes the orientation
+              // value from Exif data if set to true:
+              //previewOrientation: true,
+              // Create the preview using the Exif data thumbnail:
+              //previewThumbnail: true,
+              // Define if preview images should be cropped or only scaled:
+              //previewCrop: false,
+              // Define if preview images should be resized as canvas elements:
+              //previewCanvas: true
+          },
+            //acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            //maxFileSize: 15000000, // 15 MB
+            //loadImageMaxFileSize: 15000000, // 15MB
+            change:    function(e,data){
+                var that = $(this).data('fileupload'),
+                files = data.files;
+
+                $.each(files, function (index, file) {
+                    file.error = that._hasError(file);
+                    if (file.error) {
+                        console.log(file.error);
+                    }
+                });
+
+            }
+
+
+        });
+      /*$('#fileupload').fileupload({/*'option', {
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            process: [
+                {
+                    action: 'load',
+                    fileTypes: /^image\/(gif|jpeg|png)$/,
+                    maxFileSize: 20000000 // 20MB
+                }
+            ]
+        }*/
+        /*progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .bar').css(
+                'width',
+                progress + '%'
+            );
+        }*/
+      //});
+      $('#fileupload').bind('fileuploadsubmit', function (e, data) {
+        var inputs = data.context.find(':input');
+        if (inputs.filter('[required="required"][value=""]').first().focus().length) {
+            return false;
+        }
+        data.formData = inputs.serializeArray();
+    });
+      //
+      // Load existing files:
+      $.getJSON($('#fileupload').prop('action'), function (files) {
+        var fu = $('#fileupload').data('blueimpFileupload'),
+          template;
+        /*var fu = $("#fileupload").data('blueimp-fileupload') ||
+                        $("#fileupload").data('fileupload'),
+                    template;*/
+        fu._adjustMaxNumberOfFiles(-files.length);
+        console.log(files);
+        template = fu._renderDownload(files)
+          .appendTo($('#fileupload .files'));
+        // Force reflow:
+        fu._reflow = fu._transition && template.length &&
+          template[0].offsetWidth;
+        template.addClass('in');
+        $('#loading').remove();
+      });
+
+  });
+</script>

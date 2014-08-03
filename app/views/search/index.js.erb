@@ -1,0 +1,11 @@
+<% if @term == "people" %>
+$('#friends_partial').html('<%= escape_javascript render(:partial => "friend_found", :locals => {:users => @users}) %>');
+$('#paginator_friend').html('<%= escape_javascript(paginate(@users, :remote => true, :param_name => "people_page", :theme => "default").to_s) %>');
+<% else %>
+$('#place_partial').html('<%= escape_javascript render(:partial => "place_found", :locals => {:places => @places}) %>');
+$('#paginator_place').html('<%= escape_javascript(paginate(@places, :remote => true, :param_name => "place_page", :theme => "default").to_s) %>');
+
+$('#city_partial').html('<%= escape_javascript render(:partial => "cities/cities", :locals => {:cities => @cities}) %>');
+$('#paginator_city').html('<%= escape_javascript(paginate(@cities, :remote => true, :param_name => "city_page", :theme => "default").to_s) %>');
+
+<% end %>

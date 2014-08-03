@@ -1,0 +1,2 @@
+$('#place_stats_id').html('<%= escape_javascript render(:partial => 'places/place_stats', :locals => {:place => @place}) %>');
+$('#flash').html("<%= escape_javascript raw(flash_display) %>");

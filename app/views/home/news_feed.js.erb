@@ -1,0 +1,2 @@
+//$("#results_endless").before("<%= escape_javascript(render :partial => 'home/activity', :collection => @activities) %>");
+$("#results_endless").before("<%= escape_javascript(render :partial => 'home/recent_friends_reviews', :locals => { :reviews => @recent_reviews }) %>");

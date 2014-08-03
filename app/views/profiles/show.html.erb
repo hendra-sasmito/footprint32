@@ -1,0 +1,226 @@
+<% content_for :title, "#{@profile.full_name}" %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    var total_pages = <%= @my_activities.num_pages %>;
+    var page = 2;
+
+    var map;
+    var place_latitude;
+    var place_longitude;
+    var myLatlng;
+    var place_marker;
+
+    function set_discover_size()
+    {
+      var windowWidth = 900; //$(window).width() - 400;
+      /*if (windowWidth < 900)
+      {
+        windowWidth = 900;
+      }*/
+      var windowHeight = $(window).height();
+      var discoverHeight = windowHeight * 0.5;
+      $('#discover').css({'width':windowWidth,'height':discoverHeight });
+    }
+    function resize_map() {
+      set_discover_size();
+      google.maps.event.trigger(map, "resize");
+    };
+    
+    $(document).ready(function($) { // document ready
+
+      $(document).endlessScroll({
+        fireOnce: true,
+        fireDelay: 500,
+        loader: "<div class='loading'><div>",
+        ceaseFire: function(){
+            if (page > total_pages)
+              return true;
+            else
+              return false;
+          },
+        callback: function(){
+          $.ajax({
+                url: '<%= user_profile_path(@user) %>'+'?page='+page,
+                data: {
+                    last: $(this).attr('last')
+                },
+                dataType: 'script'
+              });
+              page++;
+        }
+      });
+
+      $("#UserEventCalendar").zabuto_calendar({
+        ajax: {
+          url: "<%= events_monthly_events_path(:id => @user.id, :type => @user.class.to_s) %>",
+          modal: true
+        }
+      });
+
+      $('#photo_image').change(function() {
+        $('#new_photo').submit();
+      });
+
+      set_discover_size();
+
+      var resizeTimer;
+      $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize_map, 100);
+      });
+      <% if !@profile.hometown.nil? %>
+        place_latitude = <%= @profile.hometown.latitude %>;
+        place_longitude = <%= @profile.hometown.longitude %>;
+      <% elsif !@profile.location.nil? %>
+        place_latitude = <%= @profile.location.latitude %>;
+        place_longitude = <%= @profile.location.longitude %>;
+      <% else %>
+        place_latitude = 47.7818;
+        place_longitude = 9.61294;
+      <% end %>
+      myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+      var mapOptions = {
+        zoom: 10,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      /*map = new google.maps.Map(document.getElementById("discover"), mapOptions);
+      
+      place_marker = new google.maps.Marker({
+        position: new google.maps.LatLng(place_latitude, place_longitude),
+        map: map
+      });*/
+
+      /*var maininfowindow = new google.maps.InfoWindow({
+        content: 'Hometown'
+      });
+
+      google.maps.event.addListener(place_marker, 'click', function() {
+        maininfowindow.open(map, place_marker);
+      });*/
+
+    });
+  </script>
+
+<% end %>
+
+<div class="page-container2">
+  <div class="left_div">
+    <div class="ads_box">
+      <%= render :partial => "ads" %>
+    </div>
+  </div>
+  <div class="left_div">
+    <%#*<div class="map_container">%>
+      <%#*<div id="discover">%>
+      <%#*</div>%>
+    <%#*</div>%>
+    <div class="parent_content">
+      <div class="center_screen">
+        <div class="no_container left_div">
+          <div class="calender_container">
+            <div class="title_text">Event Calendar</div>
+            <div id="UserEventCalendar"></div>
+            <% if @favorite_places.count > 0 %>
+                <div class="resource_container sidebar">
+                  <div id="places_partial">
+                    <%= render :partial => 'favorite_places', :locals => {:favorite_places => @favorite_places, :user => @user} %>
+                  </div>
+                  <div class="clear_float"></div>
+                </div>
+              <% end %>
+              <% if @visited_places.count > 0 %>
+                <div class="resource_container sidebar">
+                  <div id="places_partial">
+                    <%= render :partial => 'visited_places', :locals => {:visited_places => @visited_places, :user => @user} %>
+                  </div>
+                  <div class="clear_float"></div>
+                </div>
+              <% end %>
+              <% if @favorite_cities.count > 0 %>
+                <div class="resource_container sidebar">
+                  <div id="cities_partial">
+                    <%= render :partial => 'favorite_cities', :locals => {:favorite_cities => @favorite_cities, :user => @user} %>
+                  </div>
+                  <div class="clear_float"></div>
+                </div>
+              <% end %>
+              <% if @visited_cities.count > 0 %>
+                <div class="resource_container sidebar">
+                  <div id="cities_partial">
+                    <%= render :partial => 'visited_cities', :locals => {:visited_cities => @visited_cities, :user => @user} %>
+                  </div>
+                  <div class="clear_float"></div>
+                </div>
+              <% end %>
+
+          </div>
+        </div>
+        <div class="left_div">
+          <div class="page-content">
+
+
+            <div class="userCoverPhotoContainer">
+              <div class="profile_page_image">
+                <%= image_tag(get_user_small_profile_photo_url(@user), :class => "") %>
+              </div>
+
+              <div class="user_page_info">
+                <div class="wordwrap"><%= @profile.full_name %></div>
+                <% if !@profile.hometown.nil? %>
+                  <%= fa_icon("map-marker", :class => "whitecolor largesize") %> <span class="wordwrap"><%= link_to @profile.hometown.name, city_path(@profile.hometown), :class => "general_white" %></span>
+                <% end %>
+              </div>
+            </div>
+            <div class="resource_container_blue small_text">
+              <%= fa_icon("camera", :class => "whitecolor mediumsize") %>
+              <%= link_to t(".photo_album"), user_photo_albums_path(@user), :class => "general_white" %>
+
+              <%#*<div class="changeProfilePhoto">%>
+                <% if is_current_user(@user) %>
+                  <%#*<div class="dropdown_container">%>
+                    | <%= fa_icon("picture-o", :class => "whitecolor mediumsize") %>
+                    <a href="#" data-dropdown="#dropdown-cover" class="general_white">
+                    <%= t('.change_profile_photo') %>
+                    </a>
+                    <% if is_current_user(@user) %>
+                      <div id="dropdown-cover" class="dropdown dropdown-tip dropdown-relative">
+                        <ul class="dropdown-menu">
+                          <li>
+                            <%= link_to t('.select_photo_from_album'), profile_photo_show_photos_path(), :id => "show_photos" %>
+                          </li>
+                          <li>
+                            <%= form_for([current_user, @photo_album, @photo], :url => profile_photo_create_path(), :method => :post, :html => { :multipart => true}) do |f| %>
+                              <div class="field">
+                                <%= hidden_field_tag :photo_album_id, @photo_album.id %>
+                              </div>
+                              <span class="btn_dropdown fileinput-button">
+                                <span>
+                                  <%= t('.upload_photo') %>
+                                </span>
+                                <%= f.file_field :image %>
+                              </span>
+                              <%= render :partial => "shared/progress_indicator" %>
+                            <% end %>
+                          </li>
+                        </ul>
+                      </div>
+                    <% end %>
+                  <%#*</div>%>
+                <% end %>
+              <%#*</div>%>
+
+            </div>
+            <%= render :partial => 'profiles/activity', :collection => @my_activities %>
+            <div id='results_endless'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="newsfeed right_div">
+    <div id="new_newsfeed"></div>
+    <%#= render :partial => 'home/activity', :collection => @activities %>
+  </div>
+</div>
+

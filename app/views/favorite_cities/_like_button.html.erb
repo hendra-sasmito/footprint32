@@ -1,0 +1,14 @@
+<% if favorite_city = FavoriteCity.find_by_city_id_and_user_id(city.id, current_user.id) %>
+  <%= form_for [current_user, favorite_city], :url => user_favorite_city_path(current_user, favorite_city), :html => { :method => :delete }, :remote => true do |f| %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    <%= f.hidden_field :city_id, :value => city.id %>
+    <%= fa_icon("thumbs-down", :class => "whitecolor mediumsize") %><%= f.submit "Unlike", :class=>"as_button_black" %>
+  <% end %>
+<% else %>
+<% new_favorite_city = current_user.favorite_cities.new %>
+  <%= form_for ([current_user, new_favorite_city]), :remote => true do |f| %>
+    <%= f.hidden_field :city_id, :value => city.id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    <%= fa_icon("thumbs-up", :class => "whitecolor mediumsize") %><%= f.submit "Like", :class=>"as_button_black" %>
+  <% end %>
+<% end %>

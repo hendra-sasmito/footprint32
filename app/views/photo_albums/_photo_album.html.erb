@@ -1,0 +1,22 @@
+
+<div class="cover_image">
+  <% if is_current_user(@user) && photo_album.default != true %>
+    <div class="dropdown_container">
+      <a href="#" data-dropdown="#dropdown-<%= photo_album.id %>" class="menu-button"><%= fa_icon("gear", :class => "whitecolor mediumsize")%></a>
+    </div>
+  <% end %>
+  <div class="cover_image_cont"><%= link_to image_tag(get_album_cover(photo_album), :class => "adipoli_eff"), user_photo_album_path(@user, photo_album) %></div>
+  <div class="album_name"><span class="wordwrap"><%= photo_album.name %></span>  <%= render :partial => "shared/privacy_icon", :locals => {:privacy => photo_album.privacy} %></div>
+
+  <% if is_current_user(@user) && photo_album.default != true %>
+    <div class="dropdown_container_menu">
+      <div id="dropdown-<%= photo_album.id %>" class="dropdown dropdown-tip dropdown-relative">
+        <ul class="dropdown-menu">
+          <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to t(".edit"), edit_user_photo_album_path(@user, photo_album), :class=>"general" %></div></li>
+          <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to t(".delete"), user_photo_album_path(@user, photo_album), :confirm => t('.delete_confirmation'), :method => :delete, :class=>"general" %></div></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>
+

@@ -1,0 +1,11 @@
+<% for review in reviews %>
+<div id="review_<%= review.id %>">
+  <div class="comment_box_user">
+    <%= link_to image_tag(place_thumb_photo(review.place), :class => "imagedropshadow thumb_profile_pic"), place_path(review.place) %><br/>
+  </div>
+  
+  <%= render :partial => "reviews/display_review", :locals => {:review => review} %>
+  <br/>
+</div>
+<% end %>
+

@@ -1,0 +1,68 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="resource_container_blue">
+        <div class="title_text">Share Setting</div>
+      </div>
+      <div class="resource_container">
+        <p>
+          Here, you can enable automatic sharing to other social media (Facebook).
+        </p>
+        <br/>
+        <table class="hor-zebra">
+          <tr>
+            <th class="hastip" title="Social media">Provider</th>
+            <th class="hastip" title="Share review automatically">Share review</th>
+            <th class="hastip" title="Share created event automatically">Share event</th>
+            <th class="hastip" title="Share uploaded photo automatically">Share photo</th>
+            <th></th>
+          </tr>
+
+        <% @shares.each do |share| %>
+          <tr>
+            <td>
+              <% if share.provider == "facebook" %>
+                <%= image_tag("facebook_32.png", :class =>"hastip", :title => "#{share.provider}") %>
+              <% else %>
+                <%= share.provider %>
+              <% end %>
+            </td>
+            <td>
+              <% if share.share_review %>
+                On
+              <% else %>
+                Off
+              <% end %>
+            </td>
+            <td>
+              <% if share.share_event %>
+                On
+              <% else %>
+                Off
+              <% end %>
+            </td>
+            <td>
+              <% if share.share_photo %>
+                On
+              <% else %>
+                Off
+              <% end %>
+            </td>
+            <td>
+              <%= link_to fa_icon("edit", :class => "cyancolor mediumsize"), edit_user_share_path(current_user, share), :class => "general as_button hastip", :title => "Change Setting" %>
+            </td>
+          </tr>
+        <% end %>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+
+    </div>
+  </div>
+</div>
+

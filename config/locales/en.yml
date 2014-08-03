@@ -1,0 +1,723 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+# config/locales/en.yml
+
+en:
+  devise:
+    registrations:
+      edit:
+        back: "Back"
+    sessions:
+      new:
+        intro: "Write reviews about your favorite places ..."
+        additional_text: "and share them ..."
+  exception:
+    show:
+      not_found:
+        title: "Not Found"
+        description: "The page you were looking for does not exists."
+      internal_server_error:
+        title: "Internal Server Error"
+        description: "Sorry, something went wrong while processing your request."
+      bad_request:
+        title: "Bad Request"
+        description: "The server did not understand your request. It may have been malformed."
+        bad_taste:
+          title: "Bad Taste"
+          description: "Sorry, the server thinks you've got a bad taste for food (%{exception_message})."
+  activerecord:
+    errors:
+      models:
+        photo_album:
+          attributes:
+            name:
+             name: "not valid name"
+    models:
+      user: "User"
+      photo_album: "Photo Album"
+      city: "City"
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        current_password: "Current password"
+        remember_me: "Remember me"
+      profile:
+        first_name: "First name"
+        last_name: "Family name"
+        birthdate: "Birthdate"
+        gender: "Gender"
+        about: "About me"
+        male: "Male"
+        female: "Female"
+        unknown: "Unknown"
+        language: "Language"
+        time_zone: "Time zone"
+      photo_album:
+        default_name: "Profile Album"
+        default_desc: "Profile pictures"
+        name: "Name"
+        description: "Description"
+        privacy: "Privacy"
+      city:
+        name: "Name"
+        latitude: "Latitude"
+        longitude: "Longitude"
+      event:
+        name: "Name"
+        description: "Description"
+        date: "Date"
+        place: "Place"
+        privacy: "Privacy"
+      place:
+        name: "Name"
+        street: "Street"
+        postcode: "Postcode"
+        city: "City"
+        category: "Category"
+        subcategory: "Subcategory"
+        latitude: "Latitude"
+        longitude: "Longitude"
+      photo:
+        description: "Description"
+        photo_album: "Photo Album"
+        place: "Place"
+  layouts:
+    application:
+      home: "Home"
+      place: "Place"
+      photo: "Photo"
+      event: "Event"
+      account: "Account"
+      profile: "Profile"
+      logout: "Logout"
+      people: "People"
+      search_placeholder: "Search friend/place!"
+      last_location : "Last location"
+      about: "About us"
+      cookies: "Cookies"
+      help: "Help"
+      terms: "Terms of Service"
+      copyright: "Copyright"
+      made: "Made with"
+      in: "in"
+      edit_profile: "Edit profile"
+  home:
+    recent_friends_reviews:
+      created: "created"
+    index:
+      recent_friend_photo: "Recent photo"
+      recent_friend_review: "Recent review"
+      upload_photo_text: "Find something interesting? Upload your photo here"
+      upload_photo_button: "Uplaod photo"
+  help:
+    about:
+      about_title : "About Us"
+      about_text : "Koedok is a traveler social media where you can make reviews about the places and share your awesome experiences to the world. "
+  photo_albums:
+    form:
+      name_placeholder: "Album name"
+      description_placeholder: "Say something about this album"
+      submit: "Submit"
+    photo_album:
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+    edit:
+      title: "Edit"
+      show: "Show"
+      back: "Back to Album"
+    index:
+      title: "Photo Albums"
+      new_album: "New photo album"
+    new:
+      title: "Create new photo album"
+      back: "Back to album list"
+    show:
+      back: "Back to album list"
+      add: "Add photo"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+  photos:
+    photo_description:
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+      details: "Details"
+      photo_album : "Photo Album"
+    form:
+      add: "Add files..."
+      upload_all: "Upload all"
+      album_placeholder: "New photo album"
+      place_placeholder: "New place"
+      submit: "Submit"
+    photo_info:
+      title: "Photo info"
+      width: "Width"
+      height: "Height"
+      brand: "Camera brand"
+      model: "Camera model"
+      exposure: "Exposure time"
+      f_stop: "F number"
+      iso: "ISO speed"
+      date: "Taken on"
+      focal: "Focal length"
+    edit:
+      title: "Edit Photo"
+      back: "Back"
+    new:
+      title: "Add new photo"
+      back: "Back"
+    show:
+      comment: "Write comment"
+      to_do: "To do"
+      profile: "Profile Photo"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+      photo_album : "Photo Album"
+  places:
+    discovered_place:
+      tip: "Click me for more info"
+      address: "Address"
+      about: "About me"
+      review: "Review"
+      like: "Like"
+    form:
+      name_placeholder: "Place name"
+      street_placeholder: "Steet"
+      postcode_placeholder: "Postcode"
+      city_placeholder: "City"
+      latitude_placeholder: "Latitude"
+      longitude_placeholder: "Longitude"
+      description_placeholder: "What can you say about this place?"
+      submit: "Submit"
+      wrong_city: "Wrong city?"
+      change_category: "Wrong category? Tick the following check box to enable selecting the right category"
+    nearby_places:
+      title: "Nearby Places"
+    place_photos:
+      title: "Photos"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+      details: "Details"
+      tip_upload: "Upload photo"
+    place_stats:
+      like: "Like"
+      checkin: "Check-in"
+    visited:
+      title: "Visitor"
+    edit:
+      title: "Edit Place"
+      show: "Show"
+      back: "Back"
+    index:
+      create_message: "Can't find your favorite place?"
+      create: "Create new place"
+    new:
+      title: "Create new place"
+      back: "Back"
+    show:
+      checkin: "Check in"
+      edit: "Edit place"
+      recent: "Recent"
+      popular: "Popular"
+      friends: "Friends"
+      my_review: "My review"
+      review: "Review"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+      edit_photo: "Edit"
+    upload_photo:
+      title: "Add new photo to"
+      back: "Back to place"
+  profiles:
+    contact_box:
+      add: "Add as a friend"
+      add_confirmation: "Send friend request to"
+      not_friend: "is not your friend"
+      be_friend: "wants to be your friend"
+      accept: "Accept"
+      decline: "Decline"
+      decline_confirmation: "Really decline friend request with"
+      request_sent: "You have sent a friend request to"
+      cancel: "Cancel"
+      cancel_confirmation: "Really cancel friend request with"
+      is_friend: "is your friend"
+      breakup: "Break up"
+      breakup_confirmation: "Really break up friendship with"
+    favorite_places:
+      title: "Favorite Places"
+    form:
+      birthdate_placeholder: "Birthdate"
+      submit: "Submit"
+      change_profile_photo: "Change profile photo"
+      select: "Select photo"
+      upload: "Upload photo"
+    notification:
+      title: "Notification"
+      all: "See all"
+      request_message: "You have received"
+      friend_request: "friend request"
+    review:
+      vote: "vote"
+    visited_places:
+      title: "Visited Places"
+    edit:
+      title: "Edit profile"
+      show: "Go to profile"
+    show:
+      review: "Review"
+      reputation: "Reputation"
+      photo_album: "Photo Album"
+      edit: "Edit profile"
+      recent_review: "Recent review"
+      no_review: "No review"
+      about: "About me"
+      all: "See all"
+      change_cover_photo : "Change cover photo"
+      select_photo_from_album : "Select photo from album"
+      upload_photo: "Upload photo"
+  profile_photo:
+    show_photos:
+      title: "Click a photo for your profile photo"
+  cover_photo:
+    show_photos:
+      title: "Click a photo for your cover photo" 
+  reviews:
+    display_review:
+      review_about: "wrote review about"
+    form:
+      content_placeholder: "What do you think about this place?"
+      content_placeholder_city: "What do you think about this city?"
+      add_image: "Add image"
+      remove_image: "Remove image"
+      submit: "Submit"
+    review:
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+    edit:
+      title: "Edit review"
+      show: "Show review"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+  shared:
+    events:
+      title: "Events"
+      created: "created by"
+      tip_create: "Create event"
+      at: "at"
+    friends:
+      title_like: "Like"
+      title_friend: "Friend"
+    friends_recent_reviews:
+      title: "Recent friend reviews"
+    most_popular_places:
+      title: "Most popular places"
+    most_reviewed_places:
+      title: "Most reviewed places"
+    most_reviewed_places_in_a_week:
+      title: "Most reviewed places this week"
+    most_visited_places:
+      title: "Most visited places"
+    new_places:
+      title: "New places"
+    new_places_this_week:
+      title: "New places this week"
+    place_info:
+      review: "Review"
+      like: "Like"
+      visitor : "Visitor"
+    place_small_info_box:
+      review: "Review"
+      like: "Like"
+      more_info: "More info"
+    popular_reviewer:
+      title: "Popular reviewer"
+    reviewer_info_box:
+      review: "Review"
+      last_review: "Last review"
+      profile: "Profile"
+    top_reviewers:
+      title: "Top reviewers"
+    top_reviewers_in_a_week:
+      title: "Top reviewers in a week"
+    user_small_info_box:
+      review: "Review"
+      profile: "Profile"
+  visited_places:
+    visited_places:
+      friends_visiting: "Visitor"
+    index:
+      title: "visited places"
+  categories:
+    index:
+      title: "Categories"
+      places: "Places"
+    show:
+      back: "Back to categories"
+  search:
+    place_found:
+      review: "Review"
+      friend: "Friend"
+      like_this_place: "Like"
+      visited_this_place: "Visitor"
+    index:
+      friend_title: "Friends found"
+      place_title: "Place found"
+      city_title: "City found"
+      search_result_text: "Search result for "
+  cities:
+    city:
+    show:
+      to_do: "To do"
+      accomodation: "Accomodation"
+      shopping: "Shopping"
+      sightseeing: "Sightseeing"
+      eating: "Cafe, Bar & Resto"
+      sport: "Sport"
+      health: "Health"
+      bank: "Bank & ATM"
+      other: "Other"
+      back: "Back to city list"
+      edit: "Edit City"
+      create_place: "Create place"
+      create_event: "Create event"
+    edit:
+      title: "Edit city information"
+      show: "Show"
+      back: "Back to City list"
+    form:
+      submit: "Submit"
+  countries:
+    index:
+      title: "Countries"
+      cities: "Cities"
+    show:
+      filter: "Filter"
+      all: "All"
+      back: "Back to country list"
+  kaminari:
+    next_page:
+      next: "Next &rsaquo;"
+    prev_page:
+      previous: "&lsaquo; Prev"
+  comments:
+    comment:
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+    form:
+      content_placeholder: "What's in your mind?"
+      submit: "Post comment"
+    edit:
+      title: "Edit comment"
+      back: "Back"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+    show:
+      title: "Comment about"
+      uploader: "uploaded by"
+      edit: "Edit"
+      back: "Back"
+      at: "at"
+      created: "created by"
+  events:
+    event_lists:
+      at: "at"
+      details: "Details"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+    form:
+      name_placeholder: "Name of the event"
+      description_placeholder: "Say something about the event"
+      place_placeholder: "New place"
+      submit: "Submit"
+      current_place: "Current place"
+    edit:
+      title: "Edit event"
+      show: "Show"
+      back: "Back to my events"
+    new:
+      title: "Create event"
+      back: "Back to my events"
+    index:
+      title: "events"
+      incoming_event: "In coming"
+      past_event: "Past events"
+      create: "Create event"
+    show:
+      created: "created by"
+      at: "at"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirmation: "Are you sure?"
+  favorite_places:
+    favorite_places:
+      likes: "likes"
+    like_button:
+      like: "Like"
+      unlike: "Unlike"
+    index:
+      title: "favorite places"
+  friendship:
+    friends:
+      title: "friends"
+    show:
+      friend_request_title: "Friend request sent"
+      received_request_title: "Received friend request"
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+      month_only: ! '%B'
+      date_only: ! '%d'
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: ! '%{count} days'
+      x_minutes:
+        one: 1 minute
+        other: ! '%{count} minutes'
+      x_months:
+        one: 1 month
+        other: ! '%{count} months'
+      x_seconds:
+        one: 1 second
+        other: ! '%{count} seconds'
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  errors: &errors
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: must be accepted
+      blank: can't be blank
+      present: must be blank
+      confirmation: ! "doesn't match %{attribute}"
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      record_invalid: ! 'Validation failed: %{errors}'
+      restrict_dependent_destroy:
+        one: "Cannot delete record because a dependent %{record} exists"
+        many: "Cannot delete record because dependent %{record} exist"
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+      other_than: "must be other than %{count}"
+    template:
+      body: ! 'There were problems with the following fields:'
+      header:
+        one: 1 error prohibited this %{model} from being saved
+        other: ! '%{count} errors prohibited this %{model} from being saved'
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  number:
+    currency:
+      format:
+        delimiter: ! ','
+        format: ! '%u%n'
+        precision: 2
+        separator: .
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: ! ','
+      precision: 3
+      separator: .
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ', and '
+      two_words_connector: ! ' and '
+      words_connector: ! ', '
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d %b %Y %H:%M:%S %z'
+      long: ! '%B %d, %Y %H:%M'
+      short: ! '%d %b %H:%M'
+      month_only: ! '%B'
+      date_only: ! '%d'
+    pm: pm
+  category_not_found: "Category is not found"
+  country_not_found: "Country is not found"
+  city_not_found: "City is not found"
+  city_updated: "City was successfully updated"
+  comment_not_found: "Comment is not found"
+  comment_created: "Comment was successfully created"
+  comment_updated: "Comment was successfully updated"
+  comment_deleted: "Comment was successfully deleted"
+  user_not_found: "User is not found"
+  event_not_found: "Event is not found"
+  place_not_found: "Place is not found"
+  not_allowed: "Not allowed"
+  date_not_valid: "Date is not valid"
+  event_created: "Event was successfully created"
+  event_updated: "Event was successfully updated"
+  friend_request_sent: "Friend request sent"
+  friendship_accepted: "Friendship accepted"
+  no_friendship_request: "No friendship request"
+  friendship_declined: "Friendship declined"
+  friendship_canceled: "Friendship request canceled"
+  friendship_deleted: "Friendship deleted"
+  not_friend: "You aren't friend"
+  photo_album_not_found: "Photo album is not found"
+  photo_album_created: "Photo album was successfully created"
+  photo_album_updated: "Photo album was successfully updated"
+  photo_not_found: "Photo is not found"
+  photo_updated: "Photo was successfully updated"
+  set_profile_fail: "Can't set as profile photo"
+  city_blank: "City should not be blank"
+  place_created: "Place was successfully created"
+  place_updated: "Place was successfully updated"
+  profile_updated: "Profile was successfully updated"
+  review_not_found: "Review is not found"
+  review_created: "Review was successfully created"
+  review_updated: "Review was successfully updated"
+  voted: "Thank you for voting"
+  voted_fail: "Unablet to vote, perhaps you already did"
+  keyword_empty: "Keyword is empty"
+  request_fail: "Request failed"
+  like_succeed: "%{username} likes %{placename}"
+  unlike_succeed: "%{username} doesn't like %{placename}"
+  checkin_succeed: "%{username} was at %{placename}"
+  undo_checkin_succeed: "%{username} undo checkin at %{placename}"

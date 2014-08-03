@@ -1,0 +1,28 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+      <div class="title_text"><span class="wordwrap"><%= @user.profile.full_name %></span> <%= t('.title') %></div>
+      <div class="event_type resource_container_blue">
+        <%= link_to t(".incoming_event"), {:past => Event::INCOMING_EVENT}, :remote => true, :class => "general_white" %> |
+        <%= link_to t(".past_event"), {:past => Event::PAST_EVENT}, :remote => true, :class => "general_white" %>
+      </div>
+      <div class="resource_container">
+        <div id="events">
+          <%= render :partial => 'event_lists', :locals => { :events => @events, :user => @user } %>
+        </div>
+        <br/>
+        <div class="clear_float"></div>
+        <div id="paginator">
+          <%= paginate @events, :remote => true, :theme => "default" %>
+        </div>
+        <br />
+        <%= link_to t('.create'), new_user_event_path(@user), :class => "general-button", :id => "create_place" if is_current_user(@user) %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="padding">
+    </div>
+  </div>
+</div>

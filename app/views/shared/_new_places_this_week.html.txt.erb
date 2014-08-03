@@ -1,0 +1,16 @@
+<div class="info-box">
+<div class="info-box-title bold_text"><%= image_tag("review-big.png") %> New places this week</div>
+<div class="info-box-content">
+  <div class="general_box">
+    <% places = Place.new_places_this_week %>
+    <% places.each do |place| %>
+        <div class="hidden_box_container left_menu">
+          <%= link_to image_tag(place_thumb_photo(place.place),
+                  :class => "thumb_profile_pic imagedropshadow"), place_path(place.place) %>
+          <%= render :partial => "shared/place_small_info_box", :locals => { :place => place.place } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="clear_float"></div>
+</div>
+</div>

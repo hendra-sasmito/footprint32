@@ -1,0 +1,9 @@
+<%- if @photo_album.errors.any? %>
+  console.log('Error');
+  $('#dialog-form').html('<%= escape_javascript(render('form')) %>');
+<%- else %>
+  console.log('Created');
+  $('#dialog-form').dialog('close');
+  $('#dialog-form').remove();
+  $('#added_photo_album').append('<%= escape_javascript(render :partial => 'photo_album', :locals => { :photo_album => @photo_album, :user => @user }) %>');
+<%- end %>

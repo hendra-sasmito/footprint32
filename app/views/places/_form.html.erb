@@ -1,0 +1,284 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    var place_latitude;
+    var place_longitude;
+    var place_marker;
+    var map;
+    var myLatlng;
+
+    var place_icon;
+    var places = new Array();
+    var places_marker = new Array();
+    var info_windows = new Array();
+    var place_info = {};
+    
+    $(document).ready(function(){
+      <% url = Footprint32::Application.routes.url_helpers %>
+
+
+      set_map_size();
+
+      function set_map_size()
+      {
+        var windowWidth = $(window).width() - 350;
+        var windowHeight = $(window).height();
+        var discoverHeight = windowHeight - 170;
+        $('#new_place_map').css({'width':windowWidth });
+      }
+      function resize_map() {
+        set_map_size();
+        google.maps.event.trigger(map, "resize");
+      };
+
+      var resizeTimer;
+      $(window).resize(function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(resize_map, 100);
+      });
+
+
+      $('#main-category').on('change', function(){
+          $.getJSON("<%= categories_path %>"+"?cat="+$(this).val(), function(data) {
+              $('#category').html('');   // clear the existing options
+              $.each(data,function(i,o){
+                  $("<option value="+o.id+">" + o.name + "</option>").appendTo("#category");
+              });
+          });
+      });
+      <% if @place.new_record? == false %>
+        $('#change_category').icheck('uncheck');
+        $('#change_category').removeAttr('checked');
+
+        $("#main-category").attr("disabled", true);
+        $("#category").attr("disabled", true);
+
+        $('#change_category').on('ifChecked', function(event){
+          $('#change_category').attr('checked', true);
+          $("#main-category").attr("disabled", false);
+          $("#category").attr("disabled", false);
+        });
+        $('#change_category').on('ifUnchecked', function(event){
+          $('#change_category').attr('checked', false);
+          $("#main-category").attr("disabled", true);
+          $("#category").attr("disabled", true);
+        });
+      <% end %>
+
+      function placeMarker(location) {
+        place_marker.setPosition(location);
+        map.setCenter(location);
+        document.getElementById("place_latitude").value = location.lat();
+        document.getElementById("place_longitude").value = location.lng();
+      }
+      $('.auto_complete_cities').autocomplete({
+        minLength: 3,
+        source: "<%= url.autocomplete_city_name_cities_path(:json) %>",
+
+        select: function(event, ui) {
+          $('#real_city_id').val(ui.item.id);
+          document.getElementById("place_latitude").value = ui.item.latitude;
+          document.getElementById("place_longitude").value = ui.item.longitude;
+
+          place_marker.setPosition(new google.maps.LatLng(ui.item.latitude, ui.item.longitude));
+          map.setCenter(place_marker.getPosition());
+          var location = "lat=" + ui.item.latitude + "&lng=" + ui.item.longitude;
+          $.ajax({
+            type: "GET",
+            url: '<%= Footprint32::Application.config.HOST_NAME %>' + '/places/discover',
+            data: location,
+            success: function(data, textStatus, jqXHR) {
+              show_markers();
+            }
+          });
+        }
+      });
+
+      <% if @place.new_record? == true %>
+        <% if !@city.nil? %>
+          place_latitude = <%= @city.latitude %>;
+          place_longitude = <%= @city.longitude %>;
+        <% elsif !@location.nil? %>
+          place_latitude = <%= @location.latitude %>;
+          place_longitude = <%= @location.longitude %>;
+        <% else %>
+          place_latitude = 47.7818; //40.735383;
+          place_longitude = 9.61294; //73.984655;
+        <% end %>
+      <% else %>
+        place_latitude = <%= @place.latitude %>;
+        place_longitude = <%= @place.longitude %>;
+      <% end %>
+      document.getElementById("place_latitude").value = place_latitude;
+      document.getElementById("place_longitude").value = place_longitude;
+
+      myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
+      var mapOptions = {
+        zoom: 15,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("new_place_map"), mapOptions);
+      <% if @place.new_record? == true %>
+        show_markers();
+      <% end %>
+
+      // add a draggable marker
+      place_marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        title: 'Drag me'
+      });
+
+      // Adding a drag event to the marker
+      google.maps.event.addListener(place_marker, 'dragend', function() {
+        var newlatlng = place_marker.getPosition();
+        map.panTo(newlatlng);
+        document.getElementById("place_latitude").value = newlatlng.lat();
+        document.getElementById("place_longitude").value = newlatlng.lng();
+      });
+
+      google.maps.event.addListener(map, 'click', function(event) {
+          placeMarker(event.latLng);
+      });
+    });
+
+    function show_markers()
+    {
+      var i;
+      var bounds;
+      places = [];
+      info_windows.length = 0;
+
+      if ($('#my_vars_json').length)
+      {
+        var myVarsJSON = $("#my_vars_json").html(),
+        places = $.parseJSON(myVarsJSON);
+
+        clear_overlays();
+        for (i = 0; i < places.length; i++)
+        {
+            create_marker(places[i]);
+        }
+        /*bounds = new google.maps.LatLngBounds();
+        for(i = 0; i < places_marker.length; i++) {
+          bounds.extend(places_marker[i].getPosition());
+        }
+        map.fitBounds(bounds);*/
+      }
+    }
+    function clear_overlays() {
+      if (places_marker) {
+        for (i in places_marker) {
+          places_marker[i].setMap(null);
+        }
+      }
+      places_marker.length = 0;
+    }
+    function close_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].close();
+      }
+    }
+    function create_marker(place_info)
+    {
+      var contentString;
+      var infowindow;
+      var image;
+      var marker;
+      var latlng;
+
+      image = "/assets/images/marker-icon-small.png";
+      latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
+      marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: image
+      });
+
+      contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["street"] + '<br/>' + place_info["city"] + '<br/>' + place_info["region"] + ', ' + place_info["country"] + '<div class="infowindow_desc"><span class="wordwrap">' + place_info["desc"] + '</span></div></div></div>';
+      infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      info_windows.push(infowindow);
+      places_marker.push(marker);
+    }
+
+  </script>
+
+<% end %>
+<div class="new_place_map left_div">
+  <div id="new_place_map"></div>
+</div>
+<div class="no_container left_div">
+<div class="map_form">
+<%= form_for(@place, :validate => true) do |f| %>
+  <%= render "shared/form_error_message", :target => @place %>
+
+  <div class="field">
+    <%= f.text_field :name, :placeholder => t('.name_placeholder'), :validate => true %>
+  </div>
+  <div class="field">
+    <%= f.text_field :street, :placeholder => t('.street_placeholder'), :validate => true %>
+  </div>
+  <div class="field">
+    <%= f.text_field :postcode, :placeholder => t('.postcode_placeholder'), :validate => true %>
+  </div>
+  <div class="field">
+    <% if !@place.city.nil? %>
+      <%= text_field_tag :term, (params[:term] || "#{@place.city.name} - #{@place.city.country.name}"), :class => "auto_complete_cities", :placeholder => t('.city_placeholder') %>
+      <%= f.hidden_field :city_id, :value => @place.city.id, :id => "real_city_id" %>
+    <% else %>
+      <%= text_field_tag :term, params[:term], :class => "auto_complete_cities", :placeholder => t('.city_placeholder') %>
+      <%= f.hidden_field :city_id, :id => "real_city_id" %>
+    <% end %>
+  </div>
+  <% if @place.new_record? == true %>
+    <div class="field">
+      <%= f.label t("activerecord.attributes.place.category") %>
+      <%= select_tag "main-category", options_from_collection_for_select(@main_categories, "id", "name", :selected => 1) %>
+    </div>
+    <div class="field">
+      <%= f.label t("activerecord.attributes.place.subcategory") %>
+      <%= select_tag "category", options_from_collection_for_select(@categories, "id", "name") %>
+    </div>
+  <% else %>
+    <%= f.label t("activerecord.attributes.place.category") %> : <%= @place.category.parent.name %><br/>
+    <%= f.label t("activerecord.attributes.place.subcategory") %> : <%= @place.category.name %><br/><br/>
+    <div class="additional_info">
+      <%= t('.change_category') %> <%= check_box_tag 'change_category', '1', :checked => false %>
+    
+      <div class="field">
+        <%= f.label t("activerecord.attributes.place.category") %>
+        <%= select_tag "main-category", options_from_collection_for_select(@main_categories, "id", "name", :selected => 1), :disabled => true %>
+      </div>
+      <div class="field">
+        <%= f.label t("activerecord.attributes.place.subcategory") %>
+        <%= select_tag "category", options_from_collection_for_select(@categories, "id", "name"), :disabled => true %>
+      </div>
+    </div>
+  <% end %>
+  <div class="field">
+    <%#= f.text_field :latitude, :placeholder => "Latitude", :readonly => "readonly" %>
+    <%= f.text_field :latitude, :placeholder => t('.latitude_placeholder') %>
+  </div>
+  <div class="field">
+    <%#= f.text_field :longitude, :placeholder => "Longitude", :readonly => "readonly" %>
+    <%= f.text_field :longitude, :placeholder => t('.longitude_placeholder') %>
+  </div>
+  <div class="field">
+    <%= f.text_field :description, :placeholder => t('.description_placeholder') %>
+  </div>
+  <div class="actions">
+    <%= f.submit t('.submit'), :class => "general-button btn" %> <%= link_to "Back", places_path, :class => "general-button btn" %>
+  </div>
+<% end %>
+</div>
+</div>
+<div id="nearby_places">
+  <%= render(:partial => 'places/discovered_places') %>
+</div>

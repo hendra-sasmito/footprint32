@@ -1,0 +1,713 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+# config/locales/en.yml
+
+de:
+  devise:
+    registrations:
+      edit:
+        back: "Zurück"
+      sessions:
+      new:
+        intro: "Schreib über deine Lieblingsorte ..."
+        additional_text: "und teil sie ..."
+  exception:
+    show:
+      not_found:
+        title: "Not Found"
+        description: "The page you were looking for does not exists."
+      internal_server_error:
+        title: "Internal Server Error"
+        description: "Sorry, something went wrong while processing your request."
+      bad_request:
+        title: "Bad Request"
+        description: "The server did not understand your request. It may have been malformed."
+        bad_taste:
+          title: "Bad Taste"
+          description: "Sorry, the server thinks you've got a bad taste for food (%{exception_message})."
+  activerecord:
+    errors:
+      models:
+        photo_album:
+          attributes:
+            name:
+             name: "not valid name"
+    models:
+      user: "Benutzer"
+      photo_album: "Foto-Album"
+      city: "Stadt"
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Password"
+        password_confirmation: "Passwort bestätigen"
+        current_password: "Aktuelles Kennwort"
+        remember_me: "Angemeldet bleiben"
+      profile:
+        first_name: "Vorname"
+        last_name: "Nachname"
+        birthdate: "Geburtsdatum"
+        gender: "Geschlecht"
+        about: "Über mich"
+        male: "Männlich"
+        female: "Weiblich"
+        unknown: "Unbekannt"
+        language: "Sprache"
+        time_zone: "Zeitzone"
+      photo_album:
+        default_name: "Profil-Album"
+        default_desc: "Profilbilder"
+        name: "Name"
+        description: "Beschreibung"
+        privacy: "Heimlichkeit"
+      city:
+        name: "Name"
+        latitude: "Breitengrad"
+        longitude: "Längengrad"
+      event:
+        name: "Name"
+        description: "Beschreibung"
+        date: "Datum"
+        place: "Ort"
+        privacy: "Heimlichkeit"
+      place:
+        name: "Name"
+        street: "Straße"
+        postcode: "Postleitzahl"
+        city: "Stadt"
+        category: "Kategorie"
+        subcategory: "Subkategorie"
+        latitude: "Breitengrad"
+        longitude: "Längengrad"
+      photo:
+        description: "Beschreibung"
+        photo_album: "Album"
+        place: "Orte"
+  layouts:      
+    application:
+      home: "Home"
+      place: "Orte"
+      photo: "Foto"
+      event: "Veranstaltung"
+      account: "Konto"
+      profile: "Profil"
+      logout: "Abmelden"
+      people: "Leute"
+      search_placeholder: "Freund / Ort Suchen!"
+      last_location : "Letzte Standort"
+      about: "Über uns"
+      cookies: "Cookies"
+      help: "Hilfe"
+      terms: "Allgemeine Geschäftsbedingungen"
+      copyright: "Copyright"
+      made: "Hergestellt mit"
+      in: "in"
+      edit_profile: "Profil bearbeiten"
+  home:
+    recent_friends_reviews:
+      created: "erstellt"
+    index:
+      recent_friend_photo: "Neuliche Foto"
+      recent_friend_review: "Neuliche Review"
+      upload_photo_text: "Findenst du etwas Interessantes? Laden Sie dein Foto hier?"
+      upload_photo_button: "Foto hochladen"
+  help:
+    about:
+      about_title : "Über uns"
+      about_text : "Koedok ist ein Reisender Social Media, wo man Review über die Orte machen kann und teilen die geniale Erfahrungen zu der Welt."
+  photo_albums:
+    form:
+      name_placeholder: "Name des Albums"
+      description_placeholder: "Sag etwas über dieses Album"
+      submit: "Absenden"
+    photo_album:
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+    edit:
+      title: "Bearbeiten"
+      show: "Zeigen"
+      back: "Zurück zum Album"
+    index:
+      title: "Alben"
+      new_album: "Neue Album"
+    new:
+      title: "Neue Album"
+      back: "Zurück zum Album"
+    show:
+      back: "Zurück zum Album"
+      add: "Foto Hochladen"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+  photos:
+    photo_description:
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+      details: "Angaben"
+      photo_album : "Album"
+    form:
+      add: "Dateien hinzufügen ..."
+      upload_all: "Alle hochladen"
+      album_placeholder: "Neue Album"
+      place_placeholder: "Neue Orte"
+      submit: "Absenden"
+    photo_info:
+      title: "Foto info"
+      width: "Breite"
+      height: "Höhe"
+      brand: "Kamera-Marke"
+      model: "Kameramodell"
+      exposure: "Expositionszeit"
+      f_stop: "F Nummer"
+      iso: "ISO-Empfindlichkeit"
+      date: "Aufgenommen am"
+      focal: "Brennweite"
+    edit:
+      title: "Foto bearbeiten"
+      back: "Zurück"
+    new:
+      title: "Neue Foto hinzufugen"
+      back: "Zurück"
+    show:
+      comment: "Kommentar schreiben"
+      to_do: "Vorgehen"
+      profile: "Profil-Foto"
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+      photo_album : "Album"
+  places:
+    discovered_place:
+      tip: "Klick mich für mehr Informationen"
+      address: "Adresse"
+      about: "Über mich"
+      review: "Review"
+      like: "Gefällt"
+    form:
+      name_placeholder: "Name"
+      street_placeholder: "Straße"
+      postcode_placeholder: "Postleitzahl"
+      city_placeholder: "Stadt"
+      latitude_placeholder: "Breitengrad"
+      longitude_placeholder: "Längengrad"
+      description_placeholder: "Was kann man über diesen Ort sagen?"
+      submit: "Absenden"
+      wrong_city: "Falsche Stadt?"
+      change_category: "Falsche Kategorie? Aktivieren Sie die folgenden Kontrollkästchen Auswahl der richtigen Kategorie zu ermöglichen"
+    nearby_places:
+      title: "In der Nähe"
+    place_photos:
+      title: "Fotos"
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+      details: "Angaben"
+      tip_upload: "Foto hochladen"
+    place_stats:
+      like: "Gefällt"
+      checkin: "Einchecken"
+    visited:
+      title: "Besucher"
+    edit:
+      title: "Bearbeiten"
+      show: "Zeigen"
+      back: "Zurück"
+    index:
+      create_message: "Kann nicht deinen Lieblingsort finden?"
+      create: "Neu Orte erstellen"
+    new:
+      title: "Neu Orte erstellen"
+      back: "Zurück"
+    show:
+      checkin: "Einchecken"
+      edit: "Bearbeiten"
+      recent: "Neuerlich"
+      popular: "Beliebt"
+      friends: "Freunde"
+      my_review: "Mein Review"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+      edit_photo: "Bearbeiten"
+    upload_photo:
+      title: "Neue Foto hinzufugen"
+      back: "Zurück"
+  profiles:
+    contact_box:
+      add: "Als Freund hinzufügen"
+      add_confirmation: "Freundschaftsanfrage schicken zu"
+      not_friend: "ist nicht dein Freund"
+      be_friend: "will dein Freund sein"
+      accept: "Annehmen"
+      decline: "Ablehnen"
+      decline_confirmation: "Wirklich abzulehnen Freundschaftsanfrage an"
+      request_sent: "Du hast eine Freundschaftsanfrage gesendet"
+      cancel: "Abbrechen"
+      cancel_confirmation: "Wirklich Freundschaftsanfrage abbrechen mit"
+      is_friend: "ist dein Freund"
+      breakup: "Beenden"
+      breakup_confirmation: "Wirklich beenden Freundschaft mit"
+    favorite_places:
+      title: "Beliebte Orte"
+    form:
+      birthdate_placeholder: "Geburtsdatum"
+      submit: "Absenden"
+      change_profile_photo: "Profil-Bild ändern"
+      select: "Foto wählen"
+      upload: "Foto hochladen"
+    notification:
+      title: "Benachrichtigung"
+      all: "Alle ansehen"
+      request_message: "Du bekommst"
+      friend_request: "Freundschaftsanfrage"
+    review:
+      vote: "Stimme"
+    visited_places:
+      title: "Besuchte Orte"
+    edit:
+      title: "Profil bearbeiten"
+      show: "Profil ansehen"
+    show:
+      review: "Review"
+      reputation: "Reputation"
+      photo_album: "Album"
+      edit: "Profil bearbeiten"
+      recent_review: "Neueste Review"
+      no_review: "Kein Review"
+      about: "Über mich"
+      all: "Alle ansehen"
+      change_cover_photo : "COver-Bild ändern"
+      select_photo_from_album : "Foto von Alben auswählen"
+      upload_photo: "Foto hochladen"
+  profile_photo:
+    show_photos:
+      title: "Klicken ein foto für dein Profil-Bild"
+  cover_photo:
+    show_photos:
+      title: "Klicken ein foto für dein Cover-Bild" 
+  reviews:
+    display_review:
+      review_about: "schrieb Review über"
+    form:
+      content_placeholder: "Was denkst du über diesen Ort?"
+      add_image: "Bild hinzufügen"
+      remove_image: "Bild entfernen"
+      submit: "Absenden"
+    review:
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+    edit:
+      title: "Review bearbeiten"
+      show: "Review zeigen"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+  shared:
+    events:
+      title: "Veranstaltungen"
+      created: "erstellt von"
+      tip_create: "Erstellt Veranstaltung"
+      at: "in"
+    friends:
+      title_like: "Gefällt"
+      title_friend: "Freund"
+    friends_recent_reviews:
+      title: "Neulich Review vom Freund"
+    most_popular_places:
+      title: "Beliebtesten Orte"
+    most_reviewed_places:
+      title: "Orte mit die meisten Review"
+    most_reviewed_places_in_a_week:
+      title: "Orte mit die meisten Review diese Woche"
+    most_visited_places:
+      title: "Die meisten besuchten Orte"
+    new_places:
+      title: "Neue Orte"
+    new_places_this_week:
+      title: "Neue Orte, in dieser Woche"
+    place_info:
+      review: "Review"
+      like: "Gefällt mir"
+      visitor: "Besucher"
+    place_small_info_box:
+      review: "Review"
+      like: "Gefällt mir"
+      more_info: "Weitere Infos"
+    popular_reviewer:
+      title: "Popular Rezensent"
+    reviewer_info_box:
+      review: "Review"
+      lat_review: "Letzte Review"
+      profile: "Profil"
+    top_reviewers:
+      title: "Top Rezensenten"
+    top_reviewers_in_a_week:
+      title: "Top Rezensenten in einer Woche"
+    user_small_info_box:
+      review: "Review"
+      profile: "Profil"
+  visited_places:
+    visited_places:
+      friends_visiting: "Besucher"
+    index:
+      title: "besuchte Orte"
+  categories:
+    index:
+      title: "Kategorien"
+      places: "Orte"
+    show:
+      back: "Zurück zu den Kategorien"
+  search:
+    place_found:
+      review: "Review"
+      friend: "Freund"
+      like_this_place: "Gefällt"
+      visited_this_place: "Besucher"
+    index:
+      friend_title: "Freunde gefunden"
+      place_title: "Orte gefunden"
+      city_title: "Stadt gefunden"
+      search_result_text: "Suchergebnisse für "
+  cities:
+    city:
+    show:
+      to_do: "Vorgehen"
+      accomodation: "Unterkunft"
+      shopping: "Einkaufen"
+      sightseeing: "Sehenwurdigkeiten"
+      eating: "Cafe, Bar & Resto"
+      sport: "Sport"
+      health: "Gesundheit"
+      other: "Andere"
+      bank: "Bank & Geldautomat"
+      back: "Zurück zu den Städte"
+      edit: "Bearbeiten"
+      create_place: "Orte erstellen"
+      create_event: "Event erstellen"
+    edit:
+      title: "Bearbeiten die Stadts Information"
+      show: "Zeigen"
+      back: "Zurück zu den Städte"
+    form:
+      submit: "Absenden"
+  countries:
+    index:
+      title: "Länder"
+      cities: "Städte"
+    show:
+      filter: "Sortieren"
+      all: "Alle"
+      back: "Zurück zu den Länder"
+  kaminari:
+    next_page:
+      next: "Nächste &rsaquo;"
+    prev_page:
+      previous: "&lsaquo; Vor"
+  comments:
+    comment:
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+    form:
+      content_placeholder: "Was ist in deinem Kopf?"
+      submit: "Kommentar posten"
+    edit:
+      title: "Kommentar bearbeiten"
+      back: "Zurück"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+    show:
+      title: "Kommentar über"
+      uploader: "hochgeladen von"
+      edit: "Bearbeiten"
+      back: "Zurück"
+      at: "in"
+      created: "erstellt von"
+  events:
+    event_lists:
+      at: "in"
+      details: "Angaben"
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+    form:
+      name_placeholder: "Name der Veranstaltung"
+      description_placeholder: "Sag etwas über die Veranstaltung"
+      place_placeholder: "Neue Ort"
+      submit: "Absenden"
+      current_place: "Aktueller Ort"
+    edit:
+      title: "Bearbeiten Veranstaltung"
+      show: "Zeigen"
+      back: "Zurück zu meine Veranstaltungen"
+    new:
+      title: "Veranstaltung erstellen"
+      back: "Zurück zu meine Veranstaltungen"
+    index:
+      title: "Veranstaltungen"
+      incoming_event: "In den kommenden"
+      past_event: "Vergangene Veranstaltungen"
+      create: "Veranstaltung erstellen"
+    show:
+      created: "erstellt von"
+      at: "in"
+      edit: "Bearbeiten"
+      delete: "Löschen"
+      delete_confirmation: "Bist du sicher?"
+  favorite_places:
+    favorite_places:
+      likes: "Gefällt"
+    like_button:
+      like: "Gefällt mir"
+      unlike: "Gefällt mir nicht"
+    index:
+      title: "beliebtesten Orte"
+  friendship:
+    friends:
+      title: "Freunde"
+    show:
+      friend_request_title: "Freundschaftsanfrage gesendet"
+      received_request_title: "Empfangene Freundschaftsanfrage"
+  date:
+    abbr_day_names:
+    - So
+    - Mo
+    - Di
+    - Mi
+    - Do
+    - Fr
+    - Sa
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mär
+    - Apr
+    - Mai
+    - Ju
+    - Jul
+    - Aug
+    - Sep
+    - Okt
+    - Nov
+    - Dez
+    day_names:
+    - Sonntag
+    - Montag
+    - Dienstag
+    - Mittwoch
+    - Donnerstag
+    - Freitag
+    - Samstag
+    formats:
+      default: ! '%d.%m.%Y'
+      long: ! '%e. %B %Y'
+      short: ! '%e. %b'
+      month_only: ! '%B'
+      date_only: ! '%d'
+    month_names:
+    -
+    - Januar
+    - Februar
+    - März
+    - April
+    - Mai
+    - Juni
+    - Juli
+    - August
+    - September
+    - Oktober
+    - November
+    - Dezember
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: etwa eine Stunde
+        other: etwa %{count} Stunden
+      about_x_months:
+        one: etwa ein Monat
+        other: etwa %{count} Monate
+      about_x_years:
+        one: etwa ein Jahr
+        other: etwa %{count} Jahre
+      almost_x_years:
+        one: fast ein Jahr
+        other: fast %{count} Jahre
+      half_a_minute: eine halbe Minute
+      less_than_x_minutes:
+        one: weniger als eine Minute
+        other: weniger als %{count} Minuten
+      less_than_x_seconds:
+        one: weniger als eine Sekunde
+        other: weniger als %{count} Sekunden
+      over_x_years:
+        one: mehr als ein Jahr
+        other: mehr als %{count} Jahre
+      x_days:
+        one: ein Tag
+        other: ! '%{count} Tage'
+      x_minutes:
+        one: eine Minute
+        other: ! '%{count} Minuten'
+      x_months:
+        one: ein Monat
+        other: ! '%{count} Monate'
+      x_seconds:
+        one: eine Sekunde
+        other: ! '%{count} Sekunden'
+    prompts:
+      day: Tag
+      hour: Stunden
+      minute: Minuten
+      month: Monat
+      second: Sekunden
+      year: Jahr
+  errors: &errors
+    format: ! '%{attribute} %{message}'
+    messages:
+      accepted: muss akzeptiert werden
+      blank: muss ausgefüllt werden
+      confirmation: stimmt nicht mit der Bestätigung überein
+      empty: muss ausgefüllt werden
+      equal_to: muss genau %{count} sein
+      even: muss gerade sein
+      exclusion: ist nicht verfügbar
+      greater_than: muss größer als %{count} sein
+      greater_than_or_equal_to: muss größer oder gleich %{count} sein
+      inclusion: ist kein gültiger Wert
+      invalid: ist nicht gültig
+      less_than: muss kleiner als %{count} sein
+      less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+      not_a_number: ist keine Zahl
+      not_an_integer: muss ganzzahlig sein
+      odd: muss ungerade sein
+      record_invalid: ! 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
+      taken: ist bereits vergeben
+      too_long: ist zu lang (mehr als %{count} Zeichen)
+      too_short: ist zu kurz (weniger als %{count} Zeichen)
+      wrong_length: hat die falsche Länge (muss genau %{count} Zeichen haben)
+    template:
+      body: ! 'Bitte überprüfen Sie die folgenden Felder:'
+      header:
+        one: ! 'Konnte %{model} nicht speichern: ein Fehler.'
+        other: ! 'Konnte %{model} nicht speichern: %{count} Fehler.'
+  helpers:
+    select:
+      prompt: Bitte wählen
+    submit:
+      create: ! '%{model} erstellen'
+      submit: ! '%{model} speichern'
+      update: ! '%{model} aktualisieren'
+  number:
+    currency:
+      format:
+        delimiter: .
+        format: ! '%n %u'
+        precision: 2
+        separator: ! ','
+        significant: false
+        strip_insignificant_zeros: false
+        unit: €
+    format:
+      delimiter: .
+      precision: 2
+      separator: ! ','
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion:
+            one: Milliarde
+            other: Milliarden
+          million: Millionen
+          quadrillion:
+            one: Billiarde
+            other: Billiarden
+          thousand: Tausend
+          trillion: Billionen
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ' und '
+      two_words_connector: ! ' und '
+      words_connector: ! ', '
+  time:
+    am: vormittags
+    formats:
+      default: ! '%A, %d. %B %Y, %H:%M Uhr'
+      long: ! '%A, %d. %B %Y, %H:%M Uhr'
+      short: ! '%d. %B, %H:%M Uhr'
+      month_only: ! '%B'
+      date_only: ! '%d'
+    pm: nachmittags
+  category_not_found: "Kategorie wird nicht gefunden"
+  country_not_found: "Land wird nicht gefunden"
+  city_not_found: "Stadt wird nicht gefunden"
+  city_updated : "Stadt wurde erfolgreich aktualisiert"
+  comment_not_found : "Kommentar ist nicht gefunden"
+  comment_created : "Kommentar wurde erfolgreich erstellt"
+  comment_updated: "Kommentar wurde erfolgreich aktualisiert"
+  comment_deleted : "Kommentar wurde erfolgreich gelöscht"
+  user_not_found : "Benutzer ist nicht gefunden"
+  event_not_found : "Ereignis ist nicht gefunden"
+  place_not_found : "Ort ist nicht gefunden"
+  not_allowed : "Nicht erlaubt"
+  date_not_valid : "Datum ist ungültig"
+  event_created : "Ereignis wurde erfolgreich erstellt"
+  event_updated : "Ereignis wurde erfolgreich aktualisiert"
+  friend_request_sent : "Freundschaftsanfrage gesendet"
+  friendship_accepted : "Friendship akzeptiert"
+  no_friendship_request : "Keine Freundschaftsanfrage"
+  friendship_declined : "Friendship zurückgegangen"
+  friendship_canceled : "Friendship Anfrage abgebrochen"
+  friendship_deleted : "Freundschaft gelöscht"
+  not_friend : "Du bist nicht Freund"
+  photo_album_not_found : "Album wird nicht gefunden"
+  photo_album_created : "Album wurde erfolgreich erstellt"
+  photo_album_updated : "Album wurde erfolgreich aktualisiert"
+  photo_not_found : "Foto ist nicht gefunden"
+  photo_updated : "Photo wurde erfolgreich aktualisiert"
+  set_profile_fail : "Kann nicht als Profilfoto eingestellt"
+  city_blank : "Stadt darf nicht leer sein"
+  place_created : "Platz wurde erfolgreich erstellt"
+  place_updated : "Platz wurde erfolgreich aktualisiert"
+  profile_updated : "Profil wurde erfolgreich aktualisiert"
+  review_not_found : "Review wird nicht gefunden"
+  review_created : "Review wurde erfolgreich erstellt"
+  review_updated : "Review wurde erfolgreich aktualisiert"
+  voted : "Vielen Dank für die Abstimmung"
+  voted_fail : "Unablet zu stimmen, vielleicht hast du das schon"
+  keyword_empty : "Stichwort ist leer"
+  request_fail: "Anfrage fehlgeschlagen"
+  like_succeed: "%{username} gefällt %{placename}"
+  unlike_succeed: "%{username} gefällt %{placename} nicht"
+  checkin_succeed: "%{username} war in %{placename}"
+  undo_checkin_succeed: "%{username} war nicht in %{placename}"

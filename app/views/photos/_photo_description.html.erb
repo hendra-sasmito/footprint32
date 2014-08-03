@@ -1,0 +1,37 @@
+<div class="">
+  <div class="left_div">
+  <%=h link_to(image_tag(get_profile_photo_url(photo.creator.profile_photo),
+    :class => "thumb_profile_pic imagedropshadow"), user_profile_path(photo.creator)) %>
+  </div>
+  <div class="links_item_owner">
+    <span class="wordwrap normal_text"><%= link_to photo.creator.profile.full_name, user_profile_path(photo.creator), :class => "general" %></span><br/>
+    <div class="desc_text_light small_text"><%= l(photo.created_at, :format => '%d %b %Y, %H:%M') %></div>
+  </div>
+  <div class="clear_float"></div>
+  <div class="general_box_section">
+    <%= t('.photo_album') %> : <span class="wordwrap"><%= link_to photo.photo_album.name, user_photo_album_path(photo.creator, photo.photo_album), :class => "general" %></span>
+  </div>
+  <div class="links_info small_text">
+    <%= link_to fa_icon("picture-o", :class => "cyancolor mediumsize") + " " + t(".details"), user_photo_album_photo_path(photo.creator, photo.photo_album, photo), :class=>"general" %>
+    <% if is_current_user(photo.creator) %>
+      | <%= link_to fa_icon("edit", :class => "cyancolor mediumsize") + " " + t(".edit"), edit_user_photo_album_photo_path(photo.creator, photo.photo_album, photo), :class=>"general" %>
+      | <%= link_to fa_icon("trash-o", :class => "cyancolor mediumsize") + " " + t(".delete"), user_photo_album_photo_path(photo.creator, photo.photo_album, photo), :confirm => t('.delete_confirmation'), :method => :delete, :class=>"general" %><br/>
+      <% if is_current_user(photo.creator) %>
+        <% if photo != photo.creator.profile_photo %>
+          <%= link_to fa_icon("user", :class => "cyancolor mediumsize") + " " +  t('.profile'), set_as_profile_user_photo_album_photo_path(photo.creator, photo.photo_album, photo), :method => :post, :class=>"general" %>
+        <% end %>
+      <% end %>
+    <% end %>
+    
+  </div>
+  <div class="default-skin wordwrap"><%= photo.description %></div>
+  <%#*<div id="added_comment"></div>%>
+  <%#*<div id="comments_partial">%>
+    <%#= render :partial => 'comments/comments_sidebar', :locals => {:comments => photo.latest_comments} %>
+  <%#*</div>%>
+  <div id="comments_partial_<%= photo.id %>">
+  </div>
+  <%#*<div id="paginator_<%= photo.id %><!--">%>-->
+  <%#*</div>%>
+
+</div>

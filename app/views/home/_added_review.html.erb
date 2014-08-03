@@ -1,0 +1,20 @@
+<div class="review_box">
+  <div class="review_box_user">
+    <div class="hidden_box_container">
+      <%=h link_to image_tag(get_profile_photo_url(activity.user.profile_photo),
+        :class => "thumb_profile_pic"), user_profile_path(activity.user) %>
+    </div>
+  </div>
+  <% if is_current_user(activity.user) %>
+    <a href="#" data-dropdown="#dropdownreview-<%= activity.target.id %>" class="right_div" ><%= fa_icon("gear", :class => "lightgraycolor mediumsize")%></a>
+    <div class="dropdown_container_menu">
+      <div id="dropdownreview-<%= activity.target.id %>" class="dropdown dropdown-tip dropdown-relative dropdown-anchor-right">
+        <ul class="dropdown-menu">
+          <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to "Edit", edit_review_path(activity.target), :class => "general" %></div></li>
+          <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to "Delete", review_path(activity.target), :confirm => "Are you sure?", :method => :delete, :class => "general" %></div></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  <%= render :partial => "reviews/display_review", :locals => {:review => activity.target} %>
+</div>

@@ -1,0 +1,2 @@
+$('#places').html('<%= escape_javascript render(:partial => 'search/place_found', :object => @places) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@places, :remote => true, :theme => "default").to_s) %>');

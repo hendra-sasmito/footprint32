@@ -1,0 +1,202 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    var map;
+    var place_marker;
+    var place_icon;
+    var latitude;
+    var longitude;
+    var myLatlng;
+    var places = new Array();
+    var places_marker = new Array();
+    var info_windows = new Array();
+    var place_info = {};
+
+    function set_discover_size()
+    {
+      var windowWidth = $(window).width();
+      if (windowWidth < 1000)
+      {
+        windowWidth = 1000;
+      }
+      var windowHeight = $(window).height();
+      var discoverHeight = windowHeight - 100;
+      $('#discover').css({'width':windowWidth ,'height':discoverHeight });
+    }
+    function resize_map() {
+      set_discover_size();
+      google.maps.event.trigger(map, "resize");
+    };
+
+    function display_marker(place_info)
+    {
+      var index_marker = place_info["index"];
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+      close_all_info_windows();
+      google.maps.event.trigger(places_marker[index_marker], 'click');
+    }
+
+    $(document).ready(function($) { // document ready
+      set_discover_size();
+
+      var resizeTimer;
+      $(window).resize(function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resize_map, 100);
+      });
+
+
+      latitude = 47.7818;
+      longitude = 9.61294;
+
+      myLatlng = new google.maps.LatLng(latitude, longitude);
+      var mapOptions = {
+        zoom: 15,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("discover"), mapOptions);
+      show_markers();
+
+      google.maps.event.addListener(map, 'click', function(event) {
+        var newlatlng = event.latLng;
+        place_marker.setPosition(newlatlng);
+        map.panTo(newlatlng);
+        var location = "lat=" + newlatlng.lat() + "&lng=" + newlatlng.lng();
+        latitude = newlatlng.lat();
+        longitude = newlatlng.lng();
+        $.ajax({
+          type: "GET",
+          url: '<%= Footprint32::Application.config.HOST_NAME %>' + '/places/discover',
+          data: location,
+          success: function(data, textStatus, jqXHR) {
+            show_markers();
+          }
+        });
+      });
+      
+      add_reference_marker();
+
+    });
+    function show_markers()
+    {
+      var i;
+      var bounds;
+      places = [];
+      info_windows.length = 0;
+
+      if ($('#my_vars_json').length)
+      {
+        var myVarsJSON = $("#my_vars_json").html(),
+        places = $.parseJSON(myVarsJSON);
+
+        clear_overlays();
+        for (i = 0; i < places.length; i++)
+        {
+            create_marker(places[i]);
+        }
+        /*bounds = new google.maps.LatLngBounds();
+        for(i = 0; i < places_marker.length; i++) {
+          bounds.extend(places_marker[i].getPosition());
+        }
+        map.fitBounds(bounds);*/
+      }
+    }
+    function clear_overlays() {
+      if (places_marker) {
+        for (i in places_marker) {
+          places_marker[i].setMap(null);
+        }
+      }
+      places_marker.length = 0;
+    }
+    function close_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].close();
+      }
+    }
+    function create_marker(place_info)
+    {
+      var contentString;
+      var infowindow;
+      var image;
+      var marker;
+      var latlng;
+
+      image = "/assets/images/marker-icon-small.png";
+      latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
+      marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        icon: image
+      });
+
+      contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["street"] + '<br/>' + place_info["city"] + '<br/>' + place_info["region"] + ', ' + place_info["country"] + '<div class="infowindow_desc"><span class="wordwrap">' + place_info["desc"] + '</span></div></div></div>';
+      infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+      });
+      info_windows.push(infowindow);
+      places_marker.push(marker);
+    }
+    function add_reference_marker()
+    {
+      // add a draggable marker
+      place_marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latitude, longitude),
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        title: 'Drag me to show places nearby'
+      });
+
+      // Adding a drag event to the marker
+      google.maps.event.addListener(place_marker, 'dragend', function() {
+        var newlatlng = place_marker.getPosition();
+        map.panTo(newlatlng);
+        var location = "lat=" + newlatlng.lat() + "&lng=" + newlatlng.lng();
+        latitude = newlatlng.lat();
+        longitude = newlatlng.lng();
+        $.ajax({
+          type: "GET",
+          url: '<%= Footprint32::Application.config.HOST_NAME %>' + '/places/discover',
+          data: location,
+          success: function(data, textStatus, jqXHR) {
+            show_markers();
+          }
+        });
+      });
+      var maininfowindow = new google.maps.InfoWindow({
+        content: 'Drag me to show places nearby'
+      });
+
+      google.maps.event.addListener(place_marker, 'click', function() {
+        maininfowindow.open(map, place_marker);
+      });
+    }
+    $(document).ajaxComplete(function(event, request) {
+      show_markers();
+    });
+  </script>
+
+<% end %>
+
+<div class="page-container-full">
+  <div id="header-map"><div id="discover"></div></div>
+  <div id="content-fullwidth">
+    <div class="padding">
+      <div id="nearby_places">
+        <%= render(:partial => 'places/discovered_places') %>
+      </div>
+
+      <div class="clear_float"></div>
+      <% if user_signed_in? %>
+        <div class="create_place desc_text_light">
+          <div class="title_text"><%= t('.create_message') %> <%= link_to t('.create'), new_place_path, :class => "general-button" %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

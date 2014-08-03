@@ -1,0 +1,14 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content">
+    <div class="padding">
+
+      <div class="title_text"><%= t('.title')%> <%= @city.name %> </div>
+
+      <%= render 'photos/form' %>
+
+      <%= link_to t('.back'), city_path(@city), :class => "general" %>
+
+    </div>
+  </div>
+</div>

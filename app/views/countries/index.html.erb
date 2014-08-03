@@ -1,0 +1,42 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#vmap').vectorMap({
+        map: 'world_en',
+        backgroundColor: '#333333',
+        color: '#ffffff',
+        hoverOpacity: 0.7,
+        selectedColor: '#666666',
+        enableZoom: true,
+        showTooltip: true,
+        values: sample_data,
+        scaleColors: ['#C8EEFF', '#006491'],
+        normalizeFunction: 'polynomial',
+        onRegionClick: function(element, code, region)
+        {
+          <% @countries.each do |country| %>
+            if (region == "<%= country.name %>")
+            {
+              window.location = '<%= Footprint32::Application.config.HOST_NAME %>' + '/countries/' + <%= country.id %>;
+            }
+          <% end %>
+        }
+      });
+    });
+  </script>
+<% end %>
+
+<div class="page-container">
+  <div id="content-full">
+    <div class="padding">
+      <div class="title_text"><%= t('.title') %></div>
+      <div id="vmap" style="width: 900px; height: 400px;"></div>
+      <div class="general_container">
+        <% @countries.each do |country| %>
+          <%= link_to country.name, country, :class => "general country_list hastip", :title => "#{country.cities_count} #{t(".cities")}" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

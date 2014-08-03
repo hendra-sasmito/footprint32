@@ -1,0 +1,9 @@
+<div class="info-section-title title_text"><%= link_to "Favorite Cities", user_favorite_cities_path(user), :class => "general hastip", :title => "Show on map" %> (<%= user.favorite_cities.count %>) </div>
+<div class="info-section-content">
+<% favorite_cities.each do |favorite_city| %>
+  <div class="hidden_box_container left_menu">
+    <%= render :partial => "profiles/city_hover_info", :locals => {:city => favorite_city.city, :type => "fc", :id => favorite_city.id} %>
+  </div>
+<% end %>
+<div class="clear_float"></div>
+</div>

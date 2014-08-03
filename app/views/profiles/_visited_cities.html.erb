@@ -1,0 +1,9 @@
+<div class="info-section-title title_text"><%= link_to "Visited Cities", user_visited_cities_path(user), :class => "general hastip", :title => "Show on map" %> (<%= user.visited_cities.count %>) </div>
+<div class="info-section-content">
+<% visited_cities.each do |visited_city| %>
+  <div class="hidden_box_container left_menu">
+    <%= render :partial => "profiles/city_hover_info", :locals => {:city => visited_city.city, :type => "vc", :id => visited_city.id} %>
+  </div>
+<% end %>
+<div class="clear_float"></div>
+</div>

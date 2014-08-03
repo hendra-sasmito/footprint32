@@ -1,0 +1,430 @@
+$(document).ready(function() {
+
+  <% url = Footprint32::Application.routes.url_helpers %>
+
+    $('.hashtmltip').cluetip({
+      width: '400px',
+      local:true,
+      cursor: 'pointer',
+      mouseOutClose: true,
+      showTitle: false,
+      sticky: true,
+      closePosition: 'top',
+      arrows: true
+    });
+
+  $('#show_photos').click(function(e) {
+    var url = $(this).attr('href');
+    var dialog_form = $('<div id="dialog-form">Loading form...</div>').dialog({
+      autoOpen: false,
+      width: 620,
+      modal: true,
+      open: function() {
+        return $(this).load(url + ' #content');
+      },
+      close: function() {
+        $('#dialog-form').remove();
+      }
+    });
+    dialog_form.dialog('open');
+    e.preventDefault();
+  });
+
+  var x = $('.auto_complete_places').autocomplete({
+    minLength: 3,
+    source: "<%= url.autocomplete_place_name_places_path(:json) %>",
+    select: function(event, ui) {
+        $('#real_place_id').val(ui.item.id);
+    }
+  })
+  .data( "ui-autocomplete" )
+  if(x){
+  x._renderItem = function( ul, item ) {
+    return $( "<li></li>" )
+      .append('<a><div class="list_item_container"><div class="list_item_image"><img src="' + item.image + '" class="tiny_image"></div><div class="title_text">' + item.name + '</div><div class="desc_text_light">' + item.category + '</div><div class="desc_text_dark">' + item.address + '</div><div class="desc_text_light">' + item.description + '</div><div class="clear_float"></div></div></a>')
+      .appendTo( ul );
+    };
+  }
+
+  $('#create_place').click(function(e) {
+    var url = $(this).attr('href');
+    var dialog_form = $('<div id="dialog-form">Loading form...</div>').dialog({
+      autoOpen: false,
+      width: 520,
+      modal: true,
+      open: function() {
+        return $(this).load(url + ' #content');
+      },
+      close: function() {
+        $('#dialog-form').remove();
+      }
+    });
+    dialog_form.dialog('open');
+    e.preventDefault();
+  });
+
+  $('.jsform').click(function(e) {
+    var url = $(this).attr('href');
+    var dialog_form = $('<div id="dialog-form">Loading form...</div>').dialog({
+      autoOpen: false,
+      width: 650,
+      modal: true,
+      open: function() {
+        return $(this).load(url + ' #content');
+      },
+      close: function() {
+        $('#dialog-form').remove();
+      }
+    });
+    dialog_form.dialog('open');
+    e.preventDefault();
+  });
+
+  $('#loading-indicator').hide();
+  
+  $(document).ajaxStart(function() {
+    $('#loading-indicator').show();
+  });
+
+  $(document).ajaxStop(function() {
+    $('#loading-indicator').hide();
+  });
+
+  $('input').icheck({
+    checkboxClass: 'icheckbox_flat-blue',
+    radioClass: 'iradio_flat-blue'
+  });
+
+  $('input, textarea').placeholder();
+
+  $.fn.tagcloud.defaults = {
+    size: {start: 14, end: 22, unit: 'pt'},
+    color: {start: '#56BAEC', end: '#3b5998'}
+  };
+  $('#cloud a').tagcloud();
+
+  $('.hastip').tipsy({gravity: $.fn.tipsy.autoNS});
+
+  $('.haswtip').tipsy({gravity: 'w'});
+
+  /* slide panel for place info */
+  $('#slidelink').click(function() {
+    $(this).next().slideToggle();
+  });
+
+  $('.popbox').popbox();
+  $("#placeInfoLink").click(function(){
+    if ($("#placeInfoPanel").is(":hidden")){
+      $("#placeInfoPanel").slideDown("slow");
+    }
+    else{
+      $("#placeInfoPanel").slideUp("slow");
+    }
+  });
+
+  $('.fancybox-simple').fancybox({
+    title: null
+  });
+  $('.fancybox-buttons').fancybox({
+    helpers: {
+      title: null,
+      buttons: {},
+      overlay: {
+        opacity: 1,
+        css: {'background-color': '#111'}
+      },
+      thumbs	: {
+        width	: 50,
+        height	: 50
+      }
+    },
+    beforeLoad: function(){
+      console.info( 'beforeLoad:' );
+      /*var photo_id = $.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
+      $.ajax({
+                url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
+                data: {
+                    //last: $(this).attr('last')
+                },
+                dataType: 'script',
+                success: function(data) {
+                  var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
+                  $('.fancybox-sidebar').html(description);
+                }
+              });*/
+    },
+    afterLoad: function(current, previous) {
+      console.info( 'afterLoad:' );
+      var photo_id = current.href.split('/system/photo/images/')[1].split('/original/')[0];
+      $.ajax({
+                url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
+                data: {
+                    //last: $(this).attr('last')
+                },
+                dataType: 'script',
+                success: function(data) {
+                  var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
+                  $('.fancybox-sidebar').html(description);
+                }
+              });
+      /*console.info( 'Current: ' + current.href );
+      console.info( 'Previous: ' + (previous ? previous.href : '-') );
+
+      if (previous) {
+          console.info( 'Navigating: ' + (current.index > previous.index ? 'right' : 'left') );
+      }
+      */
+    },
+    beforeShow: function(){
+      console.info( 'beforeShow:' );
+    },
+    afterShow: function(){
+      console.info( 'afterShow:' );
+      /*var photo_id = $.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
+      $.ajax({
+                url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
+                data: {
+                    //last: $(this).attr('last')
+                },
+                dataType: 'script'
+              });*/
+      var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
+      $('.fancybox-sidebar').html(description);
+      //$.fancybox.update();
+      //$('.fancybox-overlay').append(description);
+      $(".content-area").customScrollbar();
+    },
+    //content: '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+    nextEffect: 'fade',
+    prevEffect: 'fade',
+    closeBtn  : false,
+    arrows    : false,
+    nextClick : true
+  });
+  $("#mygallery").justifiedGallery({
+    'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+    'justifyLastRow':false,
+    'rowHeight':120,
+    'fixedHeight':false,
+    'captions':false,
+    'margins':1,
+    'rel' : 'gallery',
+    'onComplete': function(gallery) {
+      $(gallery).find("a").addClass('fancybox-buttons');
+    }
+  });
+
+  $(".review_photo").justifiedGallery({
+    'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+    'justifyLastRow':false,
+    'rowHeight':120,
+    'fixedHeight':false,
+    'captions':false,
+    'margins':1,
+    'onComplete': function(gallery) {
+      $(gallery).find("a").addClass('fancybox-simple');
+    }
+  });
+
+  $('.adipoli_eff').adipoli({
+    'startEffect' : 'grayscale',
+    'hoverEffect' : 'normal'
+  });
+
+  $('.hidden_box_container').hover(function() {
+    $(this).children('.hidden_info_box').fadeIn();
+  }, function() {
+    $(this).children('.hidden_info_box').fadeOut();
+  });
+
+  $('.fade').hover(
+    function(){
+      $(this).find('.caption').fadeIn(250);
+    },
+    function(){
+      $(this).find('.caption').fadeOut(250);
+    }
+  );
+
+  $(".shorten").shorten({
+    showChars: '50'
+  });
+
+  $(".shorten_no_link").succinct({
+    size:50,
+    ignore: false
+  });
+
+  $(".shorten_no_link2").succinct({
+    size:30,
+    ignore: false
+  });
+  
+  $(".name_shorten").shorten({
+    showChars: '20'
+  });
+    
+  $(".content-area").customScrollbar();
+
+  $('.dropdown').each(function(){
+    $(this).find('.dropdown_button').bind('click',function(){
+      if($(this).parent().hasClass('open')){
+        $(this).parent().removeClass('open');
+      }else{
+        $('.dropdown.open').removeClass('open');
+        $(this).parent().addClass('open');
+      }
+    });
+  });
+  $('.dropdown li').each(function(){
+    $(this).bind('click',function(){
+      $('.dropdown.open').removeClass('open');
+    });
+  });
+  $(document).on('click', function(e) {
+    var $clicked = $(e.target);
+    if (!$clicked.parents().hasClass("dropdown")){
+      $('.dropdown.open').removeClass('open');
+    }
+  });
+
+  //notification
+  var alert = $('.alert');
+  if (alert.length > 0) {
+    alert.show().animate({height: alert.outerHeight()}, 200);
+    window.setTimeout(function() {
+      alert.slideUp();
+      $('.alert').remove();
+    }, 3000);
+  }
+
+});
+
+$( document ).ajaxStop( function() {
+
+  $('.hastip').tipsy({gravity: $.fn.tipsy.autoNS});
+
+  $('.hidden_box_container').hover(function() {
+    $(this).children('.hidden_info_box').fadeIn();
+  }, function() {
+    $(this).children('.hidden_info_box').fadeOut();
+  });
+
+  $('.content_hover').contenthover({
+    effect:'slide',
+    slide_speed:300,
+    overlay_background:'#000',
+    overlay_opacity:0.8
+  });
+
+  
+
+  $('.fancybox-simple').fancybox({
+    title: null
+  });
+
+  //notification
+  var alert = $('.alert');
+  if (alert.length > 0) {
+    alert.show().animate({height: alert.outerHeight()}, 200);
+    window.setTimeout(function() {
+    alert.slideUp();
+    }, 3000);
+  }
+      
+});
+
+// used to reset file field
+function reset_form_element (e) {
+  e.wrap('<form>').parent('form').trigger('reset');
+  e.unwrap();
+}
+
+$(document).on("click",".auto_complete_places",function(e){
+  var x = $('.auto_complete_places').autocomplete({
+    minLength: 3,
+    source: "<%= url.autocomplete_place_name_places_path(:json) %>",
+    select: function(event, ui) {
+        $('#real_place_id').val(ui.item.id);
+    }
+  })
+  .data( "ui-autocomplete" )
+  if(x){
+  x._renderItem = function( ul, item ) {
+    return $( "<li></li>" )
+      .append('<a><div class="list_item_container"><div class="list_item_image"><img src="' + item.image + '" class="tiny_image"></div><div class="title_text">' + item.name + '</div><div class="desc_text_light">' + item.category + '</div><div class="desc_text_dark">' + item.address + '</div><div class="desc_text_light">' + item.description + '</div><div class="clear_float"></div></div></a>')
+      .appendTo( ul );
+    };
+  }
+});
+
+$(document).on("click",".auto_complete_places_cities",function(e){
+  <% url = Footprint32::Application.routes.url_helpers %>
+  $('.auto_complete_places_cities').each(function (e) {
+    var myElement = $(this);
+    var parent = myElement.parents('.auto');
+    myElement.autocomplete({
+      minLength: 3,
+      source: "<%= url.search_autocomplete_place_city_name_path(:json) %>",
+      select: function(event, ui) {
+        //$('#real_place_id').val(ui.item.id);
+        //var id = ui.item.id;
+        parent.find('input:hidden[name*=able_id]').val(ui.item.id);
+        parent.find('input:hidden[name*=able_type]').val(ui.item.type);
+      }
+    })
+.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+    if (item.type == "Place") {
+    return $( "<li></li>" )
+      .append('<a><div class="list_item_container"><div class="list_item_image"><img src="' + item.image + '" class="tiny_image"></div><div class="title_text">' + item.name + '</div><div class="desc_text_light">' + item.category + '</div><div class="desc_text_dark">' + item.address + '</div><div class="desc_text_light">' + item.description + '</div><div class="clear_float"></div></div></a>')
+      .appendTo( ul );
+    }
+    else
+    {
+    return $( "<li></li>" )
+      .append('<a><div class="list_item_container"><div class="list_item_image"><img src="' + item.image + '" class="tiny_image"></div><div class="title_text">' + item.value + '</div><div class="desc_text_light">' + item.type + '</div><div class="clear_float"></div></div></a>')
+      .appendTo( ul );
+    }
+    };
+  });
+});
+
+$(document).ajaxComplete(function(event, request) {
+  var msg = request.getResponseHeader('X-Message');
+  var type = request.getResponseHeader('X-Message-Type');
+  if (msg == null)
+  {
+    
+  }
+  else if (msg != "error, warning, notice")
+  {
+    $.jGrowl(msg);
+  }
+
+  $(".shorten_no_link").succinct({
+    size:50,
+    ignore: false
+  });
+
+  $(".shorten_no_link2").succinct({
+    size:30,
+    ignore: false
+  });
+
+});
+
+$(document).on("mouseover",".hashtmltipwide",function(event){
+  event.preventDefault();
+  $('.hashtmltipwide').unbind('click');
+  $('.hashtmltipwide').cluetip({
+      width: '500px',
+      local:true,
+      cursor: 'pointer',
+      mouseOutClose: true,
+      showTitle: false,
+      sticky: true,
+      closePosition: 'top',
+      arrows: true,
+      activation: 'click'
+    });
+});
