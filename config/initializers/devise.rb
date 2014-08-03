@@ -211,14 +211,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  #config.omniauth :facebook, "260226657746", "60547aaa59aae279fcdf52366c45e2ec"
-  #config.omniauth :facebook, '260226657746', '60547aaa59aae279fcdf52366c45e2ec', {:scope => 'publish_stream,offline_access,email,user_photos,photo_upload', :client_options => {:ssl => {:ca_file => "#{Rails.root}/config/ca-bundle.crt"}}} #publish_checkins
-  #config.omniauth :facebook, '168361790034204', 'f28f4a3408a7748606f2d5f00ccddb06', {:scope => 'publish_stream,offline_access,email,user_photos,photo_upload', :client_options => {:ssl => {:ca_file => "#{Rails.root}/config/ca-bundle.crt"}}} #publish_checkins
-  #config.omniauth :facebook, Footprint32::Application.config.FB_APP_ID, Footprint32::Application.config.FB_APP_SECRET, {:scope => 'publish_stream,offline_access,email,user_photos,photo_upload,user_hometown', :client_options => {:ssl => {:ca_file => "#{Rails.root}/config/ca-bundle.crt"}}} #publish_checkins
   config.omniauth :facebook, Footprint32::Application.config.FB_APP_ID, Footprint32::Application.config.FB_APP_SECRET, {:scope => 'publish_stream,offline_access,email,user_photos,photo_upload,user_hometown', :client_options => {:ssl =>  {:verify => false}}} #publish_checkins
-  #config.omniauth :twitter, Footprint32::Application.config.TWITTER_CONSUMER_KEY, Footprint32::Application.config.TWITTER_CONSUMER_SECRET
-  #config.omniauth :facebook, '260226657746', '60547aaa59aae279fcdf52366c45e2ec', {:scope => 'publish_stream,offline_access,email'}
-
   config.omniauth :google_oauth2, Footprint32::Application.config.GOOGLE_CLIENT_ID, Footprint32::Application.config.GOOGLE_CLIENT_SECRET, { :access_type => "offline", :approval_prompt => "", :client_options => {:ssl => {:ca_file => "#{Rails.root}/config/ca-bundle.crt"}} }
 
   # ==> Warden configuration

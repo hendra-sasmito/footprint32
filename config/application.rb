@@ -87,9 +87,6 @@ module Footprint32
 
     config.i18n.enforce_available_locales = true
 
-#    config.FB_APP_ID = '260226657746'
-#    config.FB_APP_SECRET = '60547aaa59aae279fcdf52366c45e2ec'
-
 #    config.HOST_NAME = "http://www.koedok.com"
 #    config.DOMAIN_NAME = "koedok.com"
     
