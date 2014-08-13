@@ -4,9 +4,9 @@ class HomeController < ApplicationController
   def index
     option = params[:option]
     if option == "place"
-      @result = Place.includes({:city => [:country, :region]}, :category, :reviews).order("favorite_places_count DESC").page(params[:place_page]).per(100)
+      @result = Place.includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_place_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,
@@ -26,9 +26,9 @@ class HomeController < ApplicationController
         }
       end
     elsif option == "city"
-      @result = City.includes(:country, :region, :reviews).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+      @result = City.includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_city_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,
@@ -64,9 +64,9 @@ class HomeController < ApplicationController
 #      @result.uniq!
 #      Kaminari.paginate_array(@result).page(params[:page]).per(10)
 
-      @result = City.includes(:country, :region, :reviews).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+      @result = City.includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_city_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

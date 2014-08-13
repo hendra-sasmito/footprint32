@@ -7,12 +7,17 @@
 
   <% trips.each do |trip| %>
     <tr>
-      <% if trip.selected == true %>
-        <td><%= check_box_tag("trip" + (trip.id).to_s, trip.id, true) %></td>
-      <% else %>
-        <td><%= check_box_tag("trip" + (trip.id).to_s, trip.id, false) %></td>
-      <% end %>
-      
+      <%# if trip.selected == true %>
+        <%#*<td>%>
+          <%#= check_box_tag("trip" + (trip.id).to_s, trip.id, true) %>
+        <%#*</td>%>
+      <%# else %>
+        <%#*<td>%>
+          <%#= check_box_tag("trip" + (trip.id).to_s, trip.id, false) %>
+        <%#*</td>%>
+      <%# end %>
+
+      <td><%= radio_button_tag "trip", trip.id %></td>
 
       <td><%= link_to trip.name, user_trip_path(trip.user, trip), :class => "general" %></td>
       <td><%= link_to 'Edit', edit_user_trip_path(trip.user, trip), :class => "general-button" %> <%= link_to 'Destroy', user_trip_path(@user, trip), method: :delete, data: { confirm: 'Are you sure?' }, :class => "general-button" %></td>

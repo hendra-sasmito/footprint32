@@ -6,8 +6,12 @@ class TripsController < ApplicationController
   def index
     @user = User.find_by_id(params[:user_id])
     if !@user.nil?
-      @trips = Trip.public_trip.page(params[:all_page]).per(10)
-      @my_trips = @user.trips.page(params[:my_page]).per(10)
+      if params[:attr] == "my_sr_tab"
+        @trips = @user.trips.page(params[:all_page]).per(10)
+      else
+        @trips = Trip.public_trip.page(params[:all_page]).per(10)
+      end
+      puts @trips.count
     else
       flash[:notice] = "User not found"
       return redirect_back_or_default(home_index_path)

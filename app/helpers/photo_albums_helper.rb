@@ -10,4 +10,12 @@ module PhotoAlbumsHelper
       return "camera-128.png"
     end
   end
+
+  def get_small_photo_url(photo)
+    if !photo.first.nil?
+      return photo.first.image.url(:small)
+    else
+      return ActionController::Base.helpers.image_path('camera-128.png')
+    end
+  end
 end

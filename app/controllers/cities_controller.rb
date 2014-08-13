@@ -48,47 +48,49 @@ class CitiesController < ApplicationController
 
     if !@city.nil?
       # find major categories
-      accomodation = Category.find_by_id(Category::ACCOMODATION)
-      shopping = Category.find_by_id(Category::SHOPPING)
-      sightseeing = Category.find_by_id(Category::SIGHTSEEING)
-      eating = Category.find_by_id(Category::EATING)
-      sport = Category.find_by_id(Category::SPORT)
-      other = Category.find_by_id(Category::OTHER)
-      health = Category.find_by_id(Category::HEALTH)
-      bank = Category.find_by_id(Category::BANK)
+      main_categories = Category.where("parent_id is ?", nil).all
+
+#      accomodation = Category.find_by_id(Category::ACCOMODATION)
+#      shopping = Category.find_by_id(Category::SHOPPING)
+#      sightseeing = Category.find_by_id(Category::SIGHTSEEING)
+#      eating = Category.find_by_id(Category::EATING)
+#      sport = Category.find_by_id(Category::SPORT)
+#      other = Category.find_by_id(Category::OTHER)
+#      health = Category.find_by_id(Category::HEALTH)
+#      bank = Category.find_by_id(Category::BANK)
 
       type = params[:type]
       if (type == "accomodation")
-        @places = @city.places.includes(:city, :reviews).where(category_id: accomodation.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[0].children).page(params[:place_page]).per(9)
       elsif (type == "shopping")
-        @places = @city.places.includes(:city, :reviews).where(category_id: shopping.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[1].children).page(params[:place_page]).per(9)
       elsif (type == "sightseeing")
-        @places = @city.places.includes(:city, :reviews).where(category_id: sightseeing.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[2].children).page(params[:place_page]).per(9)
       elsif (type == "eating")
-        @places = @city.places.includes(:city, :reviews).where(category_id: eating.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[3].children).page(params[:place_page]).per(9)
       elsif (type == "sport")
-        @places = @city.places.includes(:city, :reviews).where(category_id: sport.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[4].children).page(params[:place_page]).per(9)
       elsif (type == "health")
-        @places = @city.places.includes(:city, :reviews).where(category_id: health.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[6].children).page(params[:place_page]).per(9)
       elsif (type == "bank")
-        @places = @city.places.includes(:city, :reviews).where(category_id: bank.children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[7].children).page(params[:place_page]).per(9)
       elsif (type == "other")
-        @places = @city.places.includes(:city, :reviews).where(category_id: other.children).page(params[:place_page]).per(9)
-      elsif (type == "popular")
-        @places = @city.places.popular.includes(:city, :category, :reviews).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[5].children).page(params[:place_page]).per(9)
+#      elsif (type == "popular")
+#        @places = @city.places.popular.includes(:city, :category, :reviews, :default_place_photo).page(params[:place_page]).per(9)
       else # default popular
-        @places = @city.places.popular.includes(:city, :category, :reviews).page(params[:place_page]).per(9)
+        @places = @city.places.popular.includes(:city, :category, :reviews, :default_place_photo).page(params[:place_page]).per(9)
       end
 
       sort = params[:sort]
       if (sort == "popular")
-        @reviews = @city.reviews.by_votes.includes({:creator => [:profile, :profile_photo]}, :review_photos).page(params[:review_page]).per(5)
+        @reviews = @city.reviews.by_votes.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).page(params[:review_page]).per(5)
       elsif (sort == "friends")
-        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
+        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
       elsif (sort == "myself")
-        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
+        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
       else # default recent
-        @reviews = @city.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").page(params[:review_page]).per(5)
+        @reviews = @city.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").page(params[:review_page]).per(5)
       end
 
       if (@city.photos.public_photo.count > 0)
@@ -101,7 +103,7 @@ class CitiesController < ApplicationController
       @reviewable = @city
 
       @places_list = @places.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_place_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

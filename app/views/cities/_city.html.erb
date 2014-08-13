@@ -1,10 +1,10 @@
 <div class="city">
-  <%=h link_to image_tag(place_small_photo(city), :class => "city_image"), city_path(city) %><br/>
+  <%=h link_to image_tag(get_small_photo_url(city.default_city_photo), :class => "city_image"), city_path(city) %><br/>
   <%= link_to city, :class => "white_text" do %>
     <div class="title_text"><span class="wordwrap"><%= city.name %></span></div>
     <div class="small_text">
       <% if city.region %>
-        <%= city.region.name %>, 
+        <%= city.region.name %>,
       <% end %>
       <%= city.country.name %>
     </div>

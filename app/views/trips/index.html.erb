@@ -2,24 +2,45 @@
 <% content_for :head do %>
   <script type="text/javascript">
     var map;
+    var place_marker;
+    var place_icon;
     var place_latitude = 0;
     var place_longitude = 0;
     var myLatlng;
+    var place_info = {};
+    var maininfowindow;
+    var allUploadedInformation = new Array();
+    var zIndex = 0;
+    var markers = [];
+    var marker_distance = 200;
     
     $(document).ready(function(){
-      $( "#trip_tabs" ).tabs();
-      
+      $( "#trip_tabs" ).tabs({
+            select: function(event, ui) {
+                /*$(ui.tab).click(function() {
+                    //$(ui.panel).load(this.href);
+                    alert(ui.tab);
+                    return false;
+                });*/
+                var href = $(ui.tab).attr('href').replace("#","");
+                var attr = "attr=" + href;
+                $.ajax({
+                  type: "GET",
+                  url: '<%= user_trips_url(@user) %>',
+                  data: attr,
+                  success: function(data, textStatus, jqXHR) {
+                    
+                  }
+                });
+            }
+      });
       var trip_id;
       $('.hor-zebra input:radio').click(function() {
-        trip_id = $(this).attr("id");
-        /*$.ajax({
-          type: "GET",
-          url: '<%= Footprint32::Application.config.HOST_NAME %>' + '/places/discover',
-          data: location,
-          success: function(data, textStatus, jqXHR) {
-            show_markers();
-          }
-        });*/
+        trip_id = $(this).attr("id").split("_")[1];
+        //alert(trip_id);
+        $.ajax("<%= ajax_read_all_data_user_trips_path(@user) %>"+"?trip_id="+trip_id+"&distance=200" , function(data) {
+        });
+        display_map_chart();
       });
 
       myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
@@ -28,10 +49,212 @@
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-      //map = new google.maps.Map(document.getElementById("trip_map"), mapOptions);
+      map = new google.maps.Map(document.getElementById("trip_map"), mapOptions);
+
+      function display_map_chart()
+      {
+
+        clearOverlays();
+        var myVarsJSON = $("#json_encode").html(),
+          dataJson = $.parseJSON(myVarsJSON);
+
+        if (dataJson)
+        {
+          allUploadedInformation = dataJson;
+          var latMean = 0;
+          var lngMean = 0;
+          counter = 0;
+          /*var datasets = {
+          "dataSpeed": {
+              label: "Vehicle Speed (km/h)",
+              data: []
+          },
+          "dataRpm": {
+              label: "Engine RPM",
+              data: []
+          },
+          "dataEngineTemp": {
+              label: "Engine Temperature (\xB0C)",
+              data: []
+          },
+          "dataAirTemp": {
+              label: "Intake Air Temperature (\xB0C)",
+              data: []
+          },
+          "dataValve": {
+              label: "Throttle Valve Position (%)",
+              data: []
+          },
+          "dataGear": {
+              label: "Gear Position",
+              data: []
+          }};*/
+          for(var i=0;i<dataJson.length;i++){
+              var trip = dataJson[i];
+              for(var j=0;j<trip.length;j++){
+                  var markerTrip = trip[j];
+                  latMean+=markerTrip.lat;
+                  lngMean+=markerTrip.lng;
+                  if(j==0){
+                      addTrackMarker(0, markerTrip.lat, markerTrip.lng,i,j);
+                  }else if(j==trip.length-1){
+                      addTrackMarker(2, markerTrip.lat, markerTrip.lng,i,j);
+                  }else{
+                      addTrackMarker(1, markerTrip.lat, markerTrip.lng,i,j);
+                  }
+                  /*if (typeof trip[j].additional != 'undefined')
+                  {
+                    var x_temp = counter;
+                    if (trip[j].additional.length > 0)
+                    {
+                      datasets["dataSpeed"].data.push([x_temp, trip[j].additional[1] * parseInt($('#dataSpeedMul').val())]);
+                      datasets["dataRpm"].data.push([x_temp, trip[j].additional[2] * parseInt($('#dataRpmMul').val())]);
+                      datasets["dataEngineTemp"].data.push([x_temp, trip[j].additional[3] * parseInt($('#dataEngineTempMul').val())]);
+                      datasets["dataAirTemp"].data.push([x_temp, trip[j].additional[4] * parseInt($('#dataAirTempMul').val())]);
+                      datasets["dataValve"].data.push([x_temp, trip[j].additional[5] * parseInt($('#dataValveMul').val())]);
+                      datasets["dataGear"].data.push([x_temp, trip[j].additional[13] * parseInt($('#dataGearMul').val())]);
+                    }
+                    else
+                    {
+                      datasets["dataSpeed"].data.push([x_temp,0]);
+                      datasets["dataRpm"].data.push([x_temp,0]);
+                      datasets["dataEngineTemp"].data.push([x_temp,0]);
+                      datasets["dataAirTemp"].data.push([x_temp,0]);
+                      datasets["dataValve"].data.push([x_temp,0]);
+                      datasets["dataGear"].data.push([x_temp,0]);
+                    }
+                  }*/
+                  counter++;
+              }
+          }
+          latMean = latMean/counter;
+          lngMean = lngMean/counter;
+          map.setCenter(new google.maps.LatLng(latMean, lngMean));
+          map.setZoom(14);
+        }
+      }
     });
 
+    function createMarkerByLatLong(lat, lng){
+        createMarker(new google.maps.LatLng(lat, lng));
+    }
 
+    function createMarker(location){
+        var marker = new google.maps.Marker({
+            map:map,
+            draggable:false,
+            animation: google.maps.Animation.DROP,
+            position: location
+        });
+        google.maps.event.addListener(marker, 'click', function(){
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        });
+        return marker;
+    }
+
+    function addTrackMarker(type,lat,lng,tripNum,indexNum) {
+        var markerName = '';
+        if(type==0){
+            markerName = '/assets/images/marker_trip.gif';
+        }else if(type==1){
+            markerName = '/assets/images/marker_trip.gif';
+        }else{
+            markerName = '/assets/images/marker_trip.gif';
+        }
+        var image = new google.maps.MarkerImage(markerName,
+            // This marker is 20 pixels wide by 32 pixels tall.
+            new google.maps.Size(32, 32),
+            // The origin for this image is 0,0.
+            new google.maps.Point(0,0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            new google.maps.Point(16, 32));
+        //var shadow = new google.maps.MarkerImage('/assets/images/shadow_marker.png',
+        //    new google.maps.Size(29, 22),
+        //    new google.maps.Point(0,0),
+        //    new google.maps.Point(0, 22));
+        var shape = {
+            coord: [1, 1, 1, 33, 19, 33, 18 , 1],
+            type: 'poly'
+        };
+        var myLatLng = new google.maps.LatLng(lat, lng);
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            //shadow: shadow,
+            icon: image,
+            shape: shape,
+            title: "Marker",
+            zIndex: zIndex
+        });
+
+        if (allUploadedInformation[tripNum][indexNum].additional)
+        {
+          var contentString = '<div class="infowindow_sr">'+
+          '<div class="infowindow_image">'+ '' +
+          '</div>'+
+          '<div class="infowindow_content_sr">'+
+          '<h2 class="bold_text">' + '' + '</h2>' +
+          '<h3 class="bold_text">' + 'BMW K1200S' + '</h3>' +
+          '<h3>Speed[' + allUploadedInformation[tripNum][indexNum].additional[1] +' km/h], '+
+          'RPM[' + allUploadedInformation[tripNum][indexNum].additional[2] +'], '+
+          'Throttle[ ' + allUploadedInformation[tripNum][indexNum].additional[5] +'], '+
+          'Gear[ ' + allUploadedInformation[tripNum][indexNum].additional[13] +'], '+
+          'Engine[' + allUploadedInformation[tripNum][indexNum].additional[3] +'], '+
+          'Air[' + allUploadedInformation[tripNum][indexNum].additional[4] +'], </h3>'+
+          '</div>';
+        }
+        else
+        {
+          var contentString = '<div class="infowindow_sr">'+
+          '<div class="infowindow_image">'+ '' +
+          '</div>'+
+          '<div class="infowindow_content_sr">'+
+          '<h2 class="bold_text">' + '' + '</h2>' +
+          '<h3 class="bold_text">' + 'BMW K1200S' + '</h3>' +
+          '</div>';
+        }
+
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        marker.infowindow = infowindow;
+        marker.tripnum = tripNum;
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+            //agar dapat zoom ketika hijau dan merah diklik
+            if(type==0){
+                green_clicked = marker;
+            }else if(type==2){
+                if(green_clicked!=null){
+                    green_clicked.infowindow.close();
+                    infowindow.close();
+                    //zooming
+                    var latlngbounds = new google.maps.LatLngBounds();
+                    var latlng = allUploadedInformation[tripNum];
+
+                    for ( var i = 0; i < latlng.length; i++ ){
+                        latlngbounds.extend(new google.maps.LatLng(latlng[i].lat, latlng[i].lng));
+                    }
+                    map.fitBounds(latlngbounds);
+
+                    green_clicked = null;
+                }
+            }
+        });
+
+        markers[markers.length] = marker;
+
+        zIndex++;
+    }
+    function clearOverlays() {
+      for (var i = 0; i < markers.length; i++ ) {
+        markers[i].setMap(null);
+      }
+      markers.length = 0;
+    }
   </script>
 <% end %>
 
@@ -39,7 +262,7 @@
   <div id="content-fullwidth">
     <div class="padding">
       <div class="resource_container">
-        <div id="trip_tabs">
+        <div id="trip_tabs" class="trip_tabs_index">
           <ul>
             <li><a href="#all_sr_tab">All Smart Rides</a></li>
             <li><a href="#my_sr_tab">My Smart Rides</a></li>
@@ -56,24 +279,25 @@
           </div>
           <div id="my_sr_tab">
             <div class="left_div">
-              <div id="my_trips">
-                <%= render :partial => 'trips', :locals => { :trips => @my_trips } %>
-              </div>
-              <div id="paginator_my_trips">
-                <%= paginate @my_trips, :param_name => "my_page", :remote => true, :theme => "default" %>
-              </div>
+              <%#*<div id="my_trips">%>
+                <%#= render :partial => 'trips', :locals => { :trips => @trips } %>
+              <%#*</div>%>
+              <%#*<div id="paginator_my_trips">%>
+                <%#= paginate @trips, :param_name => "my_page", :remote => true, :theme => "default" %>
+              <%#*</div>%>
               <%= link_to 'Upload New Datalog Trip', new_user_trip_path(@user), :class => "general-button" %>
             </div>
           </div>
         </div>
+        <div id="trip_map"></div>
         <div class="clear_float"></div>
       </div>
 
-      
-        
-      <div id="trip_map"></div>
       <div class="clear_float"></div>
     </div>
   </div>
 </div>
 
+<div id="trip_json">
+  <%= render :partial => "trips/trip_json", :locals => {:globalArray => @globalArray} %>
+</div>

@@ -1,7 +1,7 @@
 <div class="item_float">
   <div class="place-found-small">
     <div class="place-photo-small">
-      <%=h link_to image_tag(place_small_photo(city), :class => ""), city_path(city) %><br/>
+      <%=h link_to image_tag(get_small_photo_url(city.default_city_photo), :class => ""), city_path(city) %><br/>
     </div>
       <div class="place-desc">
         <div class="general_box">

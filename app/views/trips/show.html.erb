@@ -18,6 +18,24 @@
 
     $(document).ready(function(){
 
+      $("#dataSpeedMul").change(function(){
+        display_map_chart();
+      });
+      $("#dataRpmMul").change(function(){
+        display_map_chart();
+      });
+      $("#dataEngineTempMul").change(function(){
+        display_map_chart();
+      });
+      $("#dataAirTempMul").change(function(){
+        display_map_chart();
+      });
+      $("#dataValveMul").change(function(){
+        display_map_chart();
+      });
+      $("#dataGearMul").change(function(){
+        display_map_chart();
+      });
       function updateMap() {
         marker_distance = $( "#marker_distance" ).val();
         $.ajax("<%= ajax_read_all_data_user_trips_path(@user) %>"+"?trip_id="+"<%= @trip.id %>"+"&distance="+marker_distance , function(data) {
@@ -123,12 +141,12 @@
                   var x_temp = counter;
                   if (trip[j].additional.length > 0)
                   {
-                    datasets["dataSpeed"].data.push([x_temp, trip[j].additional[1]]);
-                    datasets["dataRpm"].data.push([x_temp, trip[j].additional[2]]);
-                    datasets["dataEngineTemp"].data.push([x_temp, trip[j].additional[3]]);
-                    datasets["dataAirTemp"].data.push([x_temp, trip[j].additional[4]]);
-                    datasets["dataValve"].data.push([x_temp, trip[j].additional[5]]);
-                    datasets["dataGear"].data.push([x_temp, trip[j].additional[13]]);
+                    datasets["dataSpeed"].data.push([x_temp, trip[j].additional[1] * parseInt($('#dataSpeedMul').val())]);
+                    datasets["dataRpm"].data.push([x_temp, trip[j].additional[2] * parseInt($('#dataRpmMul').val())]);
+                    datasets["dataEngineTemp"].data.push([x_temp, trip[j].additional[3] * parseInt($('#dataEngineTempMul').val())]);
+                    datasets["dataAirTemp"].data.push([x_temp, trip[j].additional[4] * parseInt($('#dataAirTempMul').val())]);
+                    datasets["dataValve"].data.push([x_temp, trip[j].additional[5] * parseInt($('#dataValveMul').val())]);
+                    datasets["dataGear"].data.push([x_temp, trip[j].additional[13] * parseInt($('#dataGearMul').val())]);
                   }
                   else
                   {
@@ -372,12 +390,12 @@
             <div class="left_div">
             <div id="choices">
               <ul>
-                <li><%= check_box_tag("dataSpeed", 'yes', true) %><%= label_tag "Vehicle Speed", nil, :class => "checkbox_label" %><%= text_field_tag 'dataSpeedMul', nil, :class => "text_multiplier" %></li>
-                <li><%= check_box_tag("dataRpm", 'yes', true) %><%= label_tag "Engine RPM", nil, :class => "checkbox_label" %><%= text_field_tag 'dataRpmMul', nil, :class => "text_multiplier" %></li>
-                <li><%= check_box_tag("dataEngineTemp", 'yes', true) %><%= label_tag "Engine Temperature", nil, :class => "checkbox_label" %><%= text_field_tag 'dataEngineTempMul', nil, :class => "text_multiplier" %></li>
-                <li><%= check_box_tag("dataAirTemp", 'yes', true) %><%= label_tag "Intake Air Temperature", nil, :class => "checkbox_label" %><%= text_field_tag 'dataAirTempMul', nil, :class => "text_multiplier" %></li>
-                <li><%= check_box_tag("dataValve", 'yes', true) %><%= label_tag "Throttle Valve Position", nil, :class => "checkbox_label" %><%= text_field_tag 'dataValveMul', nil, :class => "text_multiplier" %></li>
-                <li><%= check_box_tag("dataGear", 'yes', true) %><%= label_tag "Gear Position", nil, :class => "checkbox_label" %><%= text_field_tag 'dataGearMul', nil, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataSpeed", 'yes', true) %><%= label_tag "Vehicle Speed", nil, :class => "checkbox_label" %><%= text_field_tag 'dataSpeedMul', 1, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataRpm", 'yes', true) %><%= label_tag "Engine RPM", nil, :class => "checkbox_label" %><%= text_field_tag 'dataRpmMul', 1, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataEngineTemp", 'yes', true) %><%= label_tag "Engine Temperature", nil, :class => "checkbox_label" %><%= text_field_tag 'dataEngineTempMul', 1, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataAirTemp", 'yes', true) %><%= label_tag "Intake Air Temperature", nil, :class => "checkbox_label" %><%= text_field_tag 'dataAirTempMul', 1, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataValve", 'yes', true) %><%= label_tag "Throttle Valve Position", nil, :class => "checkbox_label" %><%= text_field_tag 'dataValveMul', 1, :class => "text_multiplier" %></li>
+                <li><%= check_box_tag("dataGear", 'yes', true) %><%= label_tag "Gear Position", nil, :class => "checkbox_label" %><%= text_field_tag 'dataGearMul', 1, :class => "text_multiplier" %></li>
               </ul>
             </div>
             </div>

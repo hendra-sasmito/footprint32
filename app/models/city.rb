@@ -16,6 +16,10 @@ class City < ActiveRecord::Base
 
   has_many :hometown_user, :class_name => "Profile", :foreign_key => "hometown_id"
 
+  #has_one :default_city_photo
+  has_many :default_city_photo, :order => 'photos.created_at DESC', :limit => 1, :class_name => 'Photo', :as => :photoable
+  #has_one :default_city_photo, :order => 'photos.created_at DESC', :class_name => 'Photo', :as => :photoable
+
   validates :name, :presence => true
   validates :country, :presence => true
 
@@ -31,4 +35,29 @@ class City < ActiveRecord::Base
       country.name if country
     end
   end
+
+#  def default_city_photo
+#    return photos.last
+#  end
+#
+#  def city_thumb_photo
+#    if (self.photos.public_photo.count > 0)
+#      return self.photos.public_photo.last.image.url(:thumb)
+#    else
+#      return ActionController::Base.helpers.image_path('city.png')
+#    end
+#  end
+#
+#  def city_small_photo
+#    if (self.photos.public_photo.count > 0)
+#      return self.photos.public_photo.last.image.url(:small)
+#    else
+#      return ActionController::Base.helpers.image_path('city.png')
+#    end
+#  end
+
+  def default_url
+    ActionController::Base.helpers.asset_path("city.png", :digest => false)
+  end
+
 end

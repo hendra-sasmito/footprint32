@@ -77,13 +77,13 @@ class SearchController < ApplicationController
 
     elsif term == "place"
 #      @places = Place.where("name LIKE ? or street LIKE ? or city LIKE ? or country LIKE ?", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%").order("name").uniq.page(params[:place_page]).per(2)
-      search_place = Place.solr_search(:include => [:category, :city => [:country, :region]]) do
+      search_place = Place.solr_search(:include => [:category, :default_place_photo, :city => [:country, :region]]) do
         fulltext params[:search] #, :minimum_match => 1
         paginate :page => params[:place_page], :per_page => 12
       end
       @places = search_place.results
 
-      search_city = City.solr_search(:include => [:country, :region]) do
+      search_city = City.solr_search(:include => [:default_city_photo, :country, :region]) do
         fulltext params[:search] #, :minimum_match => 1
         paginate :page => params[:city_page], :per_page => 6
       end

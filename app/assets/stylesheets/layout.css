@@ -521,7 +521,10 @@ div.cover_image
 	border-radius: 5px;
     overflow:hidden;
 }
-
+.cover_photo_album  img{
+width:220px;
+height:150px;
+}
 div.cover_image_cont{
 width:220px;
 height:150px;
@@ -3306,7 +3309,7 @@ float:right;
 }
 
 #trip_map {
-width:700px;
+width:600px;
 height:450px;
 }
 
@@ -3375,6 +3378,11 @@ width:50px;
 } 
 #trip_tabs .ui-tabs-nav .ui-state-active a { 
     color: #00a9ff; 
+}
+
+.trip_tabs_index {
+width:330px;
+float:left;
 }
 
 .rich_marker {

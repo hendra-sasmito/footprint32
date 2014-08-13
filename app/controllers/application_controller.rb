@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
 #    places_path
 #  end
 
+#  def current_user
+#    @current_user ||= super && User.includes(:profile, :profile_photo).find(@current_user.id)
+#  end
+
   def store_location
    if ((!request.fullpath.match("/users") && !request.fullpath.match("/admin") && !request.fullpath.match("/admin/login")) &&
     !request.xhr?) # don't store ajax calls

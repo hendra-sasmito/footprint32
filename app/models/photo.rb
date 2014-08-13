@@ -8,6 +8,8 @@ class Photo < ActiveRecord::Base
   has_one :cover_photo_owner, :class_name => "Profile", :foreign_key => "cover_photo_id", :dependent => :nullify
 #  belongs_to :place
   belongs_to :photoable, :polymorphic => true
+  #belongs_to :city, foreign_key: 'photoable_id', conditions: "photos.photoable_type = 'City'"
+  #belongs_to :place, foreign_key: 'photoable_id', conditions: "photos.photoable_type = 'Place'"
   has_many :activities, :as => :target, :dependent => :destroy
 
   has_many :reports, :as => :reportable
@@ -25,7 +27,8 @@ class Photo < ActiveRecord::Base
        :small  => "400x" }, #"285x180#" },
        :source_file_options => { :all => '-auto-orient' },
        :url => "/system/photo/:attachment/:id/:style/:basename.:extension",
-       :path => ":rails_root/public/system/photo/:attachment/:id/:style/:basename.:extension"
+       :path => ":rails_root/public/system/photo/:attachment/:id/:style/:basename.:extension",
+       :default_url => lambda { |a| "#{a.instance.create_default_url}" }
 
   JPEG_IMAGE = 'image/jpeg'
   JPG_IMAGE = 'image/jpg'
@@ -73,6 +76,10 @@ class Photo < ActiveRecord::Base
   
   def photo_album_creator_id
     creator.id
+  end
+
+  def create_default_url
+    ActionController::Base.helpers.asset_path("city.png", :digest => false)
   end
 
 end

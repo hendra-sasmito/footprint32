@@ -4,11 +4,11 @@ class FavoritePlacesController < ApplicationController
   def index
     @user = User.find_by_id(params[:user_id])
     if !@user.nil?
-      @places = @user.my_favorite_places.includes(:category, :city => [:region, :country]).order("updated_at DESC").page(params[:page]).per(25)
+      @places = @user.my_favorite_places.includes(:default_place_photo, :category, :city => [:region, :country]).order("updated_at DESC").page(params[:page]).per(25)
 #      @places.to_json(:include => :city)
 
       @places_list = @places.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_place_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

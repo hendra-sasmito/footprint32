@@ -15,7 +15,7 @@ class PhotoAlbumsController < ApplicationController
     if !@user.nil?
       @photo_albums = get_albums(@user)
       @result_list = @photo_albums.map do |u|
-        image = view_context.get_album_cover(u)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => !u.albumable.nil? ? u.albumable.latitude : 0,
           :longitude => !u.albumable.nil? ? u.albumable.longitude : 0,
@@ -267,9 +267,9 @@ class PhotoAlbumsController < ApplicationController
     if (user == current_user)
       return @user.photo_albums
     elsif (Friendship.is_friend?(current_user, user))
-      return @user.photo_albums.shared_photo_album
+      return @user.photo_albums.shared_photo_album.includes(:default_photo)
     else
-      return @user.photo_albums.public_photo_album
+      return @user.photo_albums.public_photo_album.includes(:default_photo)
     end
   end
 

@@ -6,11 +6,11 @@ class FavoriteCitiesController < ApplicationController
   def index
     @user = User.find_by_id(params[:user_id])
     if !@user.nil?
-      @cities = @user.my_favorite_cities.includes(:region, :country).order("updated_at DESC").page(params[:page]).per(25)
+      @cities = @user.my_favorite_cities.includes(:region, :country, :default_city_photo).order("updated_at DESC").page(params[:page]).per(25)
 #      @cities.to_json(:include => [:region, :country])
 
       @cities_list = @cities.map do |u|
-        image = view_context.place_small_photo(u)
+        image = view_context.get_small_photo_url(u.default_city_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,
