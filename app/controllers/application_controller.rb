@@ -97,5 +97,52 @@ class ApplicationController < ActionController::Base
     end
   end
 
+#  def sort_bound(a, b, c, d)
+#    temp = []
+#    if (a < c)
+#      if (b < d)
+#        temp << a
+#        temp << b
+#        temp << c
+#        temp << d
+#      else
+#        temp << a
+#        temp << d
+#        temp << c
+#        temp << b
+#      end
+#    else
+#      if (b < d)
+#        temp << c
+#        temp << b
+#        temp << a
+#        temp << d
+#      else
+#        temp << c
+#        temp << d
+#        temp << a
+#        temp << b
+#      end
+#    end
+#    return temp
+#  end
+  
+  def sort_bound(a, b, c, d)
+    if (a < c)
+      if (b < d)
+        temp = [a, b, c, d]
+      else
+        temp = [a, d, c, b]
+      end
+    else
+      if (b < d)
+        temp = [c, b, a, d]
+      else
+        temp = [c, d, a, b]
+      end
+    end
+    return temp
+  end
+
 end
 class UnauthorizedException < Exception; end

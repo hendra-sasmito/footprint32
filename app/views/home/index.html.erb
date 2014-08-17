@@ -19,7 +19,7 @@
     var info_windows = new Array();
     var place_info = {};
     var maininfowindow;
-    var markerCluster;
+    var markerCluster = null;
 
     function set_discover_size()
     {
@@ -67,16 +67,41 @@
 
       myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
       var mapOptions = {
-        zoom: 5,
+        zoom: 2,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("discover"), mapOptions);
 
-      show_markers();
+      google.maps.event.addListener(map, 'idle', ajax_request_marker);
+      //google.maps.event.addListener(map, 'dragend', test);
+      //test();
+      
+      //show_markers();
+
+      function ajax_request_marker()
+      {
+        var bounds =  map.getBounds();
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+
+        var location = "b1=" + sw.lat() + "&b2=" + sw.lng() + "&b3=" + ne.lat() + "&b4=" + ne.lng();
+        //var location = "b1=" + "62.83508901142282" + "&b2=" + "150.64453125" + "&b3=" + "27.371767300523047" + "&b4=" + "-114.08203125";
+        $.ajax({
+          type: "GET",
+          url: '<%= home_index_url(format: :js) %>',
+          data: location,
+          success: function(data) {
+            show_markers();
+          }
+        });
+        //show_markers();
+      }
     });
 
-    $(document).ajaxComplete(function(event, request) {
+    
+
+    /*$(document).ajaxComplete(function(event, request) {
       show_markers();
 
       $('.show_on_map').on('click', function(event){
@@ -85,7 +110,7 @@
         place_info["index"] = parseInt($(this).attr('data-index'));
         display_marker(place_info);
       });
-    });
+    });*/
     function show_markers()
     {
       var i;
@@ -93,7 +118,7 @@
       places = [];
       
       var mcOptions = {gridSize: 50, maxZoom: 15};
-      info_windows.length = 0;
+      //info_windows.length = 0;
 
       if ($('#my_vars_json').length)
       {
@@ -105,11 +130,13 @@
             create_marker(places[i]);
         }
         markerCluster = new MarkerClusterer(map, places_marker);
-        bounds = new google.maps.LatLngBounds();
+        
+
+        /*bounds = new google.maps.LatLngBounds();
         for(i = 0; i < places_marker.length; i++) {
           bounds.extend(places_marker[i].getPosition());
         }
-        map.fitBounds(bounds);
+        map.fitBounds(bounds);*/
 
         /*google.maps.event.addListener(markerCluster, 'mouseover', function(cluster) {
           var content = '';
@@ -143,12 +170,24 @@
       }
     }
     function clear_overlays() {
+      close_all_info_windows();
+      if (info_windows) {
+        for (i in info_windows) {
+          info_windows[i].setMap(null);
+        }
+      }
+      info_windows.length = 0;
       if (places_marker) {
         for (i in places_marker) {
           places_marker[i].setMap(null);
         }
       }
       places_marker.length = 0;
+      if (markerCluster)
+      {
+        markerCluster.clearMarkers();
+      }
+        //markerCluster.setMap(null);
     }
     function close_all_info_windows() {
       for (var i = 0; i < info_windows.length; i++) {
@@ -187,7 +226,8 @@
         contentString = '<div class="infowindow_small"><div class="infowindow_image_small"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content_small"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["country"] + '</div></div>';
       }
       infowindow = new google.maps.InfoWindow({
-        content: contentString
+        content: contentString,
+        disableAutoPan: true
       });
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
@@ -195,8 +235,10 @@
       infowindow.open(map,marker);
       info_windows.push(infowindow);
       places_marker.push(marker);
+
+      //marker.setMap(map);
     }
-    function create_marker_city(place_info)
+    /*function create_marker_city(place_info)
     {
       var contentString;
       var infowindow;
@@ -221,7 +263,7 @@
       });
       info_windows.push(infowindow);
       places_marker.push(marker);
-    }
+    }*/
   </script>
 
 <% end %>

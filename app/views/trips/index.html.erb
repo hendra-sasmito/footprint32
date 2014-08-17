@@ -37,10 +37,17 @@
       var trip_id;
       $('.hor-zebra input:radio').click(function() {
         trip_id = $(this).attr("id").split("_")[1];
-        //alert(trip_id);
-        $.ajax("<%= ajax_read_all_data_user_trips_path(@user) %>"+"?trip_id="+trip_id+"&distance=200" , function(data) {
+
+
+        var attr = "trip_id=" + trip_id + "&distance=200";
+        $.ajax({
+          type: "GET",
+          url: '<%= ajax_read_all_data_user_trips_path(@user, format: :js) %>',
+          data: attr,
+          success: function(data, textStatus, jqXHR) {
+            display_map_chart();
+          }
         });
-        display_map_chart();
       });
 
       myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
@@ -190,10 +197,10 @@
         if (allUploadedInformation[tripNum][indexNum].additional)
         {
           var contentString = '<div class="infowindow_sr">'+
-          '<div class="infowindow_image">'+ '' +
+          '<div class="infowindow_image">'+ '<%= image_tag(get_profile_photo_url(@trip.user.profile_photo), :class => "photo_in_profile") if !@trip.nil? %>' +
           '</div>'+
           '<div class="infowindow_content_sr">'+
-          '<h2 class="bold_text">' + '' + '</h2>' +
+          '<h2 class="bold_text">' + '<%= @trip.user.profile.full_name if !@trip.nil? %>' + '</h2>' +
           '<h3 class="bold_text">' + 'BMW K1200S' + '</h3>' +
           '<h3>Speed[' + allUploadedInformation[tripNum][indexNum].additional[1] +' km/h], '+
           'RPM[' + allUploadedInformation[tripNum][indexNum].additional[2] +'], '+
@@ -206,10 +213,10 @@
         else
         {
           var contentString = '<div class="infowindow_sr">'+
-          '<div class="infowindow_image">'+ '' +
+          '<div class="infowindow_image">'+ '<%= image_tag(get_profile_photo_url(@trip.user.profile_photo), :class => "photo_in_profile") if !@trip.nil? %>' +
           '</div>'+
           '<div class="infowindow_content_sr">'+
-          '<h2 class="bold_text">' + '' + '</h2>' +
+          '<h2 class="bold_text">' + '<%= @trip.user.profile.full_name if !@trip.nil? %>' + '</h2>' +
           '<h3 class="bold_text">' + 'BMW K1200S' + '</h3>' +
           '</div>';
         }

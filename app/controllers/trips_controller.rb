@@ -5,6 +5,7 @@ class TripsController < ApplicationController
   # GET /trips.json
   def index
     @user = User.find_by_id(params[:user_id])
+    @trip = nil
     if !@user.nil?
       if params[:attr] == "my_sr_tab"
         @trips = @user.trips.page(params[:all_page]).per(10)
@@ -198,13 +199,17 @@ class TripsController < ApplicationController
                 latitude = element[3].to_f
                 nssign = element[4]
                 ewsign = element[6]
-                longitude = (ewsign == "W" ? -1 : 1) * (( (longitude / 100)) + (( ( longitude % 100)) + (longitude - longitude)) / 60)
-                latitude = (ewsign == "S" ? -1 : 1) * (( (latitude / 100)) + (( ( latitude % 100)) + (latitude - latitude)) / 60)
+                longitude = (ewsign == "W" ? -1 : 1) * (( (longitude / 100).to_i) + (( ( longitude.to_i % 100).to_i) + (longitude - longitude.to_i)) / 60)
+                latitude = (ewsign == "S" ? -1 : 1) * (( (latitude / 100).to_i) + (( ( latitude.to_i % 100).to_i) + (latitude - latitude.to_i)) / 60)
                 if (longitude == 0 && latitude == 0)
                     next
                 end
                 obj['lng'] = longitude
                 obj['lat'] = latitude
+                puts "22"
+                puts obj['lat']
+                puts "33"
+                puts obj['lng']
 
                 longitude = element[5].to_f
                 latitude = element[3].to_f
@@ -353,7 +358,11 @@ class TripsController < ApplicationController
         #draw first marker
         marker = {}
         marker['lat'] = trip[0]['lat']
+        puts "000"
+        puts marker['lat']
         marker['lng'] = trip[0]['lng']
+        puts "000"
+        puts marker['lng']
         marker['latdms'] = trip[0]['latdms']
         marker['lngdms'] = trip[0]['lngdms']
         marker['date'] = trip[0]['date']

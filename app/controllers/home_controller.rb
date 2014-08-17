@@ -2,9 +2,24 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
+    puts "------------home index----------"
+    puts params[:b1]
+    puts params[:b2]
+    puts params[:b3]
+    puts params[:b4]
+    puts "------"
+    puts params[:option]
+    a = params[:b1].to_f
+    b = params[:b2].to_f
+    c = params[:b3].to_f
+    d = params[:b4].to_f
+    puts a
+    puts b
+    puts c
+    puts d
     option = params[:option]
     if option == "place"
-      @result = Place.includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(100)
+      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_place_photo)
         {
@@ -26,7 +41,7 @@ class HomeController < ApplicationController
         }
       end
     elsif option == "city"
-      @result = City.includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_city_photo)
         {
@@ -64,7 +79,23 @@ class HomeController < ApplicationController
 #      @result.uniq!
 #      Kaminari.paginate_array(@result).page(params[:page]).per(10)
 
-      @result = City.includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+#      if (a < c)
+#        if (b < d)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, b, d).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#        else
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, d, b).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#        end
+#      else
+#        if (b < d)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, b, d).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#        else
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, d, b).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#        end
+#      end
+
+      bound = sort_bound(a, b, c, d)
+      
+      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_city_photo)
         {
@@ -81,6 +112,13 @@ class HomeController < ApplicationController
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
           :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
         }
+      end
+      puts ",,,,,,,,,,,,"
+      @result.each do |r|
+        print r.name + " "
+        print r.latitude.to_s + " "
+        print r.longitude.to_s + " "
+        puts " "
       end
 #      puts @result_list
     end
@@ -144,4 +182,6 @@ class HomeController < ApplicationController
 #      format.xml  { render :xml => @activities }
     end
   end
+
+  
 end
