@@ -35,7 +35,9 @@
             }
       });
       var trip_id;
-      $('.hor-zebra input:radio').click(function() {
+      
+
+      /*$('.hor-zebra input:radio').click(function() {
         trip_id = $(this).attr("id").split("_")[1];
 
 
@@ -48,7 +50,7 @@
             display_map_chart();
           }
         });
-      });
+      });*/
 
       myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
       var mapOptions = {
@@ -56,7 +58,7 @@
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-      map = new google.maps.Map(document.getElementById("trip_map"), mapOptions);
+      //map = new google.maps.Map(document.getElementById("trip_map"), mapOptions);
 
       function display_map_chart()
       {
@@ -262,6 +264,10 @@
       }
       markers.length = 0;
     }
+
+    $('.hor-zebra input:radio').on('ifChecked', function (event) {
+      alert("You clicked " + this.value);
+    });
   </script>
 <% end %>
 

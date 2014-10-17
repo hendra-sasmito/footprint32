@@ -8,9 +8,9 @@ class TripsController < ApplicationController
     @trip = nil
     if !@user.nil?
       if params[:attr] == "my_sr_tab"
-        @trips = @user.trips.page(params[:all_page]).per(10)
+        @trips = @user.trips.page(params[:all_page]).per(2)
       else
-        @trips = Trip.public_trip.page(params[:all_page]).per(10)
+        @trips = Trip.public_trip.page(params[:all_page]).per(2)
       end
       puts @trips.count
     else

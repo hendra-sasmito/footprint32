@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.17'
+gem 'rails', '3.2.19'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -38,7 +38,8 @@ gem 'jquery-rails', '2.2.2'
 # To use debugger
 # gem 'debugger'
 
-gem 'devise'
+#gem 'devise' #2.1.2
+gem "devise", "~> 3.2.4"
 gem 'formtastic'
 #gem 'client_side_validations', '3.2.5'
 gem 'simple_form'
@@ -89,7 +90,7 @@ gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in developm
 gem "sunspot_with_kaminari", '~> 0.2.0'
 #gem "sunspot_autocomplete", ">= 0.0.3", :git => "git@github.com:xponrails/sunspot_autocomplete.git"
 #gem 'sunspot_autocomplete', ">= 0.0.3", :git => 'git://github.com/xponrails/sunspot_autocomplete.git'
-gem "devise-async"
+gem "devise-async" #devise-async-0.5.1
 gem "acts_as_paranoid", "~>0.4.0"
 #gem 'unread'
 gem 'redis'
@@ -107,3 +108,4 @@ gem 'peek-mysql2'
 gem 'peek-performance_bar'
 gem 'peek-gc'
 gem "flot-rails"
+gem 'simple_token_authentication'

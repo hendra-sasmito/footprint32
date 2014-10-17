@@ -3,8 +3,49 @@ class VisitedPlacesController < ApplicationController
   
   def index
     @user = User.find_by_id(params[:user_id])
+    @location = nil
+    @hometown = nil
+    if request.xhr?
+      puts "respond to Ajax request"
+      a = params[:b1].to_f
+      b = params[:b2].to_f
+      c = params[:b3].to_f
+      d = params[:b4].to_f
+      @zoom = 0
+    else
+      puts "respond to normal request"
+      @location = @user.location
+      @hometown = @user.hometown
+      if !@location.nil?
+        puts "respond from location"
+        a = @location.latitude - 0.01
+        b = @location.longitude - 0.01
+        c = @location.latitude + 0.01
+        d = @location.longitude + 0.01
+        @zoom = 0
+      elsif !@hometown.nil?
+        puts "respond from hometown"
+        a = @hometown.latitude - 0.01
+        b = @hometown.longitude - 0.01
+        c = @hometown.latitude + 0.01
+        d = @hometown.longitude + 0.01
+        @zoom = 0
+      else
+        a = params[:b1].to_f
+        b = params[:b2].to_f
+        c = params[:b3].to_f
+        d = params[:b4].to_f
+        @zoom = 0
+      end
+    end
+    
+    puts a
+    puts b
+    puts c
+    puts d
+    
     if !@user.nil?
-      @places = @user.my_visited_places.includes(:default_place_photo, :category, :city => [:country, :region]).order("updated_at DESC").page(params[:page]).per(25)
+      @places = @user.my_visited_places.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:default_place_photo, :category, :city => [:country, :region]).order("updated_at DESC").page(params[:page]).per(25)
 #      @places.to_json(:include => :city)
 
       @places_list = @places.map do |u|
@@ -30,7 +71,7 @@ class VisitedPlacesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-#      format.json { render json: @places_list }
+      format.json { render json: @places_list }
       format.js
     end
   end

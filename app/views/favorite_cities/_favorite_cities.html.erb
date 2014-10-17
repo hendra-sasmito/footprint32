@@ -1,11 +1,11 @@
-<div class="no_container">
-<% index = 0 %>
-<% cities.each do |city| %>
-  <%= render :partial => "cities/city_preview_small", :locals => {:city => city, :index => index} %>
-  <% index = index + 1 %>
-<% end %>
-<div class="clear_float"></div>
-</div>
+<%#*<div class="no_container">%>
+<%# index = 0 %>
+<%# cities.each do |city| %>
+  <%#= render :partial => "cities/city_preview_small", :locals => {:city => city, :index => index} %>
+  <%# index = index + 1 %>
+<%# end %>
+<%#*<div class="clear_float"></div>%>
+<%#*</div>%>
 <script id="fav_cities_json" type="text/json">
   <%= raw cities_list.to_json %>
 </script>

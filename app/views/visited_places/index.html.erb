@@ -4,14 +4,15 @@
     var map;
     var place_marker;
     var place_icon;
-    var place_latitude;
-    var place_longitude;
+    var place_latitude = 0;
+    var place_longitude = 0;
     var myLatlng;
     var places = new Array();
     var places_marker = new Array();
     var info_windows = new Array();
     var place_info = {};
-    var markerCluster;
+    var markerCluster = null;
+    var zoom = 0;
 
     function set_discover_size()
     {
@@ -47,8 +48,16 @@
         resizeTimer = setTimeout(resize_map, 100);
       });
 
-      place_latitude = 0;
-      place_longitude = 0;
+      <% if !@location.nil? %>
+        place_latitude = <%= @location.latitude %>;
+        place_longitude = <%= @location.longitude %>;
+      <% elsif !@hometown.nil? %>
+        place_latitude = <%= @hometown.latitude %>;
+        place_longitude = <%= @hometown.longitude %>;
+      <% else %>
+        place_latitude = 0;
+        place_longitude = 0;
+      <% end %>
 
       $('.show_on_map').on('click', function(event){
         event.preventDefault();
@@ -56,18 +65,48 @@
         place_info["index"] = parseInt($(this).attr('data-index'));
         display_marker(place_info);
       });
+      
+      zoom = parseInt(<%= @zoom %>);
+      if (zoom == 0)
+      {
+        zoom = 2;
+      }
+      else
+      {
+        zoom = 13;
+      }
 
       myLatlng = new google.maps.LatLng(place_latitude, place_longitude);
       var mapOptions = {
-        zoom: 15,
+        zoom: zoom,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById("discover"), mapOptions);
-      show_markers();
+      google.maps.event.addListener(map, 'idle', ajax_request_marker);
+      //show_markers();
+
+      function ajax_request_marker()
+      {
+        var bounds =  map.getBounds();
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+
+        var location = "b1=" + sw.lat() + "&b2=" + sw.lng() + "&b3=" + ne.lat() + "&b4=" + ne.lng();
+        //var location = "b1=" + "62.83508901142282" + "&b2=" + "150.64453125" + "&b3=" + "27.371767300523047" + "&b4=" + "-114.08203125";
+        $.ajax({
+          type: "GET",
+          url: '<%= user_visited_places_path(@user, format: :js) %>',
+          data: location,
+          success: function(data) {
+            show_markers();
+          }
+        });
+        //show_markers();
+      }
 
     });
-    $(document).ajaxComplete(function(event, request) {
+    /*$(document).ajaxComplete(function(event, request) {
       show_markers();
 
       $('.show_on_map').on('click', function(event){
@@ -76,13 +115,15 @@
         place_info["index"] = parseInt($(this).attr('data-index'));
         display_marker(place_info);
       });
-    });
+    });*/
     
     function show_markers()
     {
       var i;
       var bounds;
       places = [];
+
+      close_all_info_windows();
       info_windows.length = 0;
 
       if ($('#vis_places_json').length)
@@ -91,16 +132,24 @@
         places = $.parseJSON(myVarsJSON);
 
         clear_overlays();
+        if (markerCluster != null)
+        {
+          markerCluster.clearMarkers();
+        }
+        
         for (i = 0; i < places.length; i++)
         {
             create_marker(places[i]);
         }
         markerCluster = new MarkerClusterer(map, places_marker);
-        bounds = new google.maps.LatLngBounds();
+
+        open_all_info_windows();
+
+        /*bounds = new google.maps.LatLngBounds();
         for(i = 0; i < places_marker.length; i++) {
           bounds.extend(places_marker[i].getPosition());
         }
-        map.fitBounds(bounds);
+        map.fitBounds(bounds);*/
       }
     }
     function clear_overlays() {
@@ -114,6 +163,11 @@
     function close_all_info_windows() {
       for (var i = 0; i < info_windows.length; i++) {
          info_windows[i].close();
+      }
+    }
+    function open_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].open(map,places_marker[i]);
       }
     }
     function create_marker(place_info)
@@ -140,7 +194,7 @@
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
       });
-      infowindow.open(map,marker);
+      //infowindow.open(map,marker);
       info_windows.push(infowindow);
       places_marker.push(marker);
     }
@@ -152,22 +206,22 @@
 <div class="page-container-full">
   <div id="header-map"><div id="discover"></div></div>
   <%= render :partial => "shared/stacked_view_button" %>
-  <div class="stacked_view_box">
-    <div class="padding">
-      <div class="most_popular_places">
-        <span class="wordwrap padding-title"><%= @user.profile.full_name %> visited places <%= render :partial => "shared/progress_indicator" %></span>
-        <div id="paginator">
-          <%= paginate @places, :remote => true, :theme => "slider" %>
-        </div>
-        <div class="place-found-wrapper">
-        <div class="places-found-dock">
+  <%#*<div class="stacked_view_box">%>
+    <%#*<div class="padding">%>
+      <%#*<div class="most_popular_places">%>
+        
+        <%#*<div id="paginator">%>
+          <%#= paginate @places, :remote => true, :theme => "slider" %>
+        <%#*</div>%>
+        <%#*<div class="place-found-wrapper">%>
+        <%#*<div class="places-found-dock">%>
           <div id="visited_places">
             <%= render :partial => 'visited_places/visited_places', :locals => {:places => @places, :places_list => @places_list} %>
-          </div>
-        </div>
-        </div>
-        <div class="clear_float"></div>
-      </div>
-    </div>
+          <%#*</div>%>
+        <%#*</div>%>
+        <%#*</div>%>
+        <%#*<div class="clear_float"></div>%>
+      <%#*</div>%>
+    <%#*</div>%>
   </div>
 </div>

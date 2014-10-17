@@ -118,13 +118,18 @@
       places = [];
       
       var mcOptions = {gridSize: 50, maxZoom: 15};
-      //info_windows.length = 0;
+      close_all_info_windows();
+      info_windows.length = 0;
 
       if ($('#my_vars_json').length)
       {
         var myVarsJSON = $("#my_vars_json").html(),
           places = $.parseJSON(myVarsJSON);
         clear_overlays();
+        if (markerCluster != null)
+        {
+          markerCluster.clearMarkers();
+        }
         for (i = 0; i < places.length; i++)
         {
             create_marker(places[i]);
@@ -132,6 +137,7 @@
         markerCluster = new MarkerClusterer(map, places_marker);
         
 
+        open_all_info_windows();
         /*bounds = new google.maps.LatLngBounds();
         for(i = 0; i < places_marker.length; i++) {
           bounds.extend(places_marker[i].getPosition());
@@ -194,6 +200,11 @@
          info_windows[i].close();
       }
     }
+    function open_all_info_windows() {
+      for (var i = 0; i < info_windows.length; i++) {
+         info_windows[i].open(map,places_marker[i]);
+      }
+    }
     function create_marker(place_info)
     {
       var contentString;
@@ -232,7 +243,7 @@
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
       });
-      infowindow.open(map,marker);
+      //infowindow.open(map,marker);
       info_windows.push(infowindow);
       places_marker.push(marker);
 
@@ -304,5 +315,7 @@
   <%#*</div>%>
   <div class="clear_float"></div>
   <%#= render :partial => "shared/stacked_view_button" %>
-  <%= render :partial => "shared/trip_button" %>
+  <% if user_signed_in? %>
+    <%= render :partial => "shared/trip_button" %>
+  <% end %>
 </div>

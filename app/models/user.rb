@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
 
+#  before_save :ensure_authentication_token
+  
   acts_as_paranoid
-
+  acts_as_token_authenticatable
 #  include Rediline::User
 #
 #  rediline :timeline do
@@ -291,5 +293,9 @@ class User < ActiveRecord::Base
 #      super
 #    end
 #  end
+
+  def skip_confirmation!
+    self.confirmed_at = Time.now
+  end
   
 end

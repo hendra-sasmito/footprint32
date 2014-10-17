@@ -19,7 +19,7 @@ class HomeController < ApplicationController
     puts d
     option = params[:option]
     if option == "place"
-      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(100)
+      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(50)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_place_photo)
         {
@@ -41,7 +41,7 @@ class HomeController < ApplicationController
         }
       end
     elsif option == "city"
-      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_city_photo)
         {
@@ -95,7 +95,7 @@ class HomeController < ApplicationController
 
       bound = sort_bound(a, b, c, d)
       
-      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(100)
+      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
       @result_list = @result.map do |u|
         image = view_context.get_small_photo_url(u.default_city_photo)
         {

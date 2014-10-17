@@ -1,4 +1,4 @@
-<div class="info-section-title title_text"><%= link_to t('.title'), user_visited_places_path(user), :class => "general hastip", :title => "Show on map" %> (<%= user.favorite_places.count %>) </div>
+<div class="info-section-title title_text"><%= link_to t('.title'), user_visited_places_path(user), :class => "general hastip", :title => "Show on map" %> (<%= user.visited_places.count %>) </div>
 <div class="info-section-content">
 <% visited_places.each do |visited_place| %>
   <div class="hidden_box_container left_menu">
