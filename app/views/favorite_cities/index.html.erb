@@ -85,6 +85,8 @@
       };
       map = new google.maps.Map(document.getElementById("discover"), mapOptions);
       google.maps.event.addListener(map, 'idle', ajax_request_marker);
+
+      markerCluster = new MarkerClusterer(map);
       //show_markers();
 
       function ajax_request_marker()
@@ -140,7 +142,7 @@
         {
             create_marker(cities[i]);
         }
-        markerCluster = new MarkerClusterer(map, cities_marker);
+        markerCluster.addMarkers(cities_marker);
         open_all_info_windows();
         /*bounds = new google.maps.LatLngBounds();
         for(i = 0; i < cities_marker.length; i++) {
