@@ -87,7 +87,7 @@
       function ajax_request_marker()
       {
         var bounds = map.getBounds();
-        if (box2 != null)
+        /*if (box2 != null)
         {
           box2.setMap(null);
         }
@@ -98,7 +98,7 @@
           strokeWeight : 2,
           fillOpacity : 0,
           clickable : false
-        });
+        });*/
         
         var ne = bounds.getNorthEast();
         var sw = bounds.getSouthWest();
@@ -112,7 +112,7 @@
 
         sw = spherical.computeOffset(sw, distance, 45);
         ne = spherical.computeOffset(ne, distance, -135);
-        if (box != null)
+        /*if (box != null)
         {
           box.setMap(null);
         }
@@ -123,7 +123,7 @@
           strokeWeight : 2,
           fillOpacity : 0,
           clickable : false
-        });
+        });*/
         
 
         var location = "b1=" + sw.lat() + "&b2=" + sw.lng() + "&b3=" + ne.lat() + "&b4=" + ne.lng();
