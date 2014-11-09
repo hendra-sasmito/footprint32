@@ -1,1 +1,20 @@
-$("#results_endless").before("<%= escape_javascript(render :partial => 'profiles/activity', :collection => @my_activities) %>");
+//$("#results_endless").before("<%= escape_javascript(render :partial => 'profiles/activity', :collection => @my_activities) %>");
+
+$('#reviews_partial').html('<%= escape_javascript render(:partial => 'profiles/reviews', :locals => {:reviews => @reviews}) %>');
+$('#paginator_review').html('<%= escape_javascript(paginate(@reviews, :remote => true, :param_name => "review_page", :theme => "default").to_s) %>');
+
+$('#photos_partial').html('<%= escape_javascript render(:partial => 'profiles/photos', :locals => {:photos => @photos}) %>');
+$('#paginator_photo').html('<%= escape_javascript(paginate(@photos, :remote => true, :param_name => "photo_page", :theme => "default").to_s) %>');
+
+$("#mygallery").justifiedGallery({
+  'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+  'justifyLastRow':false,
+  'rowHeight':120,
+  'fixedHeight':false,
+  'captions':true,
+  'margins':5,
+  'rel' : 'gallery',
+  'onComplete': function(gallery) {
+    $(gallery).find("a").addClass('fancybox-buttons');
+  }
+});

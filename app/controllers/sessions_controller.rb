@@ -14,10 +14,12 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     super
+    puts "..........dest"
     session[:user_id] = nil
     sleep 3
 #    root_url
 #    redirect_to root_url, :notice => "Signed out!"
+
   end
   
 end

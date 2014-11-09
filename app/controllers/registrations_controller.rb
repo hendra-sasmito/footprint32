@@ -8,9 +8,12 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     super
     session[:omniauth] = nil unless @user.new_record?
+    puts "-----------------"
+    puts @token
   end
 
   def destroy
+    puts '.............destroy...........'
     redirect_back_or_default()
   end
   

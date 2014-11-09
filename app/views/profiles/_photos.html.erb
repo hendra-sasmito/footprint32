@@ -1,11 +1,34 @@
-<% photos.each do |photo| %>
-  <div class="photo">
-    <%= link_to image_tag(photo.image.url(:thumb), :class => "imagedropshadow photo_in_profile"), photo.image.url(:original),
+<%# photos.each do |photo| %>
+  <%#*<div class="photo2">%>
+    <%#= link_to image_tag(photo.image.url(:thumb), :class => "imagedropshadow photo_in_profile"), photo.image.url(:original),
       :class=>"fancybox-buttons", "data-fancybox-group"=>"button" %>
-  </div>
-<% end %>
+  <%#*</div>%>
+<%# end %>
+<%#*<div id="photo_description" style="display: none;">%>
+  <%# @photos.each do |photo| %>
+    <%#= render :partial => "photos/photo_description", :locals => {:photo => photo} %>
+  <%# end %>
+<%#*</div>%>
+
 <div id="photo_description" style="display: none;">
-  <% @photos.each do |photo| %>
+  <% photos.each do |photo| %>
     <%= render :partial => "photos/photo_description", :locals => {:photo => photo} %>
+  <% end %>
+</div>
+<div id="mygallery" >
+  <% if photos.count > 0 %>
+    <% photos.each do |photo| %>
+      <% if !photo.photoable.nil? %>
+        <% if photo.photoable.class == "Place" %>
+          <% alt = photo.photoable.name + ", " + photo.photoable.city.name%>
+        <% else %>
+          <% alt = photo.photoable.name %>
+        <% end %>
+      <% else %>
+        <% alt = "" %>
+      <% end %>
+      <%= link_to image_tag(photo.image.url(:small), :alt => alt), photo.image.url(:original),
+        :class=>"fancybox-buttons", "data-fancybox-group"=>"button", :rel=>"gallery" %>
+    <% end %>
   <% end %>
 </div>

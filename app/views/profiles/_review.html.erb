@@ -1,11 +1,59 @@
-<% for review in reviews %>
-<div id="review_<%= review.id %>">
-  <div class="comment_box_user">
-    <%= link_to image_tag(place_thumb_photo(review.place), :class => "imagedropshadow thumb_profile_pic"), place_path(review.place) %><br/>
+<div class="review_box">
+  <div id="review_<%= review.id %>">
+    <div class="review_box_user">
+      <%=h link_to(image_tag(place_thumb_photo(review.reviewable),
+          :class => "thumb_profile_pic"), place_path(review.reviewable)) %><br/>
+    </div>
+    <div class="review_box_Body">
+      <div class="review_box_Message small_text">
+        <% if review.reviewable.class.to_s == "Place" %>
+          <span class="wordwrap"><%=h link_to review.reviewable.name, place_path(review.reviewable), :class => "general" %></span><br/>
+          <%= link_to review.reviewable.city.name, city_path(review.reviewable.city), :class => "general" %>, 
+          <%= link_to review.reviewable.city.country.name, country_path(review.reviewable.city.country), :class => "general" %><br/>
+        <% else %>
+          <span class="wordwrap"><%=h link_to review.reviewable.name, city_path(review.reviewable), :class => "general" %></span><br/>
+          <%= link_to review.reviewable.country.name, country_path(review.reviewable.country), :class => "general" %><br/>
+        <% end %>
+        <%= l(review.created_at, :format => '%d %b %Y, %H:%M') %>    
+        <% if is_current_user(review.creator) %>
+          <a href="#" data-dropdown="#dropdown-<%= review.id %>" class="right_div" ><%= fa_icon("gear", :class => "lightgraycolor mediumsize")%></a>
+          <div class="dropdown_container_menu">
+            <div id="dropdown-<%= review.id %>" class="dropdown dropdown-tip dropdown-relative dropdown-anchor-right">
+              <ul class="dropdown-menu">
+                <li><div class="dropdown_container_list"><%= fa_icon("edit", :class => "cyancolor mediumsize") %> <%= link_to t(".edit"), edit_review_path(review), :class => "general" %></div></li>
+                <li><div class="dropdown_container_list"><%= fa_icon("trash-o", :class => "cyancolor mediumsize") %> <%= link_to t(".delete"), review_path(review), :confirm => t('.delete_confirmation'), :method => :delete, :class => "general" %></div></li>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+        <% if current_user && current_user != review.creator %>
+          <div class="vote">
+            <% if current_user.disliked?(review) %>
+              <%= link_to "Like", vote_review_path(review, value: 1), {:method => "post", :class => "general"} %>
+            <% elsif current_user.liked?(review) %>
+              <%= link_to "Dislike", vote_review_path(review, value: -1), {:method => "post", :class => "general"} %>
+            <% else %>
+              <%= link_to "Like", vote_review_path(review, value: 1), {:method => "post", :class => "general"} %> - 
+              <%= link_to "Dislike", vote_review_path(review, value: -1), {:method => "post", :class => "general"} %>
+            <% end %>
+          </div>
+        <% else %>
+
+        <% end %>
+      </div>
+    </div>
+    <div class="clear_float"></div>
+    <div class="review_box_desc black_text wordwrap"><%=h review.content %></div>
+    <div class="review_photo">
+      <% review.review_photos.each do |review_photo| %>
+        <%= link_to image_tag(review_photo.image.url(:original)), review_photo.image.url(:original),
+        :class=>"fancybox-simple" %>
+      <% end %>
+    </div>
+    <span class="small_text desc_text_light">
+      <%= pluralize review.likes, "likes" %> -
+      <%= pluralize review.dislikes, "dislikes" %>
+    </span>
   </div>
-  
-  <%= render :partial => "reviews/display_review", :locals => {:review => review} %>
-  <br/>
 </div>
-<% end %>
 

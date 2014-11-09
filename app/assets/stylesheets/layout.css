@@ -598,6 +598,39 @@ div.album_name
     font-weight: bold;
 }
 
+.photo2 {
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    padding:10px;
+    /*border: 1px solid #eee;*/
+
+    /* CSS3 Box sizing property */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+
+    /* CSS3 transition */
+    -moz-transition: border 0.2s ease 0s;
+    -ms-transition: border 0.2s ease 0s;
+    -o-transition: border 0.2s ease 0s;
+    -webkit-transition: border 0.2s ease 0s;
+    transition: border 0.2s ease 0s;
+}
+.photo2:hover {
+    border-color: #444;
+}
+.photo2 img {
+    cursor: pointer;
+    height:120px;
+}
+.photo2 p, .photo2 i {
+    display: block;
+}
+.photo2 p {
+    font-weight: bold;
+}
 /* photo */
 
 /* comment box style */
@@ -689,6 +722,7 @@ div.album_name
 
 .calender_container {
 width:250px;
+padding-right:5px;
 }
 
 .resource_container {
@@ -714,7 +748,7 @@ width:250px;
 }
 
 .no_container {
-background-color:#EAE8E4;
+    background-color:#EAE8E4;
     padding:5px;
 }
 
@@ -807,7 +841,7 @@ float:left
     /*height:80px;*/
 }
 .profile_page_image img {
-    width:280px;
+    /*width:280px;*/
 }
 .place_info_image img {
     width:150px;
@@ -3178,8 +3212,8 @@ font-size:12px;
 }
 
 .sidebar {
-    width:250px;
-    margin-bottom:5px;
+    width:245px;
+    margin-bottom:10px;
 }
 #modal23 { display: none; }
 
@@ -3386,12 +3420,12 @@ float:left;
 }
 
 .rich_marker {
-border: 5px solid #EBEBEB;
+border: 3px solid #EBEBEB;
 background-color: white;
 }
 
 .rich_marker img {
-width:80px;
+/*width:80px;*/
 height:auto;
 cursor: pointer;
 }
@@ -3456,4 +3490,24 @@ top:30px;
 position:absolute;
 right:35px;
 top:20px;
+}
+
+.margin_bottom_10 {
+margin-bottom:10px;
+}
+
+.headerimage {
+    cursor:hand;
+    cursor:grab;
+    cursor:-moz-grab;
+    cursor:-webkit-grab;
+}
+
+
+button {
+    display: none;
+}
+
+.headerimage:hover button {
+    display: block;
 }

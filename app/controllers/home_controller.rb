@@ -37,7 +37,8 @@ class HomeController < ApplicationController
           :type => "Place",
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :rate => u.favorite_places_count
         }
       end
     elsif option == "city"
@@ -56,7 +57,8 @@ class HomeController < ApplicationController
           :type => "City",
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :rate => u.favorite_cities_count
         }
       end
     else
@@ -110,7 +112,8 @@ class HomeController < ApplicationController
           :type => "City",
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :rate => u.favorite_cities_count
         }
       end
       puts ",,,,,,,,,,,,"

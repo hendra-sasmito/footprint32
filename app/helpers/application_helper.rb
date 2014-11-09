@@ -56,6 +56,15 @@ module ApplicationHelper
     end
   end
 
+  def get_user_normal_profile_photo_url(user)
+    photo = user.profile_photo
+    if photo != nil
+      return photo.image.url(:original)
+    else
+      return 'Transparent.png'
+    end
+  end
+
   def get_normal_cover_photo_url(photo)
     if photo != nil
       return photo.image.url(:original)

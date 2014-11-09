@@ -30,26 +30,27 @@ class ProfilesController < ApplicationController
 #      else
 #        @events = @user.events.includes(:creator, :place).public_event.incoming_event
 #      end
-#      @photos = @user.photos.includes(:creator, :photo_album).order('created_at DESC').limit(10)
+      @photos = @user.photos.includes(:creator, :photo_album).order('created_at DESC').page(params[:photo_page]).per(10)
+#      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
       @events = @user.events.includes(:creator, :place).incoming_event
 
-#      @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:page]).per(10)
+      @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:review_page]).per(10)
       @location = @user.location
 
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
-      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
-      polymorphic_association_includes @activities, :target, {
-        Photo => [:photoable, :creator, :photo_album],
-        Review => [:creator, :review_photos, :reviewable],
-        Event => [{:creator => :profile_photo}, :place]
-      }
+#      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
+#      polymorphic_association_includes @activities, :target, {
+#        Photo => [:photoable, :creator, :photo_album],
+#        Review => [:creator, :review_photos, :reviewable],
+#        Event => [{:creator => :profile_photo}, :place]
+#      }
 
-      @my_activities = @user.activities.includes(:target, :user).page(params[:page]).per(10)
-      polymorphic_association_includes @activities, :target, {
-        Photo => [:photoable, :creator, :photo_album],
-        Review => [:creator, :review_photos, :reviewable],
-        Event => [{:creator => :profile_photo}, :place]
-      }
+#      @my_activities = @user.activities.includes(:target, :user).page(params[:page]).per(10)
+#      polymorphic_association_includes @activities, :target, {
+#        Photo => [:photoable, :creator, :photo_album],
+#        Review => [:creator, :review_photos, :reviewable],
+#        Event => [{:creator => :profile_photo}, :place]
+#      }
       
     else
       flash[:notice] = t(:user_not_found)

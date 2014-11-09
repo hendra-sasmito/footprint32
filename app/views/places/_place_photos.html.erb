@@ -2,14 +2,14 @@
 <div class="info-section-content">
   <div class="general_box">
   <div class="container">
-  <% @place_photos.each do |photo| %>
+  <% place_photos.each do |photo| %>
     <div class="photo left_div">
       <%= link_to image_tag(photo.image.url(:thumb), :class => "curvedframe"), photo.image.url(:original),
         :class=>"fancybox-buttons", "data-fancybox-group"=>"place" %>
     </div>
   <% end %>
   <div id="photo_description" style="display: none;">
-    <% @place_photos.each do |photo| %>
+    <% place_photos.each do |photo| %>
       <%= render :partial => "photos/photo_description", :locals => {:photo => photo} %>
     <% end %>
   </div>

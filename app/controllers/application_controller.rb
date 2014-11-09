@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
-#  protect_from_forgery
+  protect_from_forgery
   # Prevent CSRF attacks by raising an exception.
-  protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
+#  protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   before_filter :store_location, :set_user_time_zone, :set_locale
   after_filter :flash_to_headers
