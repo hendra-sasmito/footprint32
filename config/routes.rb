@@ -24,6 +24,7 @@ Footprint32::Application.routes.draw do
   get "profile_photo/show_photos"
   post "profile_photo/select_photo"
   post "profile_photo/create"
+  post "profile_photo/save_offset"
 
   get "cover_photo/show_photos"
   post "cover_photo/select_photo"

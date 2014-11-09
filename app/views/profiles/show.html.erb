@@ -27,7 +27,32 @@
 
         var y1 = $('.picturecontainer').height();
         var y2 = $('.headerimage').height();
+        var offset = 0;
+
+        $('#disable').click(function(e) {
+            $(".headerimage").css('cursor','default');
+            $(".headerimage").draggable('disable');
+        });
+
+        $('#enable').click(function(e) {
+            $(".headerimage").css('cursor','grab');
+            $(".headerimage").draggable('enable');
+        });
+
+        $('#save').click(function(e) {
+            var data = "offset=" + offset;
+            $.ajax({
+              type: "POST",
+              url: '<%= profile_photo_save_offset_path(format: :js) %>',
+              data: data,
+              success: function(data) {
+
+              }
+            });
+        });
+          
         $(".headerimage").draggable({
+            disabled: true,
             scroll: false,
             axis: "y",
             drag: function(event, ui) {
@@ -43,6 +68,7 @@
           },
           stop: function(event, ui) {
             //####
+            offset = ui.position.top;
             alert(ui.position.top);
           }
       });
@@ -136,12 +162,14 @@
         </div>
         <div class="left_div">
           <div class="page-content">
-
+<button id="disable">Turn Off</button>
+<button id="enable">Turn On</button>
+<button id="save">Save</button>
             <div class="userCoverPhotoContainer">
 
               <div class="ui-widget-content"">
               <div class="picturecontainer" style="overflow: hidden; position: relative; width: 650px; height: 150px;">
-                <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage ui-corner-all", :style => "top: -190px;") %>
+                <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "top: #{@profile.ProfilePhotoOffset}px;") %>
                 <button type="button">Hello</button>
               </div>
    

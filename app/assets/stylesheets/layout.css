@@ -3496,18 +3496,18 @@ top:20px;
 margin-bottom:10px;
 }
 
-.headerimage {
+/*.headerimage {
     cursor:hand;
     cursor:grab;
     cursor:-moz-grab;
     cursor:-webkit-grab;
-}
+}*/
 
 
-button {
+/*button {
     display: none;
 }
 
 .headerimage:hover button {
     display: block;
-}
+}*/
