@@ -163,13 +163,12 @@
           <div class="page-content">
             <div class="userCoverPhotoContainer">
 
-              <div class="ui-widget-content"">
+              <%#*<div class="ui-widget-content"">%>
               <div class="picturecontainer" style="overflow: hidden; position: relative; height: 300px;">
                 <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "top: #{@profile.ProfilePhotoOffset}px;") %>
                 <button type="button">Hello</button>
               </div>
-   
-              </div>
+              <%#*</div>%>
 
               <div class="user_page_info">
                 <div class="wordwrap"><%= @profile.full_name %></div>
@@ -177,10 +176,12 @@
                   <%= fa_icon("map-marker", :class => "whitecolor largesize") %> <span class="wordwrap"><%= link_to @profile.hometown.name, city_path(@profile.hometown), :class => "general_white" %></span>
                 <% end %>
               </div>
-              <div class="profile_photo_button">
-                <button id="enable" class="general-button">Adjust Position</button>
-                <button id="save" class="general-button">Save Position</button>
-              </div>
+              <% if is_current_user(@user) %>
+                <div class="profile_photo_button">
+                  <button id="enable" class="general-button">Adjust Position</button>
+                  <button id="save" class="general-button">Save Position</button>
+                </div>
+              <% end %>
             </div>
             <div class="resource_container_blue small_text margin_bottom_10">
               <%= fa_icon("camera", :class => "whitecolor mediumsize") %>
