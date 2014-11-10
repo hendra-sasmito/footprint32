@@ -818,9 +818,10 @@ padding-bottom:3px;
 padding-left:15px;
 }
 .user_page_info {
+top:20px;
 padding-left:10px;
 width:280px;
-float:left;
+position:absolute;
 	color : white;
 	margin-top :20px;
 	margin-left : 15px;
@@ -829,6 +830,11 @@ float:left;
 	font-weight:bold;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 
+}
+.profile_photo_button {
+position:absolute;
+top:20px;
+right:20px;
 }
 .place_page_stats {
 float:left
@@ -1827,7 +1833,7 @@ font-size : 80%;
 
 .userCoverPhotoContainer {
 	width: 640px;
-	height: 250px;
+	height: 300px;
     /*background-color:#F4F3F1;*/ background-color: #1F2F34;
     overflow:hidden;
 }
@@ -1836,6 +1842,16 @@ width: 100%;
 overflow:hidden;
 background-color:#F4F3F1;
 }
+
+/*.picturecontainer {
+width: 100%;
+overflow: hidden; position: relative;
+}*/
+
+.picturecontainer img {
+width: 100%;
+}
+
 .userProfilePhoto {
     margin-top:20px;
 	width: 120px;
