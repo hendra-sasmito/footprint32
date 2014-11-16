@@ -15,7 +15,8 @@ class ProfilePhotoController < ApplicationController
     if !@photo.nil?
       if current_user.profile_photo != @photo
         current_user.profile_photo = @photo
-        current_user.profile.ProfilePhotoOffset = 0
+        current_user.profile.profile_photo_offset_x = 0
+        current_user.profile.profile_photo_offset_y = 0
         if current_user.save
           flash[:notice] = t(:photo_updated)
           redirect_to user_profile_path(current_user)
@@ -38,7 +39,8 @@ class ProfilePhotoController < ApplicationController
       @photo.creator_id = current_user.id
       if @photo.save
         current_user.profile_photo = @photo
-        current_user.profile.ProfilePhotoOffset = 0
+        current_user.profile.profile_photo_offset_x = 0
+        current_user.profile.profile_photo_offset_y = 0
         if current_user.save
           flash[:notice] = t(:photo_updated)
         else
@@ -59,11 +61,13 @@ class ProfilePhotoController < ApplicationController
 
   def save_offset
     puts "-----save offset"
-    puts params[:offset]
+    puts params[:offset_x]
+    puts params[:offset_y]
     @user = User.find_by_id(current_user.id)
     if !@user.nil?
       profile = @user.profile
-      profile.ProfilePhotoOffset = params[:offset]
+      profile.profile_photo_offset_x = params[:offset_x]
+      profile.profile_photo_offset_y = params[:offset_y]
       profile.save!
       flash[:notice] = "Profile photo is updated"
     else

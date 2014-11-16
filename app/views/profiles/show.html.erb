@@ -27,7 +27,10 @@
 
         var y1 = $('.picturecontainer').height();
         var y2 = $('.headerimage').height();
-        var offset = 0;
+        var x1 = $('.picturecontainer').width();
+        var x2 = $('.headerimage').width();
+        var offset_x = 0;
+        var offset_y = 0;
 
         /*$('#disable').click(function(e) {
             
@@ -39,7 +42,7 @@
         });
 
         $('#save').click(function(e) {
-            var data = "offset=" + offset;
+            var data = "offset_x=" + offset_x + "&offset_y=" + offset_y;
             $.ajax({
               type: "POST",
               url: '<%= profile_photo_save_offset_path(format: :js) %>',
@@ -55,20 +58,31 @@
         $(".headerimage").draggable({
             disabled: true,
             scroll: false,
-            axis: "y",
-            drag: function(event, ui) {
-                if(ui.position.top >= 0)
-                {
-                    ui.position.top = 0;
-                }
-                else if(ui.position.top <= y1 - y2)
-                {
-                    ui.position.top = y1 - y2;
-                }
+            axis: "y x",
+              drag: function(event, ui) {
+                  //Moving up and down
+                  if(ui.position.top >= 0)
+                  {
+                      ui.position.top = 0;
+                  }
+                  else if(ui.position.top <= y1 - y2)
+                  {
+                      ui.position.top = y1 - y2;
+                  }
 
+                  //Moving left and right
+                  if(ui.position.left >= 0)
+                  {
+                      ui.position.left = 0;
+                  }
+                  else if(ui.position.left <= x1 - x2)
+                  {
+                      ui.position.left = x1 - x2;
+                  }
           },
           stop: function(event, ui) {
-            offset = ui.position.top;
+            offset_x = ui.position.left;
+            offset_y = ui.position.top;
           }
       });
 
@@ -164,9 +178,8 @@
             <div class="userCoverPhotoContainer">
 
               <%#*<div class="ui-widget-content"">%>
-              <div class="picturecontainer" style="overflow: hidden; position: relative; height: 300px;">
-                <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "top: #{@profile.ProfilePhotoOffset}px;") %>
-                <button type="button">Hello</button>
+              <div class="picturecontainer" style="overflow: hidden; position: relative; width:280px; height: 300px;">
+                <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "left: #{@profile.profile_photo_offset_x}px; top: #{@profile.profile_photo_offset_y}px;") %>
               </div>
               <%#*</div>%>
 
