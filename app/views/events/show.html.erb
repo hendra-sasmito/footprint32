@@ -49,25 +49,51 @@
 <div class="page-container">
   <div id="content">
     <div class="padding">
-      <div class="resource_container">
-        <div class="title_text"><span class="wordwrap"><%= @event.name %></span></div>
+      <div class="resource_container event_page_container">
+
+        <div class="event_page_image">
+          <% if @event.place %>
+            <%= image_tag(place_small_photo(@event.place)) %>
+          <% else %>
+            <%= image_tag('city.png') %>
+          <% end %>
+        </div>
+
         <ul class="events-big">
           <li>
             <figure><strong><%= l(@event.date, :format => :date_only) %></strong><%= l(@event.date, :format => :month_only) %></figure>
-            <div class="event-desc-container small_text">
-              <div class="desc_text_light">
-                <%= t('.created')%> <span class="wordwrap"><%= link_to @user.profile.full_name, user_profile_path(@user), :class => "general" %></span><br/>
-                <%= l(@event.date, :format => '%d %b %Y, %H:%M') %><%= link_to(" #{t('.at')} " + @event.place.name, place_path(@event.place), :class => "general") if @event.place %>
-                <div class="general_container">
-                  <% if @event.place %>
-                    <%= render :partial => "shared/place_info", :locals => {:place => @event.place, :small_image => false} %>
-                  <% end %>
-                </div>
-              </div>
-              <div class="event-desc wordwrap"><%= @event.description %></div>
-            </div>
           </li>
         </ul>
+
+        <div class="event_page_info">
+          <div class="title_text white_text"><span class="wordwrap"><%= @event.name %></span></div>
+          <div class="desc_text_light">
+            <%= t('.created')%> <span class="wordwrap"><%= link_to @user.profile.full_name, user_profile_path(@user), :class => "general" %></span><br/>
+            <%= l(@event.date, :format => '%d %b %Y, %H:%M') %><br/>
+            <%= link_to(" #{t('.at')} " + @event.place.name, place_path(@event.place), :class => "general") if @event.place %>
+            <div class="event-desc wordwrap"><%= @event.description %></div>
+          </div>
+          <% if @event.place %>
+            <div class="place_icon left_div">
+              <%= fa_icon("map-marker", :class => "whitecolor mediumsize") %>
+            </div>
+            <div class="place_page_address white_text small_text left_div">
+              <span class="wordwrap"><%= @event.place.street %></span><br/>
+              <span class="wordwrap"><%= link_to @event.place.city.name, city_path(@event.place.city), :class => "general_white" if @event.place.city %></span> <span class=""><%= @event.place.postcode if @event.place.postcode %></span><br/>
+              <span class="wordwrap"><%= @event.place.city.region.name if @event.place.city.region %></span><br/>
+              <span class="wordwrap"><%= link_to @event.place.country.name, country_path(@event.place.country), :class => "general_white" if @event.place.country %></span><br/>
+            </div>
+          <% end %>
+          <div class="right_div white_text">
+            <div id="place_stats_id">
+              <%= render :partial => "places/place_stats", :locals => {:place => @event.place} %>
+            </div>
+          </div>
+        </div>
+        <div class="clear_float"></div>
+
+
+        
       </div>
       <% if is_current_user(@user) %>
         <div class="resource_container_blue small_text">
@@ -98,8 +124,8 @@
         <div class="sidebar_container">
           <div class="loc-desc">
             <span class="wordwrap"><%= link_to @event.place.country.name, country_path(@event.place.country), :class => "general" %></span> -
-            <span class="wordwrap"><%= link_to @event.place.city.name, city_path(@event.place.city), :class => "general" %></span> -
             <span class="light_blue_text wordwrap"><%= @event.place.city.region.name if @event.place.city.region %></span> -
+            <span class="wordwrap"><%= link_to @event.place.city.name, city_path(@event.place.city), :class => "general" %></span> -
             <span class="wordwrap"><%= link_to @event.place.name, place_path(@event.place), :class => "general" %></span>
             <div class="loc-desc desc_text_dark">
               <div id="place_latitude"><%= t("activerecord.attributes.place.latitude")%> : <%= @event.place.latitude %></div>

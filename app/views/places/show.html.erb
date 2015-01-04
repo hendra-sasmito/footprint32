@@ -212,7 +212,7 @@
           <div class="calender_container">
             <%= render :partial => "shared/facebook_like", :locals => {:url => request.original_url} %>
             <div class="title_text">Event Calendar</div>
-            <div id="placeEventCalendar"></div>
+            <div class="EventCalendar"><div id="placeEventCalendar"></div></div>
             
             <% if !@nearby_places.empty? %>
               <div class="no_container">
@@ -285,7 +285,7 @@
                 <div class="float_button">
                   <span id="visited"><%= render 'visited_places/checkin_button', :place => @place %></span>
                 </div>
-                <div class="float_button">| <%= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user, :place_id => @place.id), :class => "general_white as_button" %></div>
+                <div class="float_button">| <%= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user, :place_id => @place.id), :class => "general_white as_button", :id => "create_place" %></div>
                 <div class="float_button">| <%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t(".edit"), edit_place_path(@place), :class => "general_white as_button" %></div>
                 <div class="float_button">| <%= link_to fa_icon("ban", :class => "redcolor mediumsize") + " " + "Report problem", new_user_report_path(current_user, :type => @place.class.to_s, :id => @place.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#report-window', :class => "general_white as_button"} %></div>
                 <div class="clear_float"></div>
@@ -295,13 +295,11 @@
 
 
             <% if !@place_photos.empty? %>
-              <div class="no_container">
-                <div id="place_photos_partial">
-                  <%= render 'place_photos', :locals => {:place_photos => @place_photos} %>
-                </div>
-                <div id="paginator_place_photo">
-                  <%= paginate @place_photos, :remote => true, :param_name => "place_photo_page", :theme => "default" %>
-                </div>
+              <div id="place_photos_partial">
+                <%= render :partial => 'place_photos', :locals => {:place_photos => @place_photos} %>
+              </div>
+              <div id="paginator_place_photo">
+                <%= paginate @place_photos, :remote => true, :param_name => "place_photo_page", :theme => "default" %>
               </div>
             <% end %>
             

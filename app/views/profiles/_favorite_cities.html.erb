@@ -1,4 +1,5 @@
-<div class="info-section-title title_text"><%= link_to "Favorite Cities", user_favorite_cities_path(user), :class => "general hastip", :title => "Show on map" %> (<%= user.favorite_cities.count %>) </div>
+<div class="resource_container_sidebar_title_blue"><div class="info-section-title"><%= fa_icon("heart", :class => "whitecolor mediumsize") %> <%= link_to "Favorite Cities", user_favorite_cities_path(user), :class => "general_white hastip", :title => "Show on map" %> (<%= user.favorite_cities.count %>) </div></div>
+<div class="resource_container_sidebar_content">
 <div class="info-section-content">
 <% favorite_cities.each do |favorite_city| %>
   <div class="hidden_box_container left_menu">
@@ -6,4 +7,5 @@
   </div>
 <% end %>
 <div class="clear_float"></div>
+</div>
 </div>

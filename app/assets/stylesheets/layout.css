@@ -206,7 +206,7 @@ input[type=text], input[type=email], input[type=password], select {
 }
 input[type=submit] {
     /*padding: 0.5em;*/
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
 	/*-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;*/
@@ -317,6 +317,7 @@ textarea {
     max-height:26px;
     vertical-align:middle;
     padding:4px;
+    margin-bottom:5px;
     
     /*-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -509,7 +510,7 @@ div.cover_image
     -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
 	-webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
 	position: relative;
-	margin:2px;
+	margin:10px;
 	height:auto;
 	width:auto;
 	float:left;
@@ -522,16 +523,17 @@ div.cover_image
     overflow:hidden;
 }
 .cover_photo_album  img{
-width:220px;
-height:150px;
+width:200px;
+height:auto;
 }
 div.cover_image_cont{
-width:220px;
-height:150px;
+width:200px;
+height:120px;
 overflow:hidden;
 margin-top:5px;
 text-align:center;
 }
+
 div.profile_icon_cont{
 width:50px;
 height:50px;
@@ -633,6 +635,33 @@ div.album_name
 }
 /* photo */
 
+/* message box */
+.message_box {
+    padding: 10px;
+    position: relative;
+    border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+    margin-bottom:10px;
+}
+.message_box_user {
+    float:left;
+    width: 60px;
+}
+.message_box_Body {
+    color: #333333;/*#808080;*/
+    padding-left: 60px;
+    width: 460px;
+}
+.message_box_Message {
+    font-size: 13px !important;
+    font-weight: normal;
+    margin-left: 30px;
+	/*padding-bottom: 10px;*/
+	min-height:50px;
+	/*width: 450px;*/
+}
+
 /* comment box style */
 .comment_box {
     padding: 10px;
@@ -718,6 +747,7 @@ div.album_name
     box-shadow: 0 2px 3px #DFDFDF;
     -moz-box-shadow: 0 2px 3px #DFDFDF;
 	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+    margin-bottom:10px;
 }
 
 .calender_container {
@@ -734,6 +764,29 @@ padding-right:5px;
     box-shadow: 0 2px 3px #DFDFDF;
     -moz-box-shadow: 0 2px 3px #DFDFDF;
 	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+}
+
+.resource_container_sidebar {
+    /*background-color:#F4F3F1;*/
+    border-radius: 3px;
+    -moz-border-radius:3px;
+	-webkit-border-radius:3px;
+    box-shadow: 0 2px 3px #DFDFDF;
+    -moz-box-shadow: 0 2px 3px #DFDFDF;
+	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+    width:245px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
+
+.resource_container_sidebar_title_blue {
+    background-color:#5C97BF;/*#2969B0*/
+    color:white;
+    padding: 5px 10px 5px 10px; 
+}
+
+.resource_container_sidebar_content {
+    padding: 10px; 
 }
 
 .resource_container3 {
@@ -778,7 +831,42 @@ padding-right:5px;
 }
 
 .resource_container_blue {
-    background-color:#124191;
+    background-color:#5C97BF;
+    padding:10px;
+    border-radius: 3px;
+    -moz-border-radius:3px;
+	-webkit-border-radius:3px;
+    box-shadow: 0 2px 3px #DFDFDF;
+    -moz-box-shadow: 0 2px 3px #DFDFDF;
+	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+    color:white;
+}
+
+.resource_container_green {
+    background-color:#1ABC9C;
+    padding:10px;
+    border-radius: 3px;
+    -moz-border-radius:3px;
+	-webkit-border-radius:3px;
+    box-shadow: 0 2px 3px #DFDFDF;
+    -moz-box-shadow: 0 2px 3px #DFDFDF;
+	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+    color:white;
+}
+
+.resource_container_orange {
+    background-color:#f37934;
+    padding:10px;
+    border-radius: 3px;
+    -moz-border-radius:3px;
+	-webkit-border-radius:3px;
+    box-shadow: 0 2px 3px #DFDFDF;
+    -moz-box-shadow: 0 2px 3px #DFDFDF;
+	-webkit-box-shadow: 0 2px 3px #DFDFDF;
+    color:white;
+}
+.resource_container_red {
+    background-color:#E25041;
     padding:10px;
     border-radius: 3px;
     -moz-border-radius:3px;
@@ -802,7 +890,7 @@ padding-right:5px;
 }
 
 /* place_page */
-.place_page_container {
+.place_page_container, .event_page_container {
     background-color:#1F2F34;
 }
 
@@ -840,11 +928,19 @@ right:20px;
 .place_page_stats {
 float:left
 }
-.place_page_image, .place_page_image_small, .place_info_image, .place_page_image_thumb, .city_page_image, .profile_page_image {
+.place_page_image, .place_info_image, .place_page_image_thumb, .city_page_image, .profile_page_image, .event_page_image {
     float:left;
-}
-.place_page_image img, .city_page_image img {
     width:340px;
+    overflow:hidden;
+}
+.place_page_image_small {
+    float:left;
+    width:100px;
+    overflow:hidden;
+}
+.place_page_image img, .city_page_image img, .event_page_image img {
+    /*width:340px;*/
+    height:280px;
     /*height:80px;*/
 }
 .profile_page_image img {
@@ -1334,9 +1430,9 @@ width:40px;
 }
 .city {
 	position: relative;
-	min-height: 270px;
+	height: 250px;
 	width: 250px;
-	background-color: #505050;
+	background-color: #1F2F34;
     color:white;
     padding:10px;
     margin:2px;
@@ -1439,12 +1535,12 @@ font-size:32px;
 }
 /* friend-found style */
 .friend-found {
-	min-height: 150px;
+	min-height: 120px;
 	width: 300px;
 	margin :1px;
 	float :left;
 	border: 1px solid #eee;
-	background-color: #F4F3F1;
+	background-color: #FFFFFF;
 	padding:5px;
 }
 .general_box {
@@ -1474,9 +1570,9 @@ line-height: 80px;
     border:1px solid #e9e9e9;
 }
 .small_pic {
-    height: 75px;
+    height: 72px;
     position: relative;
-    width: 75px;
+    width: 72px;
     border:1px solid #e9e9e9;
 }
 .newsfeed_pic{
@@ -1501,7 +1597,7 @@ line-height: 80px;
 }
 .photo_in_profile {
 height:100px;
-width:120px;
+width:100px;
 }
 .tiny_profile_pic {
     height: 30px;
@@ -1631,7 +1727,7 @@ a.general:link , a.general:visited {
 	color:#00A9FF;
 }
 a.general:hover {
-color:#0969A2;
+color:#5C97BF;
 }
 a.general:active  {
     color:black;
@@ -1703,7 +1799,7 @@ div.place-desc {
 }
 
 .place-review {
-
+padding-top:10px;
 }
 div.favorite_places {
 float: left;
@@ -1775,7 +1871,7 @@ display: block;
 /*line-height:40px;*/
 }
 .general-button:hover{
-background-color: #0969A2;
+background-color: #5C97BF;
 }
 .general-submit-button {
 /*min-height:38px;*/
@@ -2226,7 +2322,7 @@ background-color:#ECEEF1;
 }
 
 #userProfileMenu ul li a:hover {
-     color:#0969A2;
+     color:#5C97BF;
 }
 
 .recent_friends_photos {
@@ -2453,7 +2549,7 @@ width:200px;
 input.as_button {
     height: 30px;
     color: white;
-    background: #124191;
+    background: #5C97BF;
     border: 0px solid gray;
     vertical-align: middle;
     padding: 0px 5px;
@@ -3064,7 +3160,7 @@ top:25px;
 
 .hideShowButton:hover
 {   
-background:url(eye_24x18.png) no-repeat #0969A2;
+background:url(eye_24x18.png) no-repeat #5C97BF;
 }
 
 /*.news_feed{
@@ -3251,7 +3347,20 @@ font-size:12px;
 
 .city_image {
 width:230px;
-height:170px;
+overflow:hidden;
+}
+
+.city_image img {
+height:230px;
+}
+
+.city_overlapped_info {
+position:absolute;
+top:140px;
+background-color: #1F2F34;
+opacity: 0.7;
+width:230px;
+height:110px;
 }
 
 /* color font awesome */
@@ -3369,6 +3478,7 @@ float:left;
 }
 
 .content_album {
+padding-left:5px;
 width:250px;
 float:left;
 overflow-y: scroll;
@@ -3437,25 +3547,26 @@ float:left;
 }
 
 .rich_marker {
-border: 3px solid #EBEBEB;
+border: 3px solid #ffffff;
 background-color: white;
+cursor: pointer;
 }
-
+fv
 .rich_marker img {
 /*width:80px;*/
-height:auto;
+width:auto;
 cursor: pointer;
 }
 
 #intro{
-	background:url(DSC_0255.jpg) 50% 0 no-repeat fixed;
+	background:url(session1.jpg) 50% 0 no-repeat fixed;
 	height: 1258px;
 	margin: 0 auto;
 	padding: 0;
 }
 
 #second{
-	background: url(DSC_0648.jpg) 50% 0 no-repeat fixed;
+	background: url(session2.jpg) 50% 0 no-repeat fixed;
 	color: white;
 	height: 1258px;
 	margin: 0 auto;
@@ -3463,18 +3574,8 @@ cursor: pointer;
 	padding: 0;
 }
 
-/*#second .bg{
-	background: url(photobook.png) 50% 0 no-repeat fixed;
-	height: 1300px;
-	margin: 300 auto;
-	padding: 0;
-	position: absolute;
-	width: 900px;
-	z-index: 200;
-}*/
-
 #third{
-	background: url(DSC_0822.jpg) 50% 0 no-repeat fixed;
+	background: url(session3.jpg) 50% 0 no-repeat fixed;
 	color: white;
 	height: 1020px;	
 }
@@ -3528,3 +3629,28 @@ margin-bottom:10px;
 .headerimage:hover button {
     display: block;
 }*/
+
+.left_arrow {
+background:url(arrow_left_alt1_24x24.png) no-repeat 0 0;
+width:24px;
+height:24px;
+}
+
+.right_arrow {
+background:url(arrow_right_alt1_24x24.png) no-repeat 0 0;
+width:24px;
+height:24px;
+}
+
+.modal-dialog{
+position: absolute;
+top: 20%;
+} 
+
+.place_icon {
+width:15px;
+}
+
+.EventCalendar {
+margin-bottom:10px;
+}

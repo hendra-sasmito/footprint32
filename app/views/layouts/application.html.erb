@@ -73,14 +73,6 @@
                 <span class="field">
                   <%= text_field_tag(:search, "", :placeholder => t(".search_placeholder")) %><%= submit_tag "", :class => "searchbutton" %>
                 </span>
-                <ul class="search_option">
-                  <li>
-                    <span class="check_box_div"><%= radio_button_tag(:option, "place", :checked => true) %></span><%= label_tag(:option_place, t('.place'), :class => "search_label") %>
-                  </li>
-                  <li>
-                    <span class="check_box_div"><%= radio_button_tag(:option, "people") %></span><%= label_tag(:option_people, t('.people'), :class => "search_label") %>
-                  </li>
-                </ul>
               </li>
             <% end %>
           </ul>

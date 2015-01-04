@@ -29,24 +29,13 @@
 //= require jquery.flot
 //= require jquery.flot.resize
 //= require_tree .
+//= require ../../../vendor/assets/javascripts/popbox
 //= require ../../../vendor/assets/javascripts/jquery.fancybox
 //= require ../../../vendor/assets/javascripts/jquery.fancybox-buttons
 //= require ../../../vendor/assets/javascripts/jquery.fancybox-thumbs
 //= require ../../../vendor/assets/javascripts/jquery.endless-scroll
-//= require ../../../vendor/assets/javascripts/popbox
-//= require ../../../vendor/assets/javascripts/jquery.placeholder.js
-//= require ../../../vendor/assets/javascripts/jquery.contenthover.js
-//= require ../../../vendor/assets/javascripts/jquery.tipsy.js
-//= require ../../../vendor/assets/javascripts/jquery.custom-scrollbar.js
-//= require ../../../vendor/assets/javascripts/jquery.shorten.js
-//= require ../../../vendor/assets/javascripts/jquery.tagcloud.js
-//= require ../../../vendor/assets/javascripts/jquery.imagesloaded.js
-//= require ../../../vendor/assets/javascripts/jquery.icheck.min.js
-//= require ../../../vendor/assets/javascripts/jquery.justifiedgallery.js
-//= require ../../../vendor/assets/javascripts/jquery.vmap.packed.js
-//= require ../../../vendor/assets/javascripts/jquery.vmap.world.js
-//= require ../../../vendor/assets/javascripts/jquery.vmap.sampledata.js
-//= require ../../../vendor/assets/javascripts/jquery.adipoli.min.js
+
+
 //= require ../../../vendor/assets/javascripts/jquery.dropdown.min.js
 //= require ../../../vendor/assets/javascripts/jquery.jgrowl.min.js
 //= require ../../../vendor/assets/javascripts/jquery.tokeninput.js
@@ -56,4 +45,25 @@
 //= require ../../../vendor/assets/javascripts/jquery.cluetip.min.js
 //= require ../../../vendor/assets/javascripts/markerclusterer.js
 //= require ../../../vendor/assets/javascripts/richmarker.js
-//= require_tree ../../../vendor/assets/javascripts/.
+
+//= require ../../../vendor/assets/javascripts/jquery.placeholder.js
+//= require ../../../vendor/assets/javascripts/jquery.contenthover.js
+//= require ../../../vendor/assets/javascripts/jquery.tipsy.js
+//= require ../../../vendor/assets/javascripts/jquery.custom-scrollbar.js
+//= require ../../../vendor/assets/javascripts/jquery.shorten.js
+
+
+//= require ../../../vendor/assets/javascripts/jquery.tagcloud.js
+//= require ../../../vendor/assets/javascripts/jquery.imagesloaded.js
+
+
+
+//= require ../../../vendor/assets/javascripts/jquery.justifiedgallery.js
+//= require ../../../vendor/assets/javascripts/jquery.vmap.packed.js
+//= require ../../../vendor/assets/javascripts/jquery.vmap.world.js
+//= require ../../../vendor/assets/javascripts/jquery.vmap.sampledata.js
+//= require ../../../vendor/assets/javascripts/jquery.adipoli.min.js
+//= require ../../../vendor/assets/javascripts/jquery.scrollTo.min.js
+//= require ../../../vendor/assets/javascripts/jquery.localscroll-1.2.7-min.js
+//= require ../../../vendor/assets/javascripts/jquery.parallax-1.1.3.js
+//= require ../../../vendor/assets/javascripts/jquery.mousewheel-3.0.6.pack.js

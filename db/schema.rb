@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141114221949) do
+ActiveRecord::Schema.define(:version => 20141231160710) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -289,13 +289,11 @@ ActiveRecord::Schema.define(:version => 20141114221949) do
     t.datetime "updated_at",                                            :null => false
     t.string   "time_zone"
     t.string   "language",                            :default => "en"
-    t.integer  "cover_photo_id"
     t.integer  "hometown_id"
     t.integer  "profile_photo_offset_x", :limit => 2
     t.integer  "profile_photo_offset_y", :limit => 2, :default => 0
   end
 
-  add_index "profiles", ["cover_photo_id"], :name => "index_profiles_on_cover_photo_id"
   add_index "profiles", ["hometown_id"], :name => "index_profiles_on_hometown_id"
   add_index "profiles", ["location_id"], :name => "index_profiles_on_location_id"
   add_index "profiles", ["profile_photo_id"], :name => "index_profiles_on_profile_photo_id"

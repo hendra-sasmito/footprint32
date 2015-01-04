@@ -59,6 +59,21 @@
       <div class="photo_button">
         <% if is_current_user(@user) %>
           <a href="#" data-dropdown="#dropdown-1" class="general-button right_menu"><%= fa_icon("gear", :class => "whitecolor mediumsize")%></a>
+          <div id="dropdown-1" class="dropdown dropdown-tip dropdown-relative">
+            <ul class="dropdown-menu">
+              <li>
+                <% if @photo != @user.profile_photo %>
+                  <%= link_to t('.profile'), set_as_profile_user_photo_album_photo_path(@user, @photo_album, @photo), :method => :post %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to t('.edit'), edit_user_photo_album_photo_path(@user, @photo_album, @photo) %>
+              </li>
+              <li>
+                <%= link_to t('.delete'), user_photo_album_photo_path(@user, @photo_album, @photo), :confirm => t('.delete_confirmation'), :method => :delete %>
+              </li>
+            </ul>
+          </div>
         <% end %>
       </div>
       <div class="resource_container">
@@ -83,7 +98,7 @@
       <div class="sidebar_container">
         <div class="loc-desc">
           <%=h link_to(image_tag(get_profile_photo_url(@user.profile_photo),
-            :class => "thumb_profile_pic imagedropshadow"), user_profile_path(@user)) %>
+            :class => "thumb_profile_pic"), user_profile_path(@user)) %>
           <div class="photo_owner">
             <span class="wordwrap"><%= link_to @user.profile.full_name, user_profile_path(@user), :class => "general" %></span><br/>
             <div class="desc_text_light small_text"><%= l(@photo.created_at, :format => '%d %b %Y, %H:%M') %></div>
@@ -134,23 +149,5 @@
     
   </div>
 </div>
-
-<% if user_signed_in? %>
-  <div id="dropdown-1" class="dropdown dropdown-tip">
-    <ul class="dropdown-menu">
-      <li>
-        <% if @photo != @user.profile_photo %>
-          <%= link_to t('.profile'), set_as_profile_user_photo_album_photo_path(@user, @photo_album, @photo), :method => :post %>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to t('.edit'), edit_user_photo_album_photo_path(@user, @photo_album, @photo) %>
-      </li>
-      <li>
-        <%= link_to t('.delete'), user_photo_album_photo_path(@user, @photo_album, @photo), :confirm => t('.delete_confirmation'), :method => :delete %>
-      </li>
-    </ul>
-  </div>
-<% end %>
 
 <div id="report-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

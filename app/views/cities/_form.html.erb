@@ -109,6 +109,9 @@
   <%= f.hidden_field :country_id, :value => @country.id %>
   <div class="actions">
     <%= f.submit t(".submit"), :class => "general-button" %>
+    <% if !@city.new_record? %>
+      <%= link_to "Back", city_path(@city), :class => "general-button btn" %>
+    <% end %>
   </div>
 <% end %>
 </div>

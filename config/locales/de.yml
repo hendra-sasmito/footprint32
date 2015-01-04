@@ -263,6 +263,7 @@ de:
       friend_request: "Freundschaftsanfrage"
     review:
       vote: "Stimme"
+      delete_confirmation: "Bist du sicher?"
     visited_places:
       title: "Besuchte Orte"
     edit:

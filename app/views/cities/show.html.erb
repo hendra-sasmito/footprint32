@@ -167,7 +167,7 @@
       });
 
       if (place_info["last_review"] != "")
-        contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["region"] + ', ' + place_info["country"] + '</div><div class="last_review">' + place_info["last_review"] + " ... " + '<a href="' + place_info["last_reviewer_path"] + '" class="italic">' + place_info["last_reviewer"] + '</a></div></div>';
+        contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["region"] + ', ' + place_info["country"] + '<div class="last_review">' + place_info["last_review"] + " ... " + '<a href="' + place_info["last_reviewer_path"] + '" class="italic">' + place_info["last_reviewer"] + '</a></div></div></div>';
       else
         contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["region"] + ', ' + place_info["country"] + '</div></div>';
       infowindow = new google.maps.InfoWindow({
@@ -197,24 +197,28 @@
           <div class="calender_container">
             <%= render :partial => "shared/facebook_like", :locals => {:url => request.original_url} %>
             <div class="title_text">Event Calendar</div>
-            <div id="CityEventCalendar"></div>
+            <div class="EventCalendar"><div id="CityEventCalendar"></div></div>
             <% if !@liked.empty? %>
-              <div class="no_container">
+              <div class="resource_container_sidebar">
                 <div id="friends_partial">
                   <%= render :partial => 'shared/liked_user', :locals => {:friends => @liked} %>
                 </div>
+                <div class="resource_container_sidebar_content">
                 <div id="paginator_friend">
                   <%= paginate @liked, :remote => true, :param_name => "friend_page", :theme => "default" %>
+                </div>
                 </div>
               </div>
             <% end %>
             <% if !@visitors.empty? %>
-              <div class="no_container">
+              <div class="resource_container_sidebar">
                 <div id="visited_partial">
                   <%= render :partial => 'shared/visited', :locals => {:visited => @visitors} %>
                 </div>
+                <div class="resource_container_sidebar_content">
                 <div id="paginator_visited">
                   <%= paginate @visitors, :remote => true, :param_name => "visited_page", :theme => "default" %>
+                </div>
                 </div>
               </div>
             <% end %>
@@ -248,7 +252,7 @@
               <% if user_signed_in? %>
 
                 <div class="float_button small_text"><%= link_to fa_icon("map-marker", :class => "whitecolor mediumsize") + " " + t('.create_place'), new_place_path(:city => @city.id), :class => "general_white as_button" %></div>
-                <div class="float_button small_text"><%= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), :class => "general_white as_button" %></div>
+                <div class="float_button small_text"><%= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), :class => "general_white as_button", :id => "create_place" %></div>
                 <%#= link_to fa_icon("calendar", :class => "whitecolor mediumsize") + " " + t('.create_event'), new_user_event_path(current_user), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#modal-window', :class => "general_white as_button"} %>
 
                 <div class="float_button small_text"><%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t(".edit"), edit_city_path(@city), :class => "general_white as_button" %></div>
@@ -275,7 +279,9 @@
               <%= link_to t(".bank"), {:type => "bank"}, :remote => true, :class => "general_white" %> |
               <%= link_to t(".other"), {:type => "other"}, :remote => true, :class => "general_white" %>
             </div>
+            <% if @places.size > 0 %>
             <div class="resource_container">
+              
               <div class="places-found">
                 <div id="place_partial">
                   <%= render :partial => 'cities/places', :locals => {:places => @places, :places_list => @places_list} %>
@@ -286,11 +292,12 @@
                 </div>
               </div>
             </div>
+            <% end %>
             <div class="general_box"></div>
 
             <div class="place-review">
               <div class="resource_container">
-                <div class="title_text"><%= t('.review')%></div>
+                <div class="small_title_text"><%= t('.review')%></div>
                 <% if user_signed_in? %>
                   <div id="new_review">
                     <%= render 'reviews/form' %>

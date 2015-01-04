@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
       @commentable = Event.includes(:creator).find_by_id(params[:idn])
     end
     if !@commentable.nil?
-      @comments = @commentable.comments.order('created_at DESC').page(params[:page]).per(2)
+      @comments = @commentable.comments.order('created_at DESC').page(params[:page]).per(4)
       puts @comments
     else
       @comments = []

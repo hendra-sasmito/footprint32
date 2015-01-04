@@ -14,13 +14,13 @@
             | <%= link_to fa_icon("edit", :class => "whitecolor mediumsize") + " " + t(".edit"), edit_user_photo_album_path(@user, @photo_album), :class=>"general_white" %>
             | <%= link_to fa_icon("trash-o", :class => "whitecolor mediumsize") + " " + t(".delete"), user_photo_album_path(@user, @photo_album), :confirm => t('.delete_confirmation'), :method => :delete, :class=>"general_white" %>
           <% end %>
+          | <%= link_to fa_icon("picture-o", :class => "whitecolor mediumsize") + " " + t('.back'), user_photo_albums_path(@user), :class => "general_white" %>
         <% end %>
       </div>
       <div class="child_container">
         <div class="album-desc desc_text_dark">
           <span class="wordwrap"><%= @photo_album.description %></span>
         </div>
-        <div class="small_text"><%= link_to t('.back'), user_photo_albums_path(@user), :class => "general" %></div>
       
         <%#*<div id="photo_description" style="display: none;">%>
           <%# @photos.each do |photo| %>

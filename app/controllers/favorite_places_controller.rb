@@ -61,7 +61,8 @@ class FavoritePlacesController < ApplicationController
           :region => !u.city.region.nil? ? u.city.region.name : "",
           :country => !u.city.country.nil? ? u.city.country.name : "",
           :image => image,
-          :path => place_url(u)
+          :path => place_url(u),
+          :rate => u.favorite_places_count
         }
       end
     else

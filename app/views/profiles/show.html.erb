@@ -137,9 +137,9 @@
         <div class="no_container left_div">
           <div class="calender_container">
             <div class="title_text">Event Calendar</div>
-            <div id="UserEventCalendar"></div>
+            <div class="EventCalendar"><div id="UserEventCalendar"></div></div>
             <% if @favorite_places.count > 0 %>
-                <div class="resource_container sidebar">
+                <div class="resource_container_sidebar">
                   <div id="places_partial">
                     <%= render :partial => 'favorite_places', :locals => {:favorite_places => @favorite_places, :user => @user} %>
                   </div>
@@ -147,7 +147,7 @@
                 </div>
               <% end %>
               <% if @visited_places.count > 0 %>
-                <div class="resource_container sidebar">
+                <div class="resource_container_sidebar">
                   <div id="places_partial">
                     <%= render :partial => 'visited_places', :locals => {:visited_places => @visited_places, :user => @user} %>
                   </div>
@@ -155,7 +155,7 @@
                 </div>
               <% end %>
               <% if @favorite_cities.count > 0 %>
-                <div class="resource_container sidebar">
+                <div class="resource_container_sidebar">
                   <div id="cities_partial">
                     <%= render :partial => 'favorite_cities', :locals => {:favorite_cities => @favorite_cities, :user => @user} %>
                   </div>
@@ -163,7 +163,7 @@
                 </div>
               <% end %>
               <% if @visited_cities.count > 0 %>
-                <div class="resource_container sidebar">
+                <div class="resource_container_sidebar">
                   <div id="cities_partial">
                     <%= render :partial => 'visited_cities', :locals => {:visited_cities => @visited_cities, :user => @user} %>
                   </div>
@@ -179,7 +179,7 @@
 
               <%#*<div class="ui-widget-content"">%>
               <div class="picturecontainer" style="overflow: hidden; position: relative; width:280px; height: 300px;">
-                <%= image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "left: #{@profile.profile_photo_offset_x}px; top: #{@profile.profile_photo_offset_y}px;") %>
+                <%= link_to image_tag(get_user_normal_profile_photo_url(@user), :class => "headerimage", :style => "left: #{@profile.profile_photo_offset_x}px; top: #{@profile.profile_photo_offset_y}px;"), get_user_normal_profile_photo_url(@user), :class=>"fancybox-buttons", "data-fancybox-group"=>"cover" %>
               </div>
               <%#*</div>%>
 
@@ -231,6 +231,9 @@
                       </div>
                     <% end %>
                   <%#*</div>%>
+                <% else %>
+                  | <%= fa_icon("pencil", :class => "whitecolor mediumsize") %>
+                  <%= link_to "Send message", new_message_path(:recv => @user), :class => "general_white" %>
                 <% end %>
               <%#*</div>%>
 

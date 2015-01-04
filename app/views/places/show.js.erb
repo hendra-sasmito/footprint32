@@ -21,3 +21,16 @@ $(".review_photo").justifiedGallery({
     $(gallery).find("a").addClass('fancybox-simple');
   }
 });
+
+$("#mygallery").justifiedGallery({
+  'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+  'justifyLastRow':false,
+  'rowHeight':120,
+  'fixedHeight':false,
+  'captions':true,
+  'margins':1,
+  'rel' : 'gallery',
+  'onComplete': function(gallery) {
+    $(gallery).find("a").addClass('fancybox-buttons');
+  }
+});

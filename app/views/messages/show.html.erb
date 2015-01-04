@@ -7,18 +7,18 @@
       </div>
       <div class="resource_container">
 
-        <%= link_to fa_icon("envelope", :class => "cyancolor mediumsize") + " Inbox", messages_path, :class => "general" %> |
+        <%= link_to fa_icon("envelope", :class => "cyancolor mediumsize") + " Back to Inbox", messages_path, :class => "general" %> |
         <%= link_to fa_icon("trash-o", :class => "cyancolor mediumsize") + " Delete", message_path(@message), :confirm => 'Are you sure?', :method => :delete, :class => "general" %>
 
-        <div class="comment_box">
+        <%#*<div class="message_box">%>
           <% @conversations.each do |conversation| %>
             <%= render :partial => 'messages/conversation', :locals => {:conversation => conversation} %>
           <% end %>
           <div id="new_added_conversation"></div>
-        </div>
+        <%#*</div>%>
       </div>
       <div class="resource_container">
-        <div class="title_text">Reply</div>
+        <div class="">Reply</div>
         <%= form_tag(reply_messages_path(@message), :html => {:id => "reply_form"}, :method => :post, :remote => true) do |f| %>
           <%= hidden_field_tag "message_id", @message.id %>
           <%= text_area_tag "message_content", nil, :placeholder => "Write your message here" %>

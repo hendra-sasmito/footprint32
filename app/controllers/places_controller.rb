@@ -48,7 +48,8 @@ class PlacesController < ApplicationController
         :path => place_url(u),
         :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
         :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-        :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+        :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+        :rate => u.favorite_places_count
       }
     end
 
@@ -118,7 +119,8 @@ class PlacesController < ApplicationController
           :path => place_url(u),
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :rate => u.favorite_places_count
         }
       end
 
@@ -172,7 +174,8 @@ class PlacesController < ApplicationController
         :path => place_url(u),
         :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
         :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-        :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+        :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+        :rate => u.favorite_places_count
       }
     end
 
@@ -347,7 +350,8 @@ class PlacesController < ApplicationController
           :path => place_url(u),
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :rate => u.favorite_places_count
         }
       end
       @ref_lat = params[:lat]

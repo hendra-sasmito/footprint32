@@ -728,8 +728,12 @@ RichMarker.prototype.onAdd = function() {
     this.markerWrapper_.appendChild(this.markerContent_);
 
     var that = this;
-    google.maps.event.addDomListener(this.markerContent_, 'click', function(e) {
+    /*https://code.google.com/p/google-maps-utility-library-v3/issues/detail?id=280*/
+    /*google.maps.event.addDomListener(this.markerContent_, 'click', function(e) {
       google.maps.event.trigger(that, 'click');
+    });*/
+    google.maps.event.addDomListener(this.markerContent_, 'click', function(e) {
+      google.maps.event.trigger(that, 'click', e);
     });
     google.maps.event.addDomListener(this.markerContent_, 'mouseover', function(e) {
       google.maps.event.trigger(that, 'mouseover');

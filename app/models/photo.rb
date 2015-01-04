@@ -5,7 +5,7 @@ class Photo < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => :creator_id, :inverse_of => :photos
   belongs_to :photo_album, :inverse_of => :photos
   has_one :profile_photo_owner, :class_name => "Profile", :foreign_key => "profile_photo_id", :dependent => :nullify
-  has_one :cover_photo_owner, :class_name => "Profile", :foreign_key => "cover_photo_id", :dependent => :nullify
+#  has_one :cover_photo_owner, :class_name => "Profile", :foreign_key => "cover_photo_id", :dependent => :nullify
 #  belongs_to :place
   belongs_to :photoable, :polymorphic => true
   #belongs_to :city, foreign_key: 'photoable_id', conditions: "photos.photoable_type = 'City'"
@@ -43,10 +43,10 @@ class Photo < ActiveRecord::Base
 #  default_scope includes(:creator, :photoable, :photo_album)
 #  default_scope includes(:creator, :photo_album)
   
-  scope :private_photo, joins(:photo_album).where("privacy = ?", Footprint32::PRIVATE)
-  scope :friends_photo, joins(:photo_album).where("privacy = ?", Footprint32::FRIENDS)
-  scope :public_photo, joins(:photo_album).where("privacy = ?", Footprint32::PUBLIC)
-  scope :shared_photo, joins(:photo_album).where("privacy <> ?", Footprint32::PRIVATE)
+  scope :private_photo, joins(:photo_album).where("photo_albums.privacy = ?", Footprint32::PRIVATE)
+  scope :friends_photo, joins(:photo_album).where("photo_albums.privacy = ?", Footprint32::FRIENDS)
+  scope :public_photo, joins(:photo_album).where("photo_albums.privacy = ?", Footprint32::PUBLIC)
+  scope :shared_photo, joins(:photo_album).where("photo_albums.privacy <> ?", Footprint32::PRIVATE)
 
   scope :place_photo, where("photos.place_id is not NULL")
 

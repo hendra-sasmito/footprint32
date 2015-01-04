@@ -15,7 +15,7 @@
             <%=h place.category.name %>
           </div>
         <% end %>
-        <span><%= fa_icon("comment", :class => "bluecolor mediumsize hastip", :title => t(".review")) %> <%= place.reviews.count %></span>
+        <span><%= fa_icon("comment", :class => "bluecolor mediumsize hastip", :title => t(".review")) %> <%= place.reviews_count %></span>
         <span><%= fa_icon("heart", :class => "redcolor mediumsize hastip", :title => t(".like_this_place")) %> <%= place.favorite_places_count %></span>
         <span><%= fa_icon("user", :class => "blackcolor mediumsize hastip", :title => t(".visited_this_place")) %> <%= place.visited_places_count %></span>
       </div>

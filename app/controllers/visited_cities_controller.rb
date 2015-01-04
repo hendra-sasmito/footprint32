@@ -60,7 +60,8 @@ class VisitedCitiesController < ApplicationController
           :region => !u.region.nil? ? u.region.name : "",
           :country => !u.country.nil? ? u.country.name : "",
           :image => image,
-          :path => city_url(u)
+          :path => city_url(u),
+          :rate => u.visited_cities_count
         }
       end
     else

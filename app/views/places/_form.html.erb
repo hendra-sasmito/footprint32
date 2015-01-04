@@ -45,23 +45,26 @@
               });
           });
       });
-      <% if @place.new_record? == false %>
-        $('#change_category').icheck('uncheck');
-        $('#change_category').removeAttr('checked');
+      <% if action_name == "edit" %>
+        //$('#change_category').prop('checked', false);
+        $('#change_category').attr('checked', false);
+        //$('#change_category').removeAttr('checked');
 
         $("#main-category").attr("disabled", true);
         $("#category").attr("disabled", true);
 
-        $('#change_category').on('ifChecked', function(event){
-          $('#change_category').attr('checked', true);
-          $("#main-category").attr("disabled", false);
-          $("#category").attr("disabled", false);
-        });
-        $('#change_category').on('ifUnchecked', function(event){
-          $('#change_category').attr('checked', false);
-          $("#main-category").attr("disabled", true);
-          $("#category").attr("disabled", true);
-        });
+        $('#change_category').on('change', function() {
+          if ($("#change_category").prop("checked")) {
+            $('#change_category').attr('checked', true);
+            $("#main-category").attr("disabled", false);
+            $("#category").attr("disabled", false);
+          }
+          else {
+            $('#change_category').attr('checked', false);
+            $("#main-category").attr("disabled", true);
+            $("#category").attr("disabled", true);
+          }
+         });
       <% end %>
 
       function placeMarker(location) {
@@ -274,7 +277,12 @@
     <%= f.text_field :description, :placeholder => t('.description_placeholder') %>
   </div>
   <div class="actions">
-    <%= f.submit t('.submit'), :class => "general-button btn" %> <%= link_to "Back", places_path, :class => "general-button btn" %>
+    <%= f.submit t('.submit'), :class => "general-button btn" %> 
+    <% if !@place.new_record? %>
+      <%= link_to "Back", place_path(@place), :class => "general-button btn" %>
+    <% else %>
+      <%= link_to "Back", places_path, :class => "general-button btn" %>
+    <% end %>
   </div>
 <% end %>
 </div>

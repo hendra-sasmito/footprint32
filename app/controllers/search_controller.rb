@@ -55,41 +55,68 @@ class SearchController < ApplicationController
 
   def index
     keyword = params[:search]
-    term = params[:option]
+#    term = params[:option]
 
     @keyword = keyword
-    @term = term
+#    @term = term
     
     if keyword.blank?
       flash[:notice] = t(:keyword_empty)
       return
     end
 
-    @users = nil
-    @places = nil
-    if @term == "people"
-#      @users = User.joins(:profile).where("profiles.first_name LIKE ? or email LIKE ?", "%"+keyword+"%", "%"+keyword+"%").order("profiles.first_name").includes(:profile, :location, {:profile_photo => :photo}).without_user(current_user).uniq.page(params[:people_page]).per(2)
-      search = User.solr_search(:include => [:profile, :profile_photo]) do
-        fulltext params[:search]
-        paginate :page => params[:people_page], :per_page => 10
-      end
-      @users = search.results
 
-    elsif term == "place"
-#      @places = Place.where("name LIKE ? or street LIKE ? or city LIKE ? or country LIKE ?", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%", "%"+keyword+"%").order("name").uniq.page(params[:place_page]).per(2)
-      search_place = Place.solr_search(:include => [:category, :default_place_photo, :city => [:country, :region]]) do
-        fulltext params[:search] #, :minimum_match => 1
-        paginate :page => params[:place_page], :per_page => 12
-      end
-      @places = search_place.results
+    search = Sunspot.search Place, City, User do
+      fulltext params[:search]
+      data_accessor_for(Place).include = [:default_place_photo, :city => [:region, :country]]
+      data_accessor_for(City).include = [:region, :country, :default_city_photo]
+      data_accessor_for(User).include = [:profile, :profile_photo]
+      paginate :page => params[:page], :per_page => 20
+    end
+    @result = search.results
+    puts "----search index ---"
 
-      search_city = City.solr_search(:include => [:default_city_photo, :country, :region]) do
-        fulltext params[:search] #, :minimum_match => 1
-        paginate :page => params[:city_page], :per_page => 6
+    
+
+    @users = []
+    @places = []
+    @cities = []
+#    if @term == "people"
+#      search = User.solr_search(:include => [:profile, :profile_photo]) do
+#        fulltext params[:search]
+#        paginate :page => params[:people_page], :per_page => 10
+#      end
+#      @users = search.results
+#
+#    elsif term == "place"
+#      search_place = Place.solr_search(:include => [:category, :default_place_photo, :city => [:country, :region]]) do
+#        fulltext params[:search] #, :minimum_match => 1
+#        paginate :page => params[:place_page], :per_page => 12
+#      end
+#      @places = search_place.results
+#
+#      search_city = City.solr_search(:include => [:default_city_photo, :country, :region]) do
+#        fulltext params[:search] #, :minimum_match => 1
+#        paginate :page => params[:city_page], :per_page => 6
+#      end
+#      @cities = search_city.results
+#    end
+
+    puts @result.size
+    data = []
+    @result.each do |p|
+      if !p.nil?
+        if p.class.to_s == "User"
+          @users << p
+        elsif p.class.to_s == "Place"
+          @places << p
+        elsif p.class.to_s == "City"
+          @cities << p
+        end
       end
-      @cities = search_city.results
     end
 
+    puts @users
     puts @places
     puts @cities
 

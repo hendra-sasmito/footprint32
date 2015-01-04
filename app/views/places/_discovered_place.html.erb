@@ -29,7 +29,7 @@
     <div class="resource_container">
       <div class="disc-place-stats">
         <div class="disc-place-stats-item"><%= image_tag("comment_fill_24x21.png") %> <%= t('.review')%>
-        <div class="disc-place-stats-value"><%= place.reviews.count %></div></div>
+        <div class="disc-place-stats-value"><%= place.reviews_count %></div></div>
         <%# @users_like = place.liked_users.limit(5) %>
         <div class="disc-place-stats-item"><%= image_tag("heart_fill_24x21.png") %> <%= t('.like')%>
         <div class="disc-place-stats-value"><%= place.favorite_places_count %></div></div>

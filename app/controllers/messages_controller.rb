@@ -88,6 +88,14 @@ class MessagesController < ApplicationController
   # GET /messages/new
   # GET /messages/new.xml
   def new
+    puts "---new message ---"
+    if params[:recv]
+      @recv = params[:recv]
+      @user_recv = User.find_by_id(@recv)
+    else
+      @recv = nil
+    end
+    puts @recv
     @message = current_user.messages.new
     @conversation = @message.conversations.new
 

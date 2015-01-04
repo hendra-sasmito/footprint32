@@ -68,11 +68,11 @@
         <filter class="solr.NGramFilterFactory" minGramSize="2" maxGramSize="30"/>
       </analyzer>
       
-      <!-- ***<analyzer type="query">
+      <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>-->
+      </analyzer>
 
     </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->

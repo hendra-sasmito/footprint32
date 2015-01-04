@@ -119,24 +119,37 @@
     {
       var contentString;
       var infowindow;
-      var image;
+      //var image;
       var marker;
       var latlng;
+      var image_height;
+      var map_zoom;
+      var z_index = 1;
 
-      image = "/assets/images/marker-icon-small.png";
+      //image = "/assets/images/marker-icon-small.png";
       latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
-      marker = new google.maps.Marker({
+      map_zoom = map.getZoom();
+
+      image_height = 40;
+      z_index = 1;
+      
+      marker = new RichMarker({
         position: latlng,
         map: map,
-        icon: image
+        draggable: false,
+        anchor: RichMarkerPosition.MIDDLE,
+        content: '<div class="rich_marker"><img style="height:'+ image_height + 'px;" src="' + place_info["image"] + '" title="' + place_info["name"] + '"/></div>'
       });
+      marker.setZIndex(z_index);
 
       contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + place_info["street"] + '<br/>' + place_info["city"] + '<br/>' + place_info["region"] + ', ' + place_info["country"] + '<div class="infowindow_desc"><span class="wordwrap">' + place_info["desc"] + '</span></div></div></div>';
       infowindow = new google.maps.InfoWindow({
         content: contentString
       });
-      google.maps.event.addListener(marker, 'click', function() {
+      
+      google.maps.event.addListener(marker, 'click', function(e) {
         infowindow.open(map, marker);
+        e.stopPropagation();
       });
       info_windows.push(infowindow);
       places_marker.push(marker);

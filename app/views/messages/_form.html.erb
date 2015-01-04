@@ -8,7 +8,12 @@
 
   <div class="field">
     <%= f.label :to %><br />
-    <%= text_field_tag :user_ids, {} %>
+    <% if @recv.nil? %>
+      <%= text_field_tag :user_ids, {} %>
+    <% else %>
+      <%= @user_recv.profile.full_name %>
+      <%= hidden_field_tag :user_ids, @recv %>
+    <% end %>
   </div>
 
   <div class="field">

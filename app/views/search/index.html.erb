@@ -2,12 +2,12 @@
 <div class="page-container">
   <div id="content-full">
     <div class="padding">
-      <div class="resource_container">
+      <div class="resource_container_blue title_text">
         <%= t('.search_result_text') %> <%= @keyword %> :
       </div>
-      <% if @term == "people" %>
+      <%# if @term == "people" %>
         <div class="resource_container">
-          <div class="title_text"><%= t('.friend_title') %></div>
+          <div class="title_text bold_text"><%= t('.friend_title') %></div>
         </div>
         <% if @users != nil %>
           <div class="resource_container">
@@ -15,12 +15,12 @@
               <%= render :partial => "friend_found", :locals => {:users => @users} %>
             </div>
             <div class="clear_float"></div>
-            <div id="paginator_friend">
-              <%= paginate @users, :remote => true, :param_name => "people_page", :theme => "default" %>
-            </div>
+            <%#*<div id="paginator_friend">%>
+              <%#= paginate @users, :remote => true, :param_name => "people_page", :theme => "default" %>
+            <%#*</div>%>
           </div>
         <% end %>
-      <% else %>
+      <%# else %>
         <div class="resource_container">
           <div class="title_text bold_text"><%= t('.city_title') %></div>
         </div>
@@ -30,9 +30,9 @@
               <%= render :partial => "cities/cities", :locals => {:cities => @cities} %>
             </div>
             <div class="clear_float"></div>
-            <div id="paginator_city">
-              <%= paginate @cities, :remote => true, :param_name => "city_page", :theme => "default" %>
-            </div>
+            <%#*<div id="paginator_city">%>
+              <%#= paginate @cities, :remote => true, :param_name => "city_page", :theme => "default" %>
+            <%#*</div>%>
           </div>
         <% end %>
 
@@ -46,13 +46,16 @@
                 <%= render :partial => "place_found", :locals => {:places => @places} %>
               </div>
               <div class="clear_float"></div>
-              <div id="paginator_place">
-                <%= paginate @places, :remote => true, :param_name => "place_page", :theme => "default" %>
-              </div>
+              <%#*<div id="paginator_place">%>
+                <%#= paginate @places, :remote => true, :param_name => "place_page", :theme => "default" %>
+              <%#*</div>%>
             </div>
           <% end %>
         </div>
-      <% end %>
+        <div id="paginator_search">
+          <%= paginate @result, :remote => true, :param_name => "page", :theme => "default" %>
+        </div>
+      <%# end %>
     </div>
   </div>
 </div>

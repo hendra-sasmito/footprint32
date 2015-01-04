@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
-         :lockable, :omniauthable, :async,
+         :lockable, :omniauthable, #:async,
          :validatable, :email_regexp =>  /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i,
          :omniauth_providers => [:facebook, :google_oauth2] #:twitter
 
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
 #  accepts_nested_attributes_for :profile_photo
 
   has_one :profile_photo, :through => :profile, :inverse_of => :user
-  has_one :cover_photo, :through => :profile, :inverse_of => :user
+#  has_one :cover_photo, :through => :profile, :inverse_of => :user
 
   has_many :friendships
   has_many :friends,

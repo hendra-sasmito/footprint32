@@ -1,7 +1,7 @@
 <div class="">
   <div class="left_div">
   <%=h link_to(image_tag(get_profile_photo_url(photo.creator.profile_photo),
-    :class => "thumb_profile_pic imagedropshadow"), user_profile_path(photo.creator)) %>
+    :class => "thumb_profile_pic"), user_profile_path(photo.creator)) %>
   </div>
   <div class="links_item_owner">
     <span class="wordwrap normal_text"><%= link_to photo.creator.profile.full_name, user_profile_path(photo.creator), :class => "general" %></span><br/>
@@ -31,7 +31,7 @@
   <%#*</div>%>
   <div id="comments_partial_<%= photo.id %>">
   </div>
-  <%#*<div id="paginator_<%= photo.id %><!--">%>-->
-  <%#*</div>%>
+  <div id="paginator_<%= photo.id %>"%>
+  </div>
 
 </div>

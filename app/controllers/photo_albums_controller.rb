@@ -265,11 +265,11 @@ class PhotoAlbumsController < ApplicationController
 
   def get_albums(user)
     if (user == current_user)
-      return @user.photo_albums
+      return @user.photo_albums.includes(:default_photo, :albumable, :creator)
     elsif (Friendship.is_friend?(current_user, user))
-      return @user.photo_albums.shared_photo_album.includes(:default_photo)
+      return @user.photo_albums.shared_photo_album.includes(:default_photo, :albumable, :creator)
     else
-      return @user.photo_albums.public_photo_album.includes(:default_photo)
+      return @user.photo_albums.public_photo_album.includes(:default_photo, :albumable, :creator)
     end
   end
 

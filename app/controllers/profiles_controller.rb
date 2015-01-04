@@ -7,7 +7,6 @@ class ProfilesController < ApplicationController
   # GET /profiles/1.json
   def show
     @user = User.find_by_id(params[:user_id])
-    @profile_album = @user.photo_albums.find_by_default(true)
     if !@user.nil?
       @profile = @user.profile
       @photo_album = current_user.photo_albums.find_by_default(true)
@@ -30,12 +29,16 @@ class ProfilesController < ApplicationController
 #      else
 #        @events = @user.events.includes(:creator, :place).public_event.incoming_event
 #      end
-      @photos = @user.photos.includes(:creator, :photo_album).order('created_at DESC').page(params[:photo_page]).per(10)
+      if is_current_user(@user)
+        @photos = @user.photos.includes(:creator, :photo_album).order('created_at DESC').page(params[:photo_page]).per(12)
+      else
+        @photos = @user.photos.public_photo.includes(:creator, :photo_album).order('photos.created_at DESC').page(params[:photo_page]).per(12)
+      end
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
-      @events = @user.events.includes(:creator, :place).incoming_event
+      #@events = @user.events.includes(:creator, :place).incoming_event
 
       @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:review_page]).per(10)
-      @location = @user.location
+      #@location = @user.location
 
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)

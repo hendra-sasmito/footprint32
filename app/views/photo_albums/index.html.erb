@@ -123,7 +123,7 @@
           map: map,
           draggable: false,
           anchor: RichMarkerPosition.MIDDLE,
-          content: '<div class="rich_marker"><img src="' + place_info["image"] + '"/></div>'
+          content: '<div class="rich_marker"><img style="width:80px;" src="' + place_info["image"] + '" title="' + place_info["name"] + '"/></div>'
         });
 
         contentString = '<div class="infowindow"><div class="infowindow_image"><a href="' + place_info["path"] + '"><img src="' + place_info["image"] + '" class="photo_in_profile" alt=""></a></div><div class="infowindow_content"><div class="bold_text"><a href="' + place_info["path"] + '">' + place_info["name"] + '</a></div>' + '<div class="infowindow_desc"><span class="wordwrap">' + place_info["desc"] + '</span></div></div></div>';

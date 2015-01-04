@@ -15,7 +15,7 @@
         <%= link_to city.name, city_path(city), :class => "general" %>
       </div>
       <%= city.region.name if city.region %>, <%= city.country.name %><br/>
-      <%= fa_icon("comment", :class => "bluecolor mediumsize") %> <%= pluralize(city.reviews.size, "Review") %>
+      <%= fa_icon("comment", :class => "bluecolor mediumsize") %> <%= pluralize(city.reviews_count, "Review") %>
       <%= fa_icon("heart", :class => "redcolor mediumsize") %> <%= pluralize(city.favorite_cities_count, "Like") %>
       <%= fa_icon("user", :class => "blackcolor mediumsize") %> <%= pluralize(city.visited_cities_count, "Visitor") %>
     </div>

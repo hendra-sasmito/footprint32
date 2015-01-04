@@ -7,6 +7,8 @@
       </div>
       <div class="resource_container">
         <%= render 'form' %>
+      </div>
+      <div class="resource_container">
         <%= link_to t('.show'), user_event_path(@user, @event), :class => "general" %> |
         <%= link_to t('.back'), user_events_path(@user), :class => "general" %>
       </div>

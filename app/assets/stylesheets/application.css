@@ -20,7 +20,6 @@
  *= require ../../../vendor/assets/stylesheets/jquery.fancybox-thumbs.css
  *= require ../../../vendor/assets/stylesheets/tipsy.css
  *= require ../../../vendor/assets/stylesheets/jquery.custom-scrollbar.css
- *= require ../../../vendor/assets/stylesheets/icheck-blue.css
  *= require ../../../vendor/assets/stylesheets/jquery.justifiedgallery.min.css
  *= require ../../../vendor/assets/stylesheets/jqvmap.css
  *= require ../../../vendor/assets/stylesheets/adipoli.css
@@ -36,4 +35,5 @@
  *= require ../../../vendor/assets/stylesheets/bootstrap.min.css
  *= require ../../../vendor/assets/stylesheets/zabuto_calendar.min.css
  *= require ../../../vendor/assets/stylesheets/jquery.cluetip.css
+
  */

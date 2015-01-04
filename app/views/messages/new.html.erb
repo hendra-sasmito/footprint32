@@ -2,9 +2,11 @@
 <% content_for :head do %>
   <script type="text/javascript">
     $(document).ready(function() { // document ready
+      <% if @recv.nil? %>
       $("#user_ids").tokenInput(
         "<%= messages_get_recipient_url %>", { minChars: 3 }
       );
+      <% end %>
       });
   </script>
 
@@ -17,7 +19,7 @@
         <div class="title_text">New message</div>
       </div>
       <div class="resource_container">
-        <div class="general_box_section"><%= link_to fa_icon("envelope", :class => "cyancolor mediumsize") + " Inbox", messages_path, :class => "general" %></div>
+        <div class="general_box_section"><%= link_to fa_icon("envelope", :class => "cyancolor mediumsize") + " Back to Inbox", messages_path, :class => "general" %></div>
         <%= render 'form' %>
       </div>
     </div>

@@ -2,66 +2,66 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
 
   def index
-    puts "------------home index----------"
-    puts params[:b1]
-    puts params[:b2]
-    puts params[:b3]
-    puts params[:b4]
-    puts "------"
-    puts params[:option]
+#    puts "------------home index----------"
+#    puts params[:b1]
+#    puts params[:b2]
+#    puts params[:b3]
+#    puts params[:b4]
+#    puts "------"
+#    puts params[:option]
     a = params[:b1].to_f
     b = params[:b2].to_f
     c = params[:b3].to_f
     d = params[:b4].to_f
-    puts a
-    puts b
-    puts c
-    puts d
-    option = params[:option]
-    if option == "place"
-      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(50)
-      @result_list = @result.map do |u|
-        image = view_context.get_small_photo_url(u.default_place_photo)
-        {
-          :latitude => u.latitude,
-          :longitude => u.longitude,
-          :id => u.id,
-          :name => u.name,
-          :desc => !u.description.nil? ? u.description : "",
-          :street => !u.street.nil? ? u.street : "",
-          :city => u.city.name,
-          :region => !u.city.region.nil? ? u.city.region.name : "",
-          :country => !u.city.country.nil? ? u.city.country.name : "",
-          :image => image,
-          :path => place_url(u),
-          :type => "Place",
-          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
-          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
-          :rate => u.favorite_places_count
-        }
-      end
-    elsif option == "city"
-      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
-      @result_list = @result.map do |u|
-        image = view_context.get_small_photo_url(u.default_city_photo)
-        {
-          :latitude => u.latitude,
-          :longitude => u.longitude,
-          :id => u.id,
-          :name => u.name,
-          :region => !u.region.nil? ? u.region.name : "",
-          :country => !u.country.nil? ? u.country.name : "",
-          :image => image,
-          :path => city_url(u),
-          :type => "City",
-          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
-          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
-          :rate => u.favorite_cities_count
-        }
-      end
-    else
+#    puts a
+#    puts b
+#    puts c
+#    puts d
+#    option = params[:option]
+#    if option == "place"
+#      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(50)
+#      @result_list = @result.map do |u|
+#        image = view_context.get_small_photo_url(u.default_place_photo)
+#        {
+#          :latitude => u.latitude,
+#          :longitude => u.longitude,
+#          :id => u.id,
+#          :name => u.name,
+#          :desc => !u.description.nil? ? u.description : "",
+#          :street => !u.street.nil? ? u.street : "",
+#          :city => u.city.name,
+#          :region => !u.city.region.nil? ? u.city.region.name : "",
+#          :country => !u.city.country.nil? ? u.city.country.name : "",
+#          :image => image,
+#          :path => place_url(u),
+#          :type => "Place",
+#          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
+#          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
+#          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+#          :rate => u.favorite_places_count
+#        }
+#      end
+#    elsif option == "city"
+#      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
+#      @result_list = @result.map do |u|
+#        image = view_context.get_small_photo_url(u.default_city_photo)
+#        {
+#          :latitude => u.latitude,
+#          :longitude => u.longitude,
+#          :id => u.id,
+#          :name => u.name,
+#          :region => !u.region.nil? ? u.region.name : "",
+#          :country => !u.country.nil? ? u.country.name : "",
+#          :image => image,
+#          :path => city_url(u),
+#          :type => "City",
+#          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
+#          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
+#          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+#          :rate => u.favorite_cities_count
+#        }
+#      end
+#    else
 #      activities = Activity.where("activity_type <= ?", 2).includes(:target).order("created_at DESC").page(params[:page]).per(10)
 #      puts "----"
 #      @result = []
@@ -116,15 +116,15 @@ class HomeController < ApplicationController
           :rate => u.favorite_cities_count
         }
       end
-      puts ",,,,,,,,,,,,"
-      @result.each do |r|
-        print r.name + " "
-        print r.latitude.to_s + " "
-        print r.longitude.to_s + " "
-        puts " "
-      end
+#      puts ",,,,,,,,,,,,"
+#      @result.each do |r|
+#        print r.name + " "
+#        print r.latitude.to_s + " "
+#        print r.longitude.to_s + " "
+#        puts " "
+#      end
 #      puts @result_list
-    end
+#    end
 
 #    @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #    polymorphic_association_includes @activities, :target, {

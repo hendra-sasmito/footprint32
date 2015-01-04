@@ -12,7 +12,7 @@
 
 <%#*<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">%>
 <div class="modal_form">
-<%= simple_form_for([@user, @event], :validate => true, :remote => true) do |f| %>
+<%= simple_form_for([@user, @event], :validate => true, :remote => request.xml_http_request?) do |f| %>
   <%= render "shared/form_error_message", :target => @event %>
 
   <div class="field">

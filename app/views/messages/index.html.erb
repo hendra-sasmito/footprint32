@@ -6,20 +6,22 @@
         <div class="title_text"><%= t('.inbox') %></div>
       </div>
       <div class="resource_container">
-      <div class="button_message left_div"><%= link_to 'New Message', new_message_path, :class => "general-button" %></div>
-      <div class="right_div">
-        <%= form_tag search_messages_path, :method => :get do %>
-          <%= text_field_tag :search, params[:search] %>
-          <%= submit_tag "Search", :name => nil, :class => "general-button" %>
-        <% end %>
+        <div class="button_message left_div"><%= link_to fa_icon("pencil", :class => "whitecolor mediumsize") + ' New Message', new_message_path, :class => "general-button" %></div>
+        <div class="right_div">
+          <%= form_tag search_messages_path, :method => :get do %>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag "Search", :name => nil, :class => "general-button" %>
+          <% end %>
+        </div>
+        <div class="clear_float"></div>
       </div>
-      <div class="clear_float"></div>
-      <div id="messages">
-        <%= render :partial => "messages/messages", :locals => {:message_statuses => @message_statuses} %>
-      </div>
-      <div id="paginator">
-        <%= paginate @message_statuses, :param_name => "page", :theme => "default" %>
-      </div>
+      <div class="resource_container">
+        <div id="messages">
+          <%= render :partial => "messages/messages", :locals => {:message_statuses => @message_statuses} %>
+        </div>
+        <div id="paginator">
+          <%= paginate @message_statuses, :param_name => "page", :theme => "default" %>
+        </div>
       </div>
     </div>
   </div>

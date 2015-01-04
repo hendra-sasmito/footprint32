@@ -3,12 +3,12 @@
 <% content_for :head do %>
   <script type="text/javascript">
     $(document).ready(function($) { // document ready
-      $('#user_remember_me').on('ifChecked', function(event){
+      /*$('#user_remember_me').on('ifChecked', function(event){
         $('#user_remember_me').attr('checked', true);
       });
       $('#user_remember_me').on('ifUnchecked', function(event){
         $('#user_remember_me').attr('checked', false);
-      });
+      });*/
 
       $('#nav').localScroll(800);
 
@@ -57,7 +57,7 @@
                 </div>
                 <% if devise_mapping.rememberable? -%>
                   <div class="check_box_container">
-                    <div class="check_box_div"><%= f.check_box :remember_me %></div><%= f.label t('activerecord.attributes.user.remember_me') %>
+                    <div class="check_box_div"><%= f.check_box :remember_me %></div><%= f.label t('activerecord.attributes.user.remember_me'), :class => "cyancolor" %>
                   </div>
                 <% end -%>
                 <div>

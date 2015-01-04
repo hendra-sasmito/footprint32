@@ -264,6 +264,7 @@ en:
       friend_request: "friend request"
     review:
       vote: "vote"
+      delete_confirmation: "Are you sure?"
     visited_places:
       title: "Visited Places"
     edit:

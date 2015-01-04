@@ -5,6 +5,52 @@
       <div class="resource_container_blue">
         <div class="title_text"><%= t('.title')%></div>
       </div>
+      <% if @review.reviewable.class.to_s == "Place" %>
+      <div class="resource_container3 place_page_container">
+        <div class="place_page_image">
+          <%= image_tag(get_small_photo_url(@review.reviewable.default_place_photo)) %>
+        </div>
+        <div class="place_page_info">
+          <div class="title_text white_text"><span class="wordwrap"><%= @review.reviewable.name %></span></div>
+          <div class="desc_text_light"><%= link_to @review.reviewable.category.name, category_path(@review.reviewable.category), :class => "general" if !@review.reviewable.category.nil? %></div>
+          <div class="place_page_address white_text small_text">
+            <span class="wordwrap"><%= @review.reviewable.street %></span><br/>
+            <span class="wordwrap"><%= link_to @review.reviewable.city.name, city_path(@review.reviewable.city), :class => "general_white" if @review.reviewable.city %></span> <span class=""><%= @review.reviewable.postcode if @review.reviewable.postcode %></span><br/>
+            <span class="wordwrap"><%= @review.reviewable.city.region.name if @review.reviewable.city.region %></span><br/>
+            <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general_white" if @review.reviewable.country %></span><br/>
+          </div>
+          <div class="place_page_description light_grey_text small_text">
+            <span class="wordwrap"><%= @review.reviewable.description %></span>
+          </div>
+          <div class="right_div white_text">
+            <div id="place_stats_id">
+              <%= render :partial => "places/place_stats", :locals => {:place => @review.reviewable} %>
+            </div>
+          </div>
+        </div>
+        <div class="clear_float"></div>
+      </div>
+      <% else %>
+      <div class="resource_container3 cityInfoContainer">
+        <div class="city_page_image">
+          <%= image_tag( get_small_photo_url(@review.reviewable.default_city_photo)) %>
+        </div>
+
+        <div class="city_page_info">
+          <div class="title_text white_text"><span class="wordwrap"><%= @review.reviewable.name %></span></div>
+          <div class="city_page_address white_text">
+            <span class="wordwrap"><%= @review.reviewable.region.name if @review.reviewable.region %></span><br/>
+            <span class="wordwrap"><%= link_to @review.reviewable.country.name, country_path(@review.reviewable.country), :class => "general_white" %></span><br/>
+          </div>
+          <div class="right_div white_text">
+            <div id="city_stats_id">
+              <%= render :partial => "cities/city_stats", :locals => {:city => @review.reviewable} %>
+            </div>
+          </div>
+        </div>
+        <div class="clear_float"></div>
+      </div>
+      <% end %>
       <div class="resource_container">
         <%= render 'form' %>
         <%= link_to t('.show'), review_path(@review), :class => "general" %> |

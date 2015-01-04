@@ -2,23 +2,24 @@ $(document).ready(function() {
 
   <% url = Footprint32::Application.routes.url_helpers %>
 
-    $('.hashtmltip').cluetip({
-      width: '400px',
-      local:true,
-      cursor: 'pointer',
-      mouseOutClose: true,
-      showTitle: false,
-      sticky: true,
-      closePosition: 'top',
-      arrows: true
-    });
+  $('.hashtmltip').cluetip({
+    width: '400px',
+    local:true,
+    cursor: 'pointer',
+    mouseOutClose: true,
+    showTitle: false,
+    sticky: true,
+    closePosition: 'top',
+    arrows: true
+  });
 
   $('#show_photos').click(function(e) {
     var url = $(this).attr('href');
     var dialog_form = $('<div id="dialog-form">Loading form...</div>').dialog({
       autoOpen: false,
-      width: 620,
+      width: 682,
       modal: true,
+      position: { my: "center", at: "top+30%", of: window },
       open: function() {
         return $(this).load(url + ' #content');
       },
@@ -48,12 +49,15 @@ $(document).ready(function() {
 
   $('#create_place').click(function(e) {
     var url = $(this).attr('href');
+    var content;
     var dialog_form = $('<div id="dialog-form">Loading form...</div>').dialog({
       autoOpen: false,
-      width: 520,
+      width: 682,
       modal: true,
+      position: { my: "center", at: "top+30%", of: window },
       open: function() {
-        return $(this).load(url + ' #content');
+        content = $(this).load(url + ' #content');
+        return content;
       },
       close: function() {
         $('#dialog-form').remove();
@@ -90,10 +94,10 @@ $(document).ready(function() {
     $('#loading-indicator').hide();
   });
 
-  $('input').icheck({
+  /*$('input').icheck({
     checkboxClass: 'icheckbox_flat-blue',
     radioClass: 'iradio_flat-blue'
-  });
+  });*/
 
   $('input, textarea').placeholder();
 
@@ -140,59 +144,31 @@ $(document).ready(function() {
     },
     beforeLoad: function(){
       console.info( 'beforeLoad:' );
-      /*var photo_id = $.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
+      var photo_id = this.element.context.href.split('/system/photo/images/')[1].split('/original/')[0]; //$.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
       $.ajax({
                 url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
-                data: {
-                    //last: $(this).attr('last')
-                },
-                dataType: 'script',
-                success: function(data) {
-                  var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
-                  $('.fancybox-sidebar').html(description);
-                }
-              });*/
-    },
-    afterLoad: function(current, previous) {
-      console.info( 'afterLoad:' );
-      var photo_id = current.href.split('/system/photo/images/')[1].split('/original/')[0];
-      $.ajax({
-                url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
-                data: {
-                    //last: $(this).attr('last')
-                },
                 dataType: 'script',
                 success: function(data) {
                   var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
                   $('.fancybox-sidebar').html(description);
                 }
               });
-      /*console.info( 'Current: ' + current.href );
-      console.info( 'Previous: ' + (previous ? previous.href : '-') );
-
-      if (previous) {
-          console.info( 'Navigating: ' + (current.index > previous.index ? 'right' : 'left') );
-      }
-      */
+    },
+    afterLoad: function(current, previous) {
+      console.info( 'afterLoad:' );
     },
     beforeShow: function(){
       console.info( 'beforeShow:' );
     },
     afterShow: function(){
       console.info( 'afterShow:' );
-      /*var photo_id = $.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
-      $.ajax({
-                url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
-                data: {
-                    //last: $(this).attr('last')
-                },
-                dataType: 'script'
-              });*/
       var description = "<div class='links'>"+$("#photo_description > div").eq(this.index).html()+"</div>"
-      $('.fancybox-sidebar').html(description);
-      //$.fancybox.update();
-      //$('.fancybox-overlay').append(description);
-      $(".content-area").customScrollbar();
+      setTimeout(function() {
+        $('.fancybox-sidebar').html(description);
+        $(".content-area").customScrollbar();
+      }, 100);
+      /*$('.fancybox-sidebar').html(description);
+      $(".content-area").customScrollbar();*/
     },
     //content: '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
     nextEffect: 'fade',
@@ -207,7 +183,7 @@ $(document).ready(function() {
     'rowHeight':120,
     'fixedHeight':false,
     'captions':true,
-    'margins':5,
+    'margins':1,
     'rel' : 'gallery',
     'onComplete': function(gallery) {
       $(gallery).find("a").addClass('fancybox-buttons');

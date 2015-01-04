@@ -7,6 +7,8 @@
       </div>
       <div class="resource_container">
         <%= render 'form' %>
+      </div>
+      <div class="resource_container">
         <%= link_to t('.show'), user_photo_album_path(@user, @photo_album), :class => "general" %> |
         <%= link_to t('.back'), user_photo_albums_path(@user), :class => "general" %>
       </div>

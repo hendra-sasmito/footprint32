@@ -61,7 +61,8 @@ class VisitedPlacesController < ApplicationController
           :region => !u.city.region.nil? ? u.city.region.name : "",
           :country => !u.city.country.nil? ? u.city.country.name : "",
           :image => image,
-          :path => place_url(u)
+          :path => place_url(u),
+          :rate => u.visited_places_count
         }
       end
     else
@@ -84,6 +85,8 @@ class VisitedPlacesController < ApplicationController
         if !@place.nil?
           @visited_place = @user.visited_places.create(:place_id => @place.id)
           @place = Place.find_by_id(params[:visited_place][:place_id])
+          @user.profile.location_id = @place.id
+          @user.save!
           flash[:notice] = t(:checkin_succeed, :username => @user.profile.full_name, :placename => @place.name)
         else
           flash[:notice] = t(:request_fail)

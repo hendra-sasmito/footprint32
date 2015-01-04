@@ -20,7 +20,7 @@
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Verdana,Arial,sans-serif/*{ffDefault}*/; font-size: 1em; }
 .ui-widget-content { border-radius: 5px; border: 0px solid #aaaaaa/*{borderColorContent}*/; background-color: #ffffff; color: #222222/*{fcContent}*/; }
 .ui-widget-content a { color: #FFFFFF/*{fcContent}*/; }
-.ui-widget-header { border: 1px solid #aaaaaa/*{borderColorHeader}*/; background-color: #124191; color: #222222/*{fcHeader}*/; font-weight: bold; }
+.ui-widget-header { /*border: 1px solid #aaaaaa*//*{borderColorHeader}*/; background-color: #2969B0; color: #222222/*{fcHeader}*/; font-weight: bold; }
 .ui-widget-header a { color: #222222/*{fcHeader}*/; }
 
 .ui-widget-header .ui-icon {
@@ -30,7 +30,7 @@
     background-position: -96px -128px;
 }
 
-.ui-dialog { position: absolute; top: 0; left: 0; padding: .1em; width: 300px; overflow: hidden; }
+.ui-dialog { position: absolute; top: 0; left: 0; /*padding: .1em;*/ width: 300px; overflow: hidden; }
 .ui-dialog .ui-dialog-titlebar { padding: .1em; position: relative;  }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; }
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
