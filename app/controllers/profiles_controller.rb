@@ -38,6 +38,7 @@ class ProfilesController < ApplicationController
       #@events = @user.events.includes(:creator, :place).incoming_event
 
       @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:review_page]).per(10)
+      @comment = Comment.new
       #@location = @user.location
 
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)

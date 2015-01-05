@@ -60,6 +60,7 @@ class PhotoAlbumsController < ApplicationController
 
     if (is_user_allowed(@user, @photo_album.privacy))
       @photos = @photo_album.photos.page(params[:photo_album_page]).per(5)
+      @comment = Comment.new
     else
       flash[:notice] = t(:not_allowed)
       return redirect_to user_photo_albums_path(@user)

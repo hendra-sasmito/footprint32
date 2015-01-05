@@ -45,8 +45,8 @@ class CommentsController < ApplicationController
     @comment.commentable_id = params[:comment][:commentable_id]
     @comment.commentable_type = params[:comment][:commentable_type]
 
-    commentable = @comment.commentable
-    @friend = commentable.creator
+    @commentable = @comment.commentable
+    @friend = @commentable.creator
 
     respond_to do |format|
       if @comment.save

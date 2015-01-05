@@ -25,13 +25,17 @@
     
   </div>
   <div class="default-skin wordwrap"><%= photo.description %></div>
-  <%#*<div id="added_comment"></div>%>
-  <%#*<div id="comments_partial">%>
-    <%#= render :partial => 'comments/comments_sidebar', :locals => {:comments => photo.latest_comments} %>
-  <%#*</div>%>
+
   <div id="comments_partial_<%= photo.id %>">
   </div>
-  <div id="paginator_<%= photo.id %>"%>
+  <div id="paginator_comment_<%= photo.id %>"%>
   </div>
 
+  <div class="">
+    <% if user_signed_in? %>
+      <div id="new_comment">
+        <%= render :partial => 'comments/form_photo_sidebar', :locals => {:commentable => photo} %>
+      </div>
+    <% end %>
+  </div>
 </div>

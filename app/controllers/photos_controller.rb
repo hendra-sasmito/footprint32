@@ -13,6 +13,7 @@ class PhotosController < ApplicationController
           @photo = @photo_album.photos.find_by_id(params[:id])
           @comment = Comment.new
           @photoable = @photo.photoable
+          @commentable = @photo
           @comments = @photo.comments.includes(:user => [:profile, :profile_photo]).order("created_at DESC").page(params[:comment_page]).per(5)
           @photo_exif = get_exif_info(@photo)
         else

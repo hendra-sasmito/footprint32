@@ -99,6 +99,7 @@ class PlacesController < ApplicationController
 
 #      @events = @place.events.public_event.incoming_event.includes({:creator => [:profile]}).order("date ASC").page(params[:event_page]).per(5)
 
+      @comment = Comment.new
       @review = Review.new
       #1.times { @review.review_photos.build }
       @reviewable = @place

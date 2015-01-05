@@ -42,6 +42,7 @@ class EventsController < ApplicationController
     if (is_user_allowed(@user, @event.privacy))
       @comment = Comment.new
       @comments = @event.comments.includes(:user => [:profile]).order("created_at DESC").page(params[:comment_page]).per(5)
+      @commentable = @event
     else
       flash[:error] = t(:event_not_found)
       return redirect_back_or_default(user_events_path(@user))

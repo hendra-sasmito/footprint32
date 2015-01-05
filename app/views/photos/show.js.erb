@@ -1,2 +1,2 @@
-$('#comments_partial').html('<%= escape_javascript render(:partial => 'comments/comments', :locals => {:comments => @comments}) %>');
-$('#paginator_comment').html('<%= escape_javascript(paginate(@comments, :remote => true, :param_name => "comment_page", :theme => "default").to_s) %>');
+$('#comments_partial_<%= @commentable.id %>').html('<%= escape_javascript render(:partial => 'comments/comments', :locals => {:comments => @comments}) %>');
+$('#paginator_comment_<%= @commentable.id %>').html('<%= escape_javascript(paginate(@comments, :remote => true, :param_name => "comment_page", :theme => "default").to_s) %>');

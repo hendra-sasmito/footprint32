@@ -254,6 +254,10 @@ textarea {
     font-size:13px;
 }
 
+.textarea_sidebar {
+width: 255px;
+}
+
 #navwrapper {
 	width: 950px;
     min-width:950px;
@@ -673,11 +677,12 @@ div.album_name
     margin-bottom:10px;
 }
 .comment_box_sidebar {
-    padding: 5px;
+    padding: 10px;
     position: relative;
     border-radius:5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
+    background-color:#FFFFFF;
     margin-bottom:10px;
 }
 .comment_box_user {

@@ -23,7 +23,7 @@ class City < ActiveRecord::Base
   validates :name, :presence => true
   validates :country, :presence => true
 
-  default_scope includes(:region, :country)
+#  default_scope includes(:region, :country)
 
   def country_name
     country.name

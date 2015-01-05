@@ -250,7 +250,7 @@
 
               <div class="place_page_image">
                 <% if !@place_cover_photo.nil? %>
-                  <%= link_to image_tag(@place_cover_photo.image.url(:small)), @place_cover_photo.image.url(:original), :class=>"fancybox-buttons", "data-fancybox-group"=>"cover" %>
+                  <%= link_to image_tag(@place_cover_photo.image.url(:small)), @place_cover_photo.image.url(:original), :class=>"fancybox-simple", "data-fancybox-group"=>"cover" %>
                 <% else %>
                   <%= image_tag('city.png') %>
                 <% end %>

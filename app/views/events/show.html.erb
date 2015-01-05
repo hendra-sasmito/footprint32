@@ -108,11 +108,11 @@
           </div>
         <% end %>
       </div>
-        <div id="added_comment"></div>
-        <div id="comments_partial">
+        <div id="added_comment_<%= @event.id %>"></div>
+        <div id="comments_partial_<%= @event.id %>">
           <%= render :partial => 'comments/comments', :locals => {:comments => @comments} %>
         </div>
-        <div id="paginator_comment">
+        <div id="paginator_comment_<%= @event.id %>">
           <%= paginate @comments, :remote => true, :param_name => "comment_page", :theme => "default" %>
         </div>
     </div>
