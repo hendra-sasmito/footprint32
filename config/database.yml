@@ -15,7 +15,7 @@ development:
   database: footprint32_development
   pool: 5
   username: root
-  password: LxQcUctjj8Q1NA3
+  password: <%= ENV['RAILS_DB_PWD'] %>
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -28,7 +28,7 @@ test:
   database: footprint32_test
   pool: 5
   username: root
-  password: LxQcUctjj8Q1NA3
+  password: <%= ENV['RAILS_DB_PWD'] %>
   host: localhost
 
 production:
@@ -38,5 +38,5 @@ production:
   database: footprint32_production
   pool: 5
   username: root
-  password: LxQcUctjj8Q1NA3
+  password: <%= ENV['RAILS_DB_PWD'] %>
   host: localhost
