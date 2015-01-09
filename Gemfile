@@ -109,3 +109,6 @@ gem 'peek-performance_bar'
 gem 'peek-gc'
 gem "flot-rails"
 gem 'simple_token_authentication'
+
+gem "oink"
+#gem "rack-insight"

@@ -138,6 +138,7 @@ GEM
     hashie (1.2.0)
     highline (1.6.19)
     hike (1.2.3)
+    hodel_3000_compliant_logger (0.1.1)
     http_parser.rb (0.5.3)
     http_parser.rb (0.5.3-x86-mingw32)
     httpauth (0.2.0)
@@ -198,6 +199,9 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
+    oink (0.10.1)
+      activerecord
+      hodel_3000_compliant_logger
     omniauth (1.1.1)
       hashie (~> 1.2)
       rack
@@ -385,6 +389,7 @@ DEPENDENCIES
   nested_form
   newrelic_rpm
   oauth2
+  oink
   omniauth
   omniauth-facebook
   omniauth-google-oauth2

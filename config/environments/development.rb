@@ -56,5 +56,6 @@ Footprint32::Application.configure do
 
   Paperclip.options[:command_path] = "C:\Program Files\ImageMagick-6.5.6-Q8"
 
-
+#  config.middleware.use 'Rack::Insight::App',
+#    :secret_key => 'someverylongandveryhardtoguesspreferablyrandomstring'
 end

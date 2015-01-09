@@ -145,6 +145,8 @@ $(document).ready(function() {
     beforeLoad: function(){
       console.info( 'beforeLoad:' );
       var photo_id = this.element.context.href.split('/system/photo/images/')[1].split('/original/')[0]; //$.fancybox.current.href.split('/system/photo/images/')[1].split('/original/')[0];
+      var photo_id_temp = photo_id.split("/");
+      photo_id = photo_id_temp[photo_id_temp.length - 1];
       $.ajax({
                 url: '/comments/retrieve'+'?type=Photo'+'&idn='+photo_id,
                 dataType: 'script',

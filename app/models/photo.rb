@@ -26,8 +26,10 @@ class Photo < ActiveRecord::Base
        :thumb => "100x100#",
        :small  => "400x" }, #"285x180#" },
        :source_file_options => { :all => '-auto-orient' },
-       :url => "/system/photo/:attachment/:id/:style/:basename.:extension",
-       :path => ":rails_root/public/system/photo/:attachment/:id/:style/:basename.:extension",
+#       :url => "/system/photo/:attachment/:id/:style/:basename.:extension",
+#       :path => ":rails_root/public/system/photo/:attachment/:id/:style/:basename.:extension",
+       :url => attachment_virtual_path,
+       :path => attachment_real_path,
        :default_url => lambda { |a| "#{a.instance.create_default_url}" }
 
   JPEG_IMAGE = 'image/jpeg'
