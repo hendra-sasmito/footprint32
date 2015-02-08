@@ -106,16 +106,29 @@ class CommentsController < ApplicationController
       @commentable = @comment.commentable
       @comment.destroy
       flash[:notice] = t(:comment_deleted)
-      if @commentable.class.name == "Event"
-        return redirect_to user_event_path(@commentable.creator, @commentable)
-      elsif @commentable.class.name == "Photo"
-        return redirect_to user_photo_album_photo_path(@commentable.creator, @commentable.photo_album, @commentable)
-      else
-        return redirect_to home_index_path
-      end
+#      if @commentable.class.name == "Event"
+#        return redirect_to user_event_path(@commentable.creator, @commentable)
+#      elsif @commentable.class.name == "Photo"
+#        return redirect_to user_photo_album_photo_path(@commentable.creator, @commentable.photo_album, @commentable)
+#      else
+#        return redirect_to home_index_path
+#      end
     else
       flash[:error] = t(:comment_not_found)
       return redirect_back_or_default()
+    end
+
+    respond_to do |format|
+      if @commentable.class.name == "Event"
+        format.html { redirect_to user_event_path(@commentable.creator, @commentable) }
+        format.js   { render :layout => false }
+      elsif @commentable.class.name == "Photo"
+        format.html { redirect_to user_photo_album_photo_path(@commentable.creator, @commentable.photo_album, @commentable) }
+        format.js   { render :layout => false }
+      else
+        format.html { redirect_to home_index_path }
+        format.js   { render :layout => false }
+      end
     end
   end
 

@@ -67,6 +67,18 @@
          });
       <% end %>
 
+      $('#place_latitude').on("change", function () {
+        place_latitude = $(this).val();
+        place_marker.setPosition(new google.maps.LatLng(place_latitude, place_longitude));
+        map.setCenter(place_marker.getPosition());
+      });
+
+      $('#place_longitude').on("change", function () {
+        place_longitude = $(this).val();
+        place_marker.setPosition(new google.maps.LatLng(place_latitude, place_longitude));
+        map.setCenter(place_marker.getPosition());
+      });
+      
       function placeMarker(location) {
         place_marker.setPosition(location);
         map.setCenter(location);

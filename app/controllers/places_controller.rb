@@ -206,7 +206,7 @@ class PlacesController < ApplicationController
     @main_categories, @categories = get_categories
     
     @place = Place.new(params[:place])
-    @place.category_id = params[:category_id]
+    @place.category_id = params[:category]
 #    if !params[:new_city].blank? and !params[:new_city_name].blank? and !params[:country_id].blank?
 #      @country = Country.find_by_id(params[:country_id])
 #      if @country.nil?
