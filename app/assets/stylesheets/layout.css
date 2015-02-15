@@ -1483,6 +1483,7 @@ color:#ffffff;
 .disc-place-desc {
     padding:10px;
     margin-bottom:-10px;
+    min-height:80px;
 }
 .disc-place-desc-content-icon{
 	width:60px;

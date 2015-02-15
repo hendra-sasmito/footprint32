@@ -45,11 +45,11 @@ class VisitedPlacesController < ApplicationController
     puts d
     
     if !@user.nil?
-      @places = @user.my_visited_places.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:default_place_photo, :category, :city => [:country, :region]).order("updated_at DESC").page(params[:page]).per(25)
+      @places = @user.my_visited_places.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:default_photo, :category, :city => [:country, :region]).order("updated_at DESC").page(params[:page]).per(25)
 #      @places.to_json(:include => :city)
 
       @places_list = @places.map do |u|
-        image = view_context.get_small_photo_url(u.default_place_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

@@ -1,6 +1,6 @@
 <div class="city">
   <div class="city_image">
-    <%=h link_to image_tag(get_small_photo_url(city.default_city_photo), :class => ""), city_path(city) %>
+    <%=h link_to image_tag(get_small_photo_url(city.default_photo), :class => ""), city_path(city) %>
   </div>
   <div class="city_overlapped_info">
     <%= link_to city, :class => "white_text" do %>

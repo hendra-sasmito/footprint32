@@ -161,7 +161,7 @@ class EventsController < ApplicationController
           FbshareWorker.perform_async(@user.id, @content, @name, @link)
         end
         if false #disabled, not working with fb share
-        @activity = Activity.create!(:user_id => @event.creator.id, :activity_type => Activity::CREATE_EVENT, :target_type => @event.class.name, :target_id => @event.id)
+          @activity = Activity.create!(:user_id => @event.creator.id, :activity_type => Activity::CREATE_EVENT, :target_type => @event.class.name, :target_id => @event.id)
         end
         format.html { redirect_to user_event_path(@user, @event), :notice => t(:event_created) }
         format.json { render json: @event, status: :created, location: @event }

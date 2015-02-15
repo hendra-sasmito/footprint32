@@ -91,6 +91,7 @@ Footprint32::Application.routes.draw do
 
   get "home/index"
   get "home/news_feed"
+  get "home/updates"
 
   #devise_for :users
 #  ActiveAdmin.routes(self)

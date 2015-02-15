@@ -98,7 +98,7 @@ gem 'redis'
 gem 'capistrano'
 gem 'omniauth-google-oauth2'
 #gem "rediline", :git1 => 'git://github.com/dmathieu/rediline.git'
-gem "font-awesome-rails"
+gem "font-awesome-rails", '4.3.0.0'
 #gem 'mapbox-maki-rails'
 #gem "parsley-rails"
 gem 'newrelic_rpm'
@@ -112,3 +112,6 @@ gem 'simple_token_authentication'
 
 gem "oink"
 #gem "rack-insight"
+group :development do
+  gem 'meta_request'
+end

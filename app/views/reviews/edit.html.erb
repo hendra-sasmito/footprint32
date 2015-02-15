@@ -8,7 +8,7 @@
       <% if @review.reviewable.class.to_s == "Place" %>
       <div class="resource_container3 place_page_container">
         <div class="place_page_image">
-          <%= image_tag(get_small_photo_url(@review.reviewable.default_place_photo)) %>
+          <%= image_tag(get_small_photo_url(@review.reviewable.default_photo)) %>
         </div>
         <div class="place_page_info">
           <div class="title_text white_text"><span class="wordwrap"><%= @review.reviewable.name %></span></div>
@@ -33,7 +33,7 @@
       <% else %>
       <div class="resource_container3 cityInfoContainer">
         <div class="city_page_image">
-          <%= image_tag( get_small_photo_url(@review.reviewable.default_city_photo)) %>
+          <%= image_tag( get_small_photo_url(@review.reviewable.default_photo)) %>
         </div>
 
         <div class="city_page_info">

@@ -68,8 +68,8 @@ class SearchController < ApplicationController
 
     search = Sunspot.search Place, City, User do
       fulltext params[:search]
-      data_accessor_for(Place).include = [:default_place_photo, :city => [:region, :country]]
-      data_accessor_for(City).include = [:region, :country, :default_city_photo]
+      data_accessor_for(Place).include = [:default_photo, :city => [:region, :country]]
+      data_accessor_for(City).include = [:region, :country, :default_photo]
       data_accessor_for(User).include = [:profile, :profile_photo]
       paginate :page => params[:page], :per_page => 20
     end
@@ -89,13 +89,13 @@ class SearchController < ApplicationController
 #      @users = search.results
 #
 #    elsif term == "place"
-#      search_place = Place.solr_search(:include => [:category, :default_place_photo, :city => [:country, :region]]) do
+#      search_place = Place.solr_search(:include => [:category, :default_photo, :city => [:country, :region]]) do
 #        fulltext params[:search] #, :minimum_match => 1
 #        paginate :page => params[:place_page], :per_page => 12
 #      end
 #      @places = search_place.results
 #
-#      search_city = City.solr_search(:include => [:default_city_photo, :country, :region]) do
+#      search_city = City.solr_search(:include => [:default_photo, :country, :region]) do
 #        fulltext params[:search] #, :minimum_match => 1
 #        paginate :page => params[:city_page], :per_page => 6
 #      end

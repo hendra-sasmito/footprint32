@@ -48,7 +48,7 @@ class Place < ActiveRecord::Base
   has_many :location_user, :class_name => "Profile", :foreign_key => "location_id"
   has_many :review_photos, :through => :reviews
 
-  has_many :default_place_photo, :order => 'photos.created_at DESC', :limit => 1, :class_name => 'Photo', :as => :photoable
+  has_many :default_photo, :order => 'photos.created_at DESC', :limit => 1, :class_name => 'Photo', :as => :photoable
 
 #  default_scope includes(:category, :city)
   scope :recently_created, where("created_at > ?", DateTime.now - 1.week).order("created_at desc")

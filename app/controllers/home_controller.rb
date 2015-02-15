@@ -19,9 +19,9 @@ class HomeController < ApplicationController
 #    puts d
 #    option = params[:option]
 #    if option == "place"
-#      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_place_photo).order("favorite_places_count DESC").page(params[:place_page]).per(50)
+#      @result = Place.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes({:city => [:country, :region]}, :category, :reviews, :default_photo).order("favorite_places_count DESC").page(params[:place_page]).per(50)
 #      @result_list = @result.map do |u|
-#        image = view_context.get_small_photo_url(u.default_place_photo)
+#        image = view_context.get_small_photo_url(u.default_photo)
 #        {
 #          :latitude => u.latitude,
 #          :longitude => u.longitude,
@@ -42,9 +42,9 @@ class HomeController < ApplicationController
 #        }
 #      end
 #    elsif option == "city"
-#      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
+#      @result = City.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
 #      @result_list = @result.map do |u|
-#        image = view_context.get_small_photo_url(u.default_city_photo)
+#        image = view_context.get_small_photo_url(u.default_photo)
 #        {
 #          :latitude => u.latitude,
 #          :longitude => u.longitude,
@@ -83,23 +83,24 @@ class HomeController < ApplicationController
 
 #      if (a < c)
 #        if (b < d)
-#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, b, d).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, b, d).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
 #        else
-#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, d, b).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", a, c, d, b).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
 #        end
 #      else
 #        if (b < d)
-#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, b, d).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, b, d).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
 #        else
-#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, d, b).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
+#          @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", c, a, d, b).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(30)
 #        end
 #      end
 
       bound = sort_bound(a, b, c, d)
       
-      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :reviews, :default_city_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
+      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
+#      @result = City.where("(latitude BETWEEN ? AND ?) AND (longitude BETWEEN ? AND ?)", bound[0], bound[2], bound[1], bound[3]).includes(:country, :region, :reviews, :default_photo).order("favorite_cities_count DESC").page(params[:place_page]).per(50)
       @result_list = @result.map do |u|
-        image = view_context.get_small_photo_url(u.default_city_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,
@@ -110,9 +111,13 @@ class HomeController < ApplicationController
           :image => image,
           :path => city_url(u),
           :type => "City",
-          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
-          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+#          :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
+#          :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
+#          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+#          :rate => u.favorite_cities_count
+          :last_review => "",
+          :last_reviewer => "",
+          :last_reviewer_path => "",
           :rate => u.favorite_cities_count
         }
       end
@@ -186,5 +191,19 @@ class HomeController < ApplicationController
     end
   end
 
+  def updates
+    @new_photos = Photo.public_photo.includes(:photo_album, :creator => [:profile_photo, :profile]).order("photos.created_at DESC").page(params[:new_photos_page]).per(6)
+    @comment = Comment.new
+    @new_places = Place.includes({:city => [:country, :region]}, :default_photo).order("created_at DESC").page(params[:new_places_page]).per(10)
+    @new_reviews = Review.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").page(params[:new_reviews_page]).per(10)
+    polymorphic_association_includes @new_reviews, :reviewable, {
+      Place => [:default_photo, {:city => :country}],
+      City => [:default_photo, :country]
+    }
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
   
 end

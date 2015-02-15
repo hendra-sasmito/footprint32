@@ -61,25 +61,25 @@ class CitiesController < ApplicationController
 
       type = params[:type]
       if (type == "accomodation")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[0].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[0].children).page(params[:place_page]).per(9)
       elsif (type == "shopping")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[1].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[1].children).page(params[:place_page]).per(9)
       elsif (type == "sightseeing")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[2].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[2].children).page(params[:place_page]).per(9)
       elsif (type == "eating")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[3].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[3].children).page(params[:place_page]).per(9)
       elsif (type == "sport")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[4].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[4].children).page(params[:place_page]).per(9)
       elsif (type == "health")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[6].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[6].children).page(params[:place_page]).per(9)
       elsif (type == "bank")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[7].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[7].children).page(params[:place_page]).per(9)
       elsif (type == "other")
-        @places = @city.places.includes(:city, :reviews, :default_place_photo).where(category_id: main_categories[5].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[5].children).page(params[:place_page]).per(9)
 #      elsif (type == "popular")
-#        @places = @city.places.popular.includes(:city, :category, :reviews, :default_place_photo).page(params[:place_page]).per(9)
+#        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(9)
       else # default popular
-        @places = @city.places.popular.includes(:city, :category, :reviews, :default_place_photo).page(params[:place_page]).per(9)
+        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(9)
       end
 
       sort = params[:sort]
@@ -103,7 +103,7 @@ class CitiesController < ApplicationController
       @reviewable = @city
 
       @places_list = @places.map do |u|
-        image = view_context.get_small_photo_url(u.default_place_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

@@ -1,0 +1,36 @@
+<% content_for :title, Footprint32::APP_NAME %>
+<div class="page-container">
+  <div id="content-full">
+    <div class="no_container">
+      <div class="title_text">Latest photos</div>
+      <div id="new_photos_partial">
+        <%= render :partial => "home/new_photos", :locals => {:photos => @new_photos} %>
+      </div>
+      <div id="paginator_new_photos">
+        <%= paginate @new_photos, :remote => true, :param_name => "new_photos_page", :theme => "default" %>
+      </div>
+    </div>
+  </div>
+  <div id="content">
+    <div class="no_container">
+      <div class="title_text">Latest reviews</div>
+      <div id="new_reviews_partial">
+        <%= render :partial => "profiles/reviews", :locals => {:reviews => @new_reviews} %>
+      </div>
+      <div id="paginator_new_reviews">
+        <%= paginate @new_reviews, :remote => true, :param_name => "new_reviews_page", :theme => "default" %>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar">
+    <div class="no_container">
+      <div class="title_text">New places</div>
+      <div id="new_places_partial">
+        <%= render :partial => "home/new_places", :locals => {:places => @new_places} %>
+      </div>
+      <div id="paginator_new_places">
+        <%= paginate @new_places, :remote => true, :param_name => "new_places_page", :theme => "default" %>
+      </div>
+    </div>
+  </div>
+</div>

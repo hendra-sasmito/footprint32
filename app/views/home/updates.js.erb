@@ -1,0 +1,23 @@
+$('#new_reviews_partial').html('<%= escape_javascript render(:partial => 'profiles/reviews', :locals => {:reviews => @new_reviews}) %>');
+$('#paginator_new_reviews').html('<%= escape_javascript(paginate(@new_reviews, :remote => true, :param_name => "new_reviews_page", :theme => "default").to_s) %>');
+
+$('#new_photos_partial').html('<%= escape_javascript render(:partial => 'home/new_photos', :locals => {:photos => @new_photos}) %>');
+$('#paginator_new_photos').html('<%= escape_javascript(paginate(@new_photos, :remote => true, :param_name => "new_photos_page", :theme => "default").to_s) %>');
+
+$('#new_places_partial').html('<%= escape_javascript render(:partial => 'home/new_places', :locals => {:places => @new_places}) %>');
+$('#paginator_new_places').html('<%= escape_javascript(paginate(@new_places, :remote => true, :param_name => "new_places_page", :theme => "default").to_s) %>');
+
+$("#mygallery").justifiedGallery({
+  'sizeRangeSuffixes' : {'lt100':'', 'lt240':'', 'lt320':'', 'lt500':'', 'lt640':'', 'lt1024':''},
+  'justifyLastRow':false,
+  'rowHeight':120,
+  'fixedHeight':false,
+  'captions':true,
+  'margins':1,
+  'rel' : 'gallery',
+  'onComplete': function(gallery) {
+    $(gallery).find("a").addClass('fancybox-buttons');
+  }
+});
+
+$("html, body").animate({ scrollTop: 0 }, "slow");

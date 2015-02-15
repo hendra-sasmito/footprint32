@@ -47,11 +47,11 @@ class VisitedCitiesController < ApplicationController
     puts d
     
     if !@user.nil?
-      @cities = @user.my_visited_cities.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :default_city_photo).order("updated_at DESC").page(params[:page]).per(25)
+      @cities = @user.my_visited_cities.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:country, :region, :default_photo).order("updated_at DESC").page(params[:page]).per(25)
 #      @places.to_json(:include => :city)
 
       @cities_list = @cities.map do |u|
-        image = view_context.get_small_photo_url(u.default_city_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

@@ -31,9 +31,9 @@ class PlacesController < ApplicationController
     #@places = nil #Place.all
     latitude = 47.7818;
     longitude = 9.61294;
-    @places = Place.includes(:city, :reviews, :default_place_photo).near([latitude, longitude], Footprint32::NEARBY_PLACE_DISTANCE)
+    @places = Place.includes(:city, :reviews, :default_photo).near([latitude, longitude], Footprint32::NEARBY_PLACE_DISTANCE)
     @places_list = @places.map do |u|
-      image = view_context.get_small_photo_url(u.default_place_photo)
+      image = view_context.get_small_photo_url(u.default_photo)
       {
         :latitude => u.latitude,
         :longitude => u.longitude,
@@ -103,9 +103,9 @@ class PlacesController < ApplicationController
       @review = Review.new
       #1.times { @review.review_photos.build }
       @reviewable = @place
-      @nearby_places = Place.includes({:city => [:country, :region]}, :category, :default_place_photo, {:reviews => {:creator => :profile}}).where("id != ?", @place.id).near([@place.latitude, @place.longitude], Footprint32::NEARBY_PLACE_DISTANCE).limit(5)
+      @nearby_places = Place.includes({:city => [:country, :region]}, :category, :default_photo, {:reviews => {:creator => :profile}}).where("id != ?", @place.id).near([@place.latitude, @place.longitude], Footprint32::NEARBY_PLACE_DISTANCE).limit(5)
       @places_list = @nearby_places.map do |u|
-        image = view_context.get_small_photo_url(u.default_place_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,
@@ -158,9 +158,9 @@ class PlacesController < ApplicationController
       longitude = 9.61294
     end
 
-    @places = Place.includes(:city, :reviews, :default_place_photo).near([latitude, longitude], Footprint32::NEARBY_PLACE_DISTANCE)
+    @places = Place.includes(:city, :reviews, :default_photo).near([latitude, longitude], Footprint32::NEARBY_PLACE_DISTANCE)
     @places_list = @places.map do |u|
-      image = view_context.get_small_photo_url(u.default_place_photo)
+      image = view_context.get_small_photo_url(u.default_photo)
       {
         :latitude => u.latitude,
         :longitude => u.longitude,
@@ -334,9 +334,9 @@ class PlacesController < ApplicationController
   def discover
     if (!params[:lat].nil? && !params[:lng].nil?)
       @discover = true
-      @places = Place.includes(:city, :reviews, :default_place_photo).near([params[:lat], params[:lng]], Footprint32::NEARBY_PLACE_DISTANCE)
+      @places = Place.includes(:city, :reviews, :default_photo).near([params[:lat], params[:lng]], Footprint32::NEARBY_PLACE_DISTANCE)
       @places_list = @places.map do |u|
-        image = view_context.get_small_photo_url(u.default_place_photo)
+        image = view_context.get_small_photo_url(u.default_photo)
         {
           :latitude => u.latitude,
           :longitude => u.longitude,

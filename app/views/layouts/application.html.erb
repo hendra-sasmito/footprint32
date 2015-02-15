@@ -5,9 +5,9 @@
   <title><%=h yield(:title) %></title>
   <meta name="description" content="Share your favorite places">
   <%= favicon_link_tag 'favicon.ico' %>
+  <%= stylesheet_link_tag "application" %>
   <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GMAP_KEY'] %>&libraries=geometry&sensor=false"></script>
   <%#= javascript_include_tag "http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=" + Footprint32::Application.config.MAPQUEST_API %>
-  <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= timeago_script_tag %>
   <script type="text/javascript">
@@ -47,6 +47,9 @@
         
         <% if user_signed_in? %>
           <div id="menuh" class="right_menu">
+          <ul class="right_menu">
+            <li><%= link_to fa_icon("newspaper-o", :class => "lightgraycolor largesize"), home_updates_path, :class => "hastip", :title => "What's new" %></li>
+          </ul>
           <ul class="right_menu">
             <a href="#" data-dropdown="#dropdown-user"><%= fa_icon("gear", :class => "lightgraycolor largesize") %></a>
           </ul>
