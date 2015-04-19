@@ -16,7 +16,7 @@
   <% end %>
 </div>
 <div id="mygallery" >
-  <% if photos.count > 0 %>
+  <% if photos.length > 0 %>
     <% photos.each do |photo| %>
       <% if !photo.photoable.nil? %>
         <% if photo.photoable.class == "Place" %>

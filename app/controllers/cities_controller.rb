@@ -1,6 +1,8 @@
 class CitiesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :autocomplete_city_name]
-  
+#  before_filter :authenticate_user!, :except => [:show, :autocomplete_city_name]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:show, :autocomplete_city_name]
+
+
   def autocomplete_city_name
     search = City.solr_search(:include => [:country, :region]) do
       fulltext params[:term]
@@ -86,11 +88,11 @@ class CitiesController < ApplicationController
       if (sort == "popular")
         @reviews = @city.reviews.by_votes.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).page(params[:review_page]).per(5)
       elsif (sort == "friends")
-        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
+        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("updated_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
       elsif (sort == "myself")
-        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
+        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("updated_at DESC").where("reviewable_type = ? and reviewable_id = ?", @city.class.to_s, @city.id).page(params[:review_page]).per(5)
       else # default recent
-        @reviews = @city.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("created_at DESC").page(params[:review_page]).per(5)
+        @reviews = @city.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos, :review_votes).order("updated_at DESC").page(params[:review_page]).per(5)
       end
 
       if (@city.photos.public_photo.count > 0)
@@ -192,7 +194,7 @@ class CitiesController < ApplicationController
       flash[:notice] = "Country not found"
       return redirect_to countries_path
     end
-    
+
 
     respond_to do |format|
       if @city.save

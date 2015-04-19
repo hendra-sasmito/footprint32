@@ -1,10 +1,10 @@
-<% reviews = current_user.friends_reviews.order("created_at DESC").limit(5) %>
+<% reviews = current_user.friends_reviews.order("updated_at DESC").limit(5) %>
 
 <% if !reviews.empty? %>
 <div class="info-box">
 <div class="info-box-title"><%= t('.title')%></div>
 <div class="info-box-content">
-    <% reviews = current_user.friends_reviews.order("created_at DESC").limit(5) %>
+    <% reviews = current_user.friends_reviews.order("updated_at DESC").limit(5) %>
     <% reviews.each do |review| %>
       <div class="review_box">
           <div class="review_box_user">

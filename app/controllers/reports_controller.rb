@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
 
   def new
     @report = current_user.reports.new

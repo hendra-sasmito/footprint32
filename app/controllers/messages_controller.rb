@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   
   # GET /messages
   # GET /messages.xml
@@ -19,6 +19,7 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @message_statuses }
+      format.json { render json: @message_statuses }
       format.js
     end
   end
@@ -202,7 +203,7 @@ class MessagesController < ApplicationController
     users = search.results
 
     recipients = Array.new
-    for i in 0..(users.count - 1)
+    for i in 0..(users.length - 1)
        recipients[i] = Hash.new
        recipients[i][:id] = users[i].id
        recipients[i][:name] = users[i].profile.full_name
@@ -219,7 +220,7 @@ class MessagesController < ApplicationController
 #        redirect_to :controller => 'messages', :action => 'index'
         return
       end
-      @message.updated_at = Time.now
+      @message.updated_at = Time.zone.now
 
       @new_conversation = @message.conversations.new
       @new_conversation.sender = current_user

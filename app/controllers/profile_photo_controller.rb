@@ -1,5 +1,5 @@
 class ProfilePhotoController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   
   def show_photos
     @photos = current_user.photos.page(params[:photo_page]).per(24)

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:retrieve]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:retrieve]
 
   def retrieve
     object = params[:type]

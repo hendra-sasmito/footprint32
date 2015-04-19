@@ -17,8 +17,8 @@ class City < ActiveRecord::Base
   has_many :hometown_user, :class_name => "Profile", :foreign_key => "hometown_id"
 
   #has_one :default_photo
-  has_many :default_photo, :order => 'photos.created_at DESC', :limit => 1, :class_name => 'Photo', :as => :photoable
-  #has_one :default_photo, :order => 'photos.created_at DESC', :class_name => 'Photo', :as => :photoable
+  has_many :default_photo, :order => 'photos.updated_at DESC', :limit => 1, :class_name => 'Photo', :as => :photoable
+  #has_one :default_photo, :order => 'photos.updated_at DESC', :class_name => 'Photo', :as => :photoable
 
   validates :name, :presence => true
   validates :country, :presence => true

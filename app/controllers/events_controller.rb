@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :monthly_events]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:show, :monthly_events]
   
   # GET /events
   # GET /events.json
@@ -129,7 +129,7 @@ class EventsController < ApplicationController
 #        puts params[:event]
 #        puts @event.name
 #        puts @event.date
-        if @event.date <= Time.now
+        if @event.date <= Time.zone.now
           flash[:error] = t(:date_not_valid)
           return render action: "new"
         end
@@ -197,7 +197,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.update_attributes(params[:event])
-        if @event.date <= Time.now
+        if @event.date <= Time.zone.now
           flash[:error] = t(:date_not_valid)
           return render action: "edit"
         end
@@ -263,8 +263,8 @@ class EventsController < ApplicationController
           body_string += !u.place.city.region.nil? ? u.place.city.region.name.to_s + ";" : "" + ";"
           body_string += !u.place.city.country.nil? ? u.place.city.country.name.to_s + ";" : "" + ";"
           body_string += (user_event_url(u.creator.id, u.id)).to_s + ";"
-          body_string += image.to_s
-          
+          body_string += image.to_s + ";"
+          body_string += current_user == u.creator ? (edit_user_event_url(u.creator.id, u.id)).to_s : ""
           {
             :date => u.date.strftime("%F"),
             :body => body_string,

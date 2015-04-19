@@ -3,7 +3,7 @@ class PhotoAlbum < ActiveRecord::Base
 
   belongs_to :creator, :class_name => "User", :foreign_key => :creator_id, :inverse_of => :photo_albums
   has_many :photos, :inverse_of => :photo_album, :dependent => :destroy
-  has_many :default_photo, :order => 'photos.created_at DESC', :limit => 1, :class_name => 'Photo'
+  has_many :default_photo, :order => 'photos.updated_at DESC', :limit => 1, :class_name => 'Photo'
   has_many :comments, :through => :photos, :dependent => :destroy
   belongs_to :albumable, :polymorphic => true
 #  has_many :activities, :as => :target, :through => :photo, :dependent => :destroy

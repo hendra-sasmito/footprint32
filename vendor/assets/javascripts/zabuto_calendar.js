@@ -369,8 +369,10 @@ $.fn.zabuto_calendar = function (options) {
                     body_string += res[3];
                     body_string += "</div>";
                     if (res[12] != "")
+                    {
                         body_string += '<a class="general-button-white" href="' + res[12] + '">Edit Event</a>'
                         body_string += '<a class="general-button-white" href="' + res[10] + '" data-method="delete" data-confirm="Are you sure?">Delete Event</a>'
+                    }
                     body_string += "<div class='clear_float'></div>";
                 
                 body_string += "</div>";

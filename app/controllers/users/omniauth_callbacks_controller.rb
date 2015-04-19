@@ -109,43 +109,43 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
-  def twitter
-     omni = request.env["omniauth.auth"]
-     authentication = Authentication.find_by_provider_and_uid(omni['provider'], omni['uid'])
-     if authentication
-      flash[:notice] = "Logged in Successfully"
-      user = User.with_deleted.find(authentication.user_id)
-      if !user.deleted_at.nil?
-        # recover user account
-        user.recover
-      end
-      sign_in_and_redirect user
-     elsif current_user
-       token = omni['credentials'].token
-       token_secret = omni['credentials'].secret
-       # add authentication to current_user
-       current_user.authentications.create!(:provider => omni['provider'], :uid => omni['uid'], :token => token, :token_secret => token_secret)
-       flash[:notice] = "Authentication successful."
-       sign_in_and_redirect current_user
-     else
-       user = User.new
-       user.apply_omniauth(omni)
-       user.build_profile(:first_name => omni['extra']['raw_info'].first_name,
-                             :last_name => omni['extra']['raw_info'].last_name)
-       user.photo_albums.build(:name => "Profile Album",
-                             :description => "Profile Pictures",
-                             :privacy => Footprint32::PUBLIC,
-                             :default => 1)
-       # don't need to confirm email
-       user.skip_confirmation!
-       user.confirm!
-       if user.save
-         flash[:notice] = "Logged in."
-         sign_in_and_redirect User.find(user.id)
-       else
-         session[:omniauth] = omni.except('extra')
-         redirect_to new_user_registration_path
-       end
-     end
-   end
+#  def twitter
+#     omni = request.env["omniauth.auth"]
+#     authentication = Authentication.find_by_provider_and_uid(omni['provider'], omni['uid'])
+#     if authentication
+#      flash[:notice] = "Logged in Successfully"
+#      user = User.with_deleted.find(authentication.user_id)
+#      if !user.deleted_at.nil?
+#        # recover user account
+#        user.recover
+#      end
+#      sign_in_and_redirect user
+#     elsif current_user
+#       token = omni['credentials'].token
+#       token_secret = omni['credentials'].secret
+#       # add authentication to current_user
+#       current_user.authentications.create!(:provider => omni['provider'], :uid => omni['uid'], :token => token, :token_secret => token_secret)
+#       flash[:notice] = "Authentication successful."
+#       sign_in_and_redirect current_user
+#     else
+#       user = User.new
+#       user.apply_omniauth(omni)
+#       user.build_profile(:first_name => omni['extra']['raw_info'].first_name,
+#                             :last_name => omni['extra']['raw_info'].last_name)
+#       user.photo_albums.build(:name => "Profile Album",
+#                             :description => "Profile Pictures",
+#                             :privacy => Footprint32::PUBLIC,
+#                             :default => 1)
+#       # don't need to confirm email
+#       user.skip_confirmation!
+#       user.confirm!
+#       if user.save
+#         flash[:notice] = "Logged in."
+#         sign_in_and_redirect User.find(user.id)
+#       else
+#         session[:omniauth] = omni.except('extra')
+#         redirect_to new_user_registration_path
+#       end
+#     end
+#   end
 end

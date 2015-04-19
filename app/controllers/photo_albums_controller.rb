@@ -1,5 +1,5 @@
 class PhotoAlbumsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
 
   autocomplete :photo_album, :name, :extra_data => [:id]
 

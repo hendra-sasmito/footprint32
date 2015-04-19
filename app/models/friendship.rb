@@ -34,7 +34,7 @@ class Friendship < ActiveRecord::Base
   # Accept a friend request.
   def self.accept(user, friend)
     transaction do
-      accepted_at = Time.now
+      accepted_at = Time.zone.now
       accept_one_side(user, friend, accepted_at)
       accept_one_side(friend, user, accepted_at)
     end

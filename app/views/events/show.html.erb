@@ -53,9 +53,7 @@
 
         <div class="event_page_image">
           <% if @event.place %>
-            <%= image_tag(place_small_photo(@event.place)) %>
-          <% else %>
-            <%= image_tag('city.png') %>
+            <%= image_tag(get_small_photo_url(@event.place.default_photo)) %>
           <% end %>
         </div>
 

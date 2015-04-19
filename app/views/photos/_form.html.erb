@@ -41,7 +41,7 @@
         <%= f.hidden_field :photo_album_id, :id => "real_photo_album_id" %>
         <div class="field_additional">
           <div class="place_page_image_small">
-            <%= image_tag(get_album_cover(@photo.photo_album), :class => "imagedropshadow") %>
+            <%= image_tag(get_small_photo_url(@photo.photo_album.default_photo), :class => "imagedropshadow") %>
           </div>
           <div class="place_page_desc_pad">
             <div class="title_text"><span class="wordwrap"><%= @photo.photo_album.name %></span></div>

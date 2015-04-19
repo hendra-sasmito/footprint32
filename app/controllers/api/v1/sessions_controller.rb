@@ -8,12 +8,13 @@ class Api::V1::SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    puts "--create--"
-    puts resource_name
+#    puts "--create--"
+#    puts resource_name
     resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-    puts resource
+#    puts resource
     sign_in(resource_name, resource)
     current_user.reset_authentication_token!
+    current_user.save
     render :status => 200,
            :json => { :success => true,
                       :info => "Logged in",
@@ -21,17 +22,31 @@ class Api::V1::SessionsController < Devise::SessionsController
   end
 
   def destroy
-    puts "--destroy--"
-    warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
-    current_user.update_column(:authentication_token, nil)
-    render :status => 200,
+#    puts "--destroy--"
+#    puts resource_name
+#    resource = warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#failure")
+
+    user_email = params[:user_email].presence
+    user       = user_email && User.find_by_email(user_email)
+    
+    if user && Devise.secure_compare(user.authentication_token, params[:auth_token])
+      user.update_column(:authentication_token, nil)
+      user.save
+      render :status => 200,
            :json => { :success => true,
                       :info => "Logged out",
                       :data => {} }
+    else
+#      puts "authenticate_user_from_token! failed"
+      render :status => 401,
+           :json => { :success => false,
+                      :info => "Login Failed",
+                      :data => {} }
+    end
   end
 
   def failure
-    puts "failure"
+#    puts "failure"
     render :status => 401,
            :json => { :success => false,
                       :info => "Login Failed",

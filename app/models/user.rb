@@ -1,8 +1,18 @@
 class User < ActiveRecord::Base
 
-#  before_save :ensure_authentication_token
-  
+  before_save :ensure_authentication_token
   acts_as_paranoid
+  
+  def ensure_authentication_token
+    if authentication_token.blank?
+        self.authentication_token = generate_authentication_token
+    end
+  end
+
+  def reset_authentication_token!
+    self.authentication_token = generate_authentication_token
+  end
+  
 #  acts_as_token_authenticatable
 #  include Rediline::User
 #
@@ -103,11 +113,11 @@ class User < ActiveRecord::Base
   has_many :message_statuses
   has_many :messages, :through => :message_statuses, :source => :message
   has_many :unread_messages, :through => :message_statuses, :source => :message,
-    :conditions => ["message_statuses.status = 'Unread'"]
+    :conditions => "message_statuses.status = 'MessageStatus::UNREAD'"
   has_many :read_messages, :through => :message_statuses, :source => :message,
-    :conditions => "message_statuses.status == 'Read'"
+    :conditions => "message_statuses.status == 'MessageStatus::READ'"
   has_many :undeleted_messages, :through => :message_statuses, :source => :message,
-    :conditions => "message_statuses.status != 'Deleted'"
+    :conditions => "message_statuses.status != 'MessageStatus::DELETED'"
 
   has_many :activities
   has_many :shares
@@ -295,7 +305,14 @@ class User < ActiveRecord::Base
 #  end
 
 #  def skip_confirmation!
-#    self.confirmed_at = Time.now
+#    self.confirmed_at = Time.zone.now
 #  end
-  
+
+  private
+    def generate_authentication_token
+        loop do
+            token = Devise.friendly_token
+            break token unless User.where(authentication_token: token).first
+        end
+    end
 end

@@ -2,7 +2,7 @@
 <div class="page-container">
   <div id="content">
     <div class="padding">
-      <% if @pending_friends.count > 0 %>
+      <% if @pending_friends.length > 0 %>
         <div class="title_text"><%= t('.friend_request_title') %></div>
         <div id="pending_friends_partial">
           <%= render :partial => "search/friend_found", :locals => {:users => @pending_friends} %>
@@ -13,7 +13,7 @@
         </div>
       <% end %>
 
-      <% if @requested_friends.count > 0 %>
+      <% if @requested_friends.length > 0 %>
         <div class="title_text"><%= t('.received_request_title') %></div>
         <div id="requested_friends_partial">
           <%= render :partial => "search/friend_found", :locals => {:users => @requested_friends} %>

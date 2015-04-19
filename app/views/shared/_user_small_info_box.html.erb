@@ -7,7 +7,7 @@
       <% end %>
       <div>
         <%#= image_tag("star-16-g.png") %> <%= user.total_votes.to_i %>
-        <%= fa_icon("comment", :class => "graycolor mediumsize") %> <%= pluralize(user.reviews.size, t('.review')) %>
+        <%= fa_icon("comment", :class => "graycolor mediumsize") %> <%= pluralize(user.reviews_count, t('.review')) %>
       </div>
       <%= link_to t(".profile"), user_profile_path(user), :class => "general-button right_div" %>
     </div>

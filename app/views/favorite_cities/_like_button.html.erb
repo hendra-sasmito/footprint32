@@ -6,7 +6,7 @@
   <% end %>
 <% else %>
 <% new_favorite_city = current_user.favorite_cities.new %>
-  <%= form_for ([current_user, new_favorite_city]), :remote => true do |f| %>
+  <%= form_for [current_user, new_favorite_city], :remote => true do |f| %>
     <%= f.hidden_field :city_id, :value => city.id %>
     <%= f.hidden_field :user_id, :value => current_user.id %>
     <%= fa_icon("thumbs-up", :class => "whitecolor mediumsize") %><%= f.submit "Like", :class=>"as_button_black" %>

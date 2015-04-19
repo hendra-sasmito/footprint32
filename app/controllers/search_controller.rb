@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   include PlacesHelper
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
 
   def autocomplete_place_city_name
     search = Sunspot.search Place, City do
@@ -12,8 +12,8 @@ class SearchController < ApplicationController
       data_accessor_for(City).include = [:region, :country]
     end
     result = search.results
-    puts "----"
-    puts result.size
+#    puts "----"
+#    puts result.size
 
     data = []
     result.each do |p|

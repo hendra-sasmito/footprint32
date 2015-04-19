@@ -6,7 +6,7 @@
   <% end %>
 <% else %>
 <% new_visited_city = current_user.visited_cities.new %>
-  <%= form_for ([current_user, new_visited_city]), :remote => true do |f| %>
+  <%= form_for [current_user, new_visited_city], :remote => true do |f| %>
     <%= f.hidden_field :city_id, :value => city.id %>
     <%= f.hidden_field :user_id, :value => current_user.id %>
     <%= fa_icon("tag", :class => "whitecolor mediumsize") %><%= f.submit "Checkin", :class=>"as_button_black" %>

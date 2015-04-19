@@ -9,6 +9,42 @@ class ApplicationController < ActionController::Base
 
   config.relative_url_root = ""
 
+#  def authenticate_user_from_token!
+#    user_token = params[:auth_token].presence
+#    puts "--authenticate_user_from_token!--"
+#    puts user_token
+#    user = user_token && User.find_by_authentication_token(user_token.to_s)
+#
+#    if user
+#      sign_in user, store: false
+#    else
+#      puts "authenticate_user_from_token! failed"
+#      render :status => 401,
+#           :json => { :success => false,
+#                      :info => "Login Failed",
+#                      :data => {} }
+#    end
+#  end
+
+  def authenticate_user_from_token!
+    user_email = params[:user_email].presence
+    user       = user_email && User.find_by_email(user_email)
+#    puts "--authenticate_user_from_token!--"
+#    puts user_email
+
+    # Notice how we use Devise.secure_compare to compare the token
+    # in the database with the token given in the params, mitigating
+    # timing attacks.
+    if user && Devise.secure_compare(user.authentication_token, params[:auth_token])
+      sign_in user, store: false
+#    else
+#      puts "authenticate_user_from_token! failed"
+#      render :status => 401,
+#           :json => { :success => false,
+#                      :info => "Login Failed",
+#                      :data => {} }
+    end
+  end
 #  acts_as_token_authentication_handler_for User
   
 #  def after_sign_in_path_for(resource_or_scope)
@@ -78,7 +114,11 @@ class ApplicationController < ActionController::Base
   private
   def set_user_time_zone
     if user_signed_in?
-      Time.zone = current_user.profile.time_zone if current_user.profile.time_zone
+      if current_user.profile.time_zone
+        Time.zone = current_user.profile.time_zone
+      else
+        Time.zone = "Berlin"
+      end
     end
   end
 

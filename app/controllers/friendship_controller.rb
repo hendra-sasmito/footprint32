@@ -1,5 +1,5 @@
 class FriendshipController < ApplicationController  
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   before_filter :setup_friends, :except => [:show]
 
   # Send a friend request.

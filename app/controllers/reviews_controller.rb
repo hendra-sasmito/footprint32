@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   helper :Places
   
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   
   # GET /reviews/1
   # GET /reviews/1.json

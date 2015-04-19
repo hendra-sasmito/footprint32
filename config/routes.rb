@@ -212,14 +212,14 @@ Footprint32::Application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-#  namespace :api do
-#    namespace :v1 do
-#      devise_scope :user do
-#        post 'sessions' => 'sessions#create', :as => 'login'
-#        delete 'sessions' => 'sessions#destroy', :as => 'logout'
-#      end
-#      get 'tasks' => 'tasks#index', :as => 'tasks'
-#    end
-#  end
+  namespace :api do
+    namespace :v1 do
+      devise_scope :user do
+        post 'sessions' => 'sessions#create', :as => 'login'
+        delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      end
+      get 'tasks' => 'tasks#index', :as => 'tasks'
+    end
+  end
   
 end

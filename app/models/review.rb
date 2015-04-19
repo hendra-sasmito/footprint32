@@ -48,14 +48,14 @@ class Review < ActiveRecord::Base
   end
 
 #  scope :popular, lambda do |time|
-#    where("created_at < ?", DateTime.now - 1.week).select("place_id, count(place_id) as count").group(:place_id).order("count desc").limit(3)
+#    where("created_at < ?", DateTime.now.in_time_zone - 1.week).select("place_id, count(place_id) as count").group(:place_id).order("count desc").limit(3)
 #  end
 
 #  scope :most_reviewed, select("place_id, count(place_id) as count").group(:place_id).order("count desc").limit(3)
 
   default_scope includes(:creator)
-  scope :weekly_top_places, where("created_at > ?", DateTime.now - 1.week).select("place_id, count(place_id) as count").group(:place_id).order("count desc")
-  scope :weekly_top_reviewers, includes(:creator).where("created_at > ?", DateTime.now - 1.week).select("creator_id, count(creator_id) as count").group(:creator_id).order("count desc")
+  scope :weekly_top_places, where("created_at > ?", DateTime.now.in_time_zone - 1.week).select("place_id, count(place_id) as count").group(:place_id).order("count desc")
+  scope :weekly_top_reviewers, includes(:creator).where("created_at > ?", DateTime.now.in_time_zone - 1.week).select("creator_id, count(creator_id) as count").group(:creator_id).order("count desc")
 
 #  scope :recent_friends_reviews, includes(:creator).where(creator_id: current_user.friend_ids).order('created_at DESC')
   

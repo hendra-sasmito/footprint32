@@ -1,5 +1,5 @@
 class CountriesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:index, :show]
   
   autocomplete :country, :name, :extra_data => [:id]
 

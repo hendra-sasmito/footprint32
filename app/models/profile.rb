@@ -16,7 +16,7 @@ class Profile < ActiveRecord::Base
   validates_date :birthdate, :allow_blank => true, :invalid_date_message => "Birthdate is not valid"
 
 #  START_YEAR = 1900
-#  VALID_DATES = DateTime.new(START_YEAR)..DateTime.now
+#  VALID_DATES = DateTime.new(START_YEAR)..DateTime.now.in_time_zone
 
 #  validates_inclusion_of    :birthdate,
 #                            :in => VALID_DATES,

@@ -5,6 +5,12 @@ GIT
   specs:
     client_side_validations (3.2.6)
 
+GIT
+  remote: git://github.com/nesquena/query_reviewer.git
+  revision: 77755b4c1d45516a8bc429a8ed36be55153be195
+  specs:
+    query_reviewer (0.2.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -111,8 +117,7 @@ GEM
     em-socksify (0.2.1)
       eventmachine (>= 1.0.0.beta.4)
     erubis (2.7.0)
-    eventmachine (1.0.0)
-    eventmachine (1.0.0-x86-mingw32)
+    eventmachine (1.0.7)
     execjs (1.4.0)
       multi_json (~> 1.0)
     exifr (1.1.3)
@@ -182,8 +187,8 @@ GEM
     mini_portile (0.5.1)
     multi_json (1.10.1)
     multipart-post (1.1.5)
-    mysql2 (0.3.11)
-    mysql2 (0.3.11-x86-mingw32)
+    mysql2 (0.3.18)
+    mysql2 (0.3.18-x86-mingw32)
     nested_form (0.3.2)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -409,6 +414,7 @@ DEPENDENCIES
   peek-mysql2
   peek-performance_bar
   private_pub
+  query_reviewer!
   rails (= 3.2.19)
   rails-timeago (~> 2.0)
   rails3-jquery-autocomplete

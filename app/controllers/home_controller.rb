@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:index]
 
   def index
 #    puts "------------home index----------"
@@ -169,7 +169,7 @@ class HomeController < ApplicationController
 #    @graph.put_wall_post("home", {:name => "place1", :link => "http://youtu.be/EYKO1za5mX0"})
 
 #    @friends_reviews = Review.includes(:place, :review_photos, :creator => [:profile, :profile_photo]).where(creator_id: [current_user.id, current_user.friend_ids]).order('created_at DESC').page(params[:page]).per(10)
-    @recent_reviews = Review.includes({:place => [:category, {:city => [:region, :country]}]}, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:page]).per(10)
+    @recent_reviews = Review.includes({:place => [:category, {:city => [:region, :country]}]}, :review_photos, :creator => [:profile, :profile_photo]).order('updated_at DESC').page(params[:page]).per(10)
 
 #    @friends_photos = Photo.public_photo.includes(:photo_album, :creator => [:profile_photo, :profile]).where(creator_id: [current_user.id, current_user.friend_ids]).order('photos.created_at DESC').page(params[:page]).per(10)
     @recent_photos = Photo.public_photo.place_photo.includes(:photo_album, :creator => [:profile_photo, :profile]).order('photos.created_at DESC').page(params[:page]).per(10)
@@ -192,10 +192,10 @@ class HomeController < ApplicationController
   end
 
   def updates
-    @new_photos = Photo.public_photo.includes(:photo_album, :creator => [:profile_photo, :profile]).order("photos.created_at DESC").page(params[:new_photos_page]).per(6)
+    @new_photos = Photo.public_photo.includes(:photo_album, :creator => [:profile_photo, :profile]).order("photos.updated_at DESC").page(params[:new_photos_page]).per(6)
     @comment = Comment.new
     @new_places = Place.includes({:city => [:country, :region]}, :default_photo).order("created_at DESC").page(params[:new_places_page]).per(10)
-    @new_reviews = Review.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").page(params[:new_reviews_page]).per(10)
+    @new_reviews = Review.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("updated_at DESC").page(params[:new_reviews_page]).per(10)
     polymorphic_association_includes @new_reviews, :reviewable, {
       Place => [:default_photo, {:city => :country}],
       City => [:default_photo, :country]

@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   require 'exifr'
   
   # GET /photos/1

@@ -115,3 +115,7 @@ gem "oink"
 group :development do
   gem 'meta_request'
 end
+
+gem "query_reviewer", :github => "nesquena/query_reviewer"
+
+#gem "lol_dba"

@@ -1,7 +1,7 @@
 class PlacesController < ApplicationController
   include PlacesHelper
 
-  before_filter :authenticate_user!, :except => [:show]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:show]
 #  autocomplete :place, :name, :extra_data => [:id]
 
   def autocomplete_place_name
@@ -73,11 +73,11 @@ class PlacesController < ApplicationController
       if (sort == "popular")
         @reviews = @place.reviews.by_votes.includes({:creator => [:profile, :profile_photo]}, :review_photos).page(params[:review_page]).per(5)
       elsif (sort == "friends")
-        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @place.class.to_s, @place.id).page(params[:review_page]).per(5)
+        @reviews = current_user.friends_reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("updated_at DESC").where("reviewable_type = ? and reviewable_id = ?", @place.class.to_s, @place.id).page(params[:review_page]).per(5)
       elsif (sort == "myself")
-        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").where("reviewable_type = ? and reviewable_id = ?", @place.class.to_s, @place.id).page(params[:review_page]).per(5)
+        @reviews = current_user.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("updated_at DESC").where("reviewable_type = ? and reviewable_id = ?", @place.class.to_s, @place.id).page(params[:review_page]).per(5)
       else # default recent
-        @reviews = @place.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("created_at DESC").page(params[:review_page]).per(5)
+        @reviews = @place.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("updated_at DESC").page(params[:review_page]).per(5)
       end
 
       @place_photos = @place.photos.joins(:photo_album).includes(:photo_album, :creator => [:profile, :profile_photo]).where("privacy = ?", Footprint32::PUBLIC).page(params[:place_photo_page]).per(5)

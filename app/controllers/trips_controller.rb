@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   
   # GET /trips
   # GET /trips.json
@@ -12,7 +12,7 @@ class TripsController < ApplicationController
       else
         @trips = Trip.public_trip.page(params[:all_page]).per(2)
       end
-      puts @trips.count
+#      puts @trips.count
     else
       flash[:notice] = "User not found"
       return redirect_back_or_default(home_index_path)

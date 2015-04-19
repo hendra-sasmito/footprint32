@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
 
   helper :friendship
   
@@ -14,11 +14,11 @@ class ProfilesController < ApplicationController
 #      @requested_friends_count = @user.requested_friends.count
 #      @pending_friends_count = @user.pending_friends.count
 
-      @favorite_places = @user.favorite_places.includes(:place => [{:city => [:country, :region]}, :category]).limit(9)
+      @favorite_places = @user.favorite_places.order('updated_at DESC').includes(:place => [{:city => [:country, :region]}, :category]).limit(9)
 
       @visited_places = @user.visited_places.order('updated_at DESC').includes(:place => [{:city => [:country, :region]}, :category]).limit(9)
 
-      @favorite_cities = @user.favorite_cities.includes(:city => [:country, :region]).limit(9)
+      @favorite_cities = @user.favorite_cities.order('updated_at DESC').includes(:city => [:country, :region]).limit(9)
 
       @visited_cities = @user.visited_cities.order('updated_at DESC').includes(:city => [:country, :region]).limit(9)
 
@@ -30,14 +30,14 @@ class ProfilesController < ApplicationController
 #        @events = @user.events.includes(:creator, :place).public_event.incoming_event
 #      end
       if is_current_user(@user)
-        @photos = @user.photos.includes(:creator, :photo_album).order('created_at DESC').page(params[:photo_page]).per(12)
+        @photos = @user.photos.includes(:creator, :photo_album).order('photos.updated_at DESC').page(params[:photo_page]).per(12)
       else
-        @photos = @user.photos.public_photo.includes(:creator, :photo_album).order('photos.created_at DESC').page(params[:photo_page]).per(12)
+        @photos = @user.photos.public_photo.includes(:creator, :photo_album).order('photos.updated_at DESC').page(params[:photo_page]).per(12)
       end
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
       #@events = @user.events.includes(:creator, :place).incoming_event
 
-      @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('created_at DESC').page(params[:review_page]).per(10)
+      @reviews = @user.reviews.includes(:reviewable, :review_photos, :creator => [:profile, :profile_photo]).order('updated_at DESC').page(params[:review_page]).per(10)
       @comment = Comment.new
       #@location = @user.location
 

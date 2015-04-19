@@ -1,5 +1,5 @@
 class FavoriteCitiesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
   
   # GET /favorite_cities
   # GET /favorite_cities.json
@@ -47,7 +47,7 @@ class FavoriteCitiesController < ApplicationController
     puts d
     
     if !@user.nil?
-      @cities = @user.my_favorite_cities.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:region, :country, :default_photo).order("updated_at DESC").page(params[:page]).per(25)
+      @cities = @user.my_favorite_cities.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:region, :country, :default_photo).page(params[:page]).per(25)
 #      @cities.to_json(:include => [:region, :country])
 
       @cities_list = @cities.map do |u|

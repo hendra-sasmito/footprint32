@@ -133,7 +133,7 @@
       <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
     </td>
     <td class="start">{% if (!o.options.autoUpload) { %}
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" hidden="hidden">
         <i class="icon-upload icon-white"></i>
         <span>{%=locale.fileupload.start%}</span>
       </button>
@@ -262,7 +262,7 @@
 
         $('input:hidden[name="photo_album_name"]').val( $('input[name="photo_album[name]"]').val() );
         $('input:hidden[name="photo_album_desc"]').val( $('textarea[name="photo_album[description]"]').val() );
-        $('input:hidden[name="photo_album_priv"]').val( $('input[name="photo_album[privacy]"]').val() );
+        $('input:hidden[name="photo_album_priv"]').val( $('#photo_album_privacy').val() );
         $('input:hidden[name="photo_album_albumable_id"]').val( $('#albumable_id').val() );
         $('input:hidden[name="photo_album_albumable_type"]').val( $('#albumable_type').val() );
 

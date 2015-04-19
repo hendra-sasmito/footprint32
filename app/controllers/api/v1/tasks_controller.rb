@@ -4,20 +4,25 @@ class Api::V1::TasksController < ApplicationController
                      :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Just skip the authentication for now
-  # before_filter :authenticate_user!
+#  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!
 
   respond_to :json
 
   def index
-    render :text => '{
-  "success":true,
-  "info":"ok",
-  "data":{
-          "tasks":[
-                    {"title":"Complete the app"},
-                    {"title":"Complete the tutorial"}
-                  ]
-         }
-}'
+    respond_to do |format|
+      format.json { 
+        render :text => '{
+        "success":true,
+        "info":"ok",
+        "data":{
+            "tasks":[
+                      {"title":"Complete the app"},
+                      {"title":"Complete the tutorial"}
+                    ]
+           }
+        }'
+      }
+    end
   end
 end

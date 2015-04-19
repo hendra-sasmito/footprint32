@@ -1,5 +1,5 @@
 class HelpController < ApplicationController
-  before_filter :authenticate_user!, :except => [:about, :cookies, :index, :terms]
+  before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:about, :cookies, :index, :terms]
   def about
   end
 

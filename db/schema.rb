@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141231160710) do
+ActiveRecord::Schema.define(:version => 20150419113105) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -29,12 +29,12 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
   create_table "activities", :force => true do |t|
-    t.integer  "user_id",       :null => false
-    t.integer  "activity_type", :null => false
-    t.integer  "target_id",     :null => false
-    t.string   "target_type",   :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "user_id",                     :null => false
+    t.integer  "activity_type",               :null => false
+    t.integer  "target_id",                   :null => false
+    t.string   "target_type",   :limit => 20, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   add_index "activities", ["target_id", "target_type"], :name => "index_activities_on_target_id_and_target_type"
@@ -57,13 +57,6 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
 
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
-
-  create_table "admincode", :force => true do |t|
-    t.string  "admincode", :limit => 20, :null => false
-    t.string  "name",                    :null => false
-    t.string  "asciiname",               :null => false
-    t.integer "geonameid",               :null => false
-  end
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",      :null => false
@@ -108,19 +101,19 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.integer "reviews_count",         :default => 0
   end
 
-  add_index "cities", ["region_id", "country_id"], :name => "index_cities_on_region_id_and_country_id"
+  add_index "cities", ["country_id", "places_count"], :name => "index_cities_on_places_count"
 
   create_table "comments", :force => true do |t|
-    t.text     "content",          :null => false
-    t.integer  "commentable_id",   :null => false
-    t.string   "commentable_type", :null => false
-    t.integer  "user_id",          :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.text     "content",                        :null => false
+    t.integer  "commentable_id",                 :null => false
+    t.string   "commentable_type", :limit => 20, :null => false
+    t.integer  "user_id",                        :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
-  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+  add_index "comments", ["commentable_id", "commentable_type", "created_at"], :name => "index_comments_on_commentable_id"
+  add_index "comments", ["user_id", "created_at"], :name => "index_comments_on_user_id_and_created_at"
 
   create_table "conversations", :force => true do |t|
     t.integer  "message_id", :null => false
@@ -150,8 +143,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.datetime "updated_at",                              :null => false
   end
 
-  add_index "events", ["creator_id"], :name => "index_events_on_creator_id"
-  add_index "events", ["place_id"], :name => "index_events_on_place_id"
+  add_index "events", ["creator_id", "date"], :name => "index_events_on_creator_id_and_date"
+  add_index "events", ["place_id", "date"], :name => "index_events_on_place_id_and_date"
 
   create_table "favorite_cities", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -160,8 +153,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "favorite_cities", ["city_id"], :name => "index_favorite_cities_on_city_id"
-  add_index "favorite_cities", ["user_id"], :name => "index_favorite_cities_on_user_id"
+  add_index "favorite_cities", ["city_id", "updated_at"], :name => "index_favorite_cities_on_city_id_and_updated_at"
+  add_index "favorite_cities", ["user_id", "updated_at"], :name => "index_favorite_cities_on_user_id_and_updated_at"
 
   create_table "favorite_places", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -170,8 +163,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "favorite_places", ["place_id"], :name => "index_favorite_places_on_place_id"
-  add_index "favorite_places", ["user_id"], :name => "index_favorite_places_on_user_id"
+  add_index "favorite_places", ["place_id", "updated_at"], :name => "index_favorite_places_on_place_id_and_updated_at"
+  add_index "favorite_places", ["user_id", "updated_at"], :name => "index_favorite_places_on_user_id_and_updated_at"
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -184,27 +177,6 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
 
   add_index "friendships", ["user_id", "friend_id"], :name => "index_friendships_on_user_id_and_friend_id"
 
-  create_table "geonames", :primary_key => "geonameid", :force => true do |t|
-    t.string  "name",              :limit => 200,  :default => "",  :null => false
-    t.string  "ansiname",          :limit => 200,  :default => "",  :null => false
-    t.string  "alternatenames",    :limit => 2000, :default => "",  :null => false
-    t.float   "latitude",                          :default => 0.0, :null => false
-    t.float   "longitude",                         :default => 0.0, :null => false
-    t.string  "feature_class",     :limit => 1
-    t.string  "feature_code",      :limit => 10
-    t.string  "country_code",      :limit => 2
-    t.string  "cc2",               :limit => 60
-    t.string  "admin1_code",       :limit => 20,   :default => ""
-    t.string  "admin2_code",       :limit => 80,   :default => ""
-    t.string  "admin3_code",       :limit => 20,   :default => ""
-    t.string  "admin4_code",       :limit => 20,   :default => ""
-    t.integer "population",        :limit => 8,    :default => 0
-    t.integer "elevation",                         :default => 0
-    t.integer "gtopo30",                           :default => 0
-    t.string  "timezone",          :limit => 40
-    t.date    "modification_date"
-  end
-
   create_table "message_statuses", :force => true do |t|
     t.integer  "message_id", :null => false
     t.integer  "user_id",    :null => false
@@ -214,9 +186,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.integer  "start_at"
   end
 
-  add_index "message_statuses", ["message_id"], :name => "index_message_statuses_on_message_id"
-  add_index "message_statuses", ["start_at"], :name => "index_message_statuses_on_start_at"
-  add_index "message_statuses", ["user_id"], :name => "index_message_statuses_on_user_id"
+  add_index "message_statuses", ["message_id", "status"], :name => "index_message_statuses_on_message_id_and_status"
+  add_index "message_statuses", ["user_id", "status"], :name => "index_message_statuses_on_user_id_and_status"
 
   create_table "messages", :force => true do |t|
     t.string   "subject",    :null => false
@@ -225,37 +196,37 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
   end
 
   create_table "photo_albums", :force => true do |t|
-    t.integer  "creator_id",                                     :null => false
-    t.string   "name",                                           :null => false
+    t.integer  "creator_id",                                      :null => false
+    t.string   "name",                                            :null => false
     t.text     "description"
-    t.integer  "privacy",        :limit => 1, :default => 0
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
-    t.boolean  "default",                     :default => false
+    t.integer  "privacy",        :limit => 1,  :default => 0
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.boolean  "default",                      :default => false
     t.integer  "albumable_id"
-    t.string   "albumable_type"
+    t.string   "albumable_type", :limit => 20
   end
 
   add_index "photo_albums", ["albumable_id", "albumable_type"], :name => "index_photo_albums_on_albumable_id_and_albumable_type"
   add_index "photo_albums", ["creator_id"], :name => "index_photo_albums_on_creator_id"
 
   create_table "photos", :force => true do |t|
-    t.integer  "creator_id",         :null => false
-    t.integer  "photo_album_id",     :null => false
+    t.integer  "creator_id",                       :null => false
+    t.integer  "photo_album_id",                   :null => false
     t.text     "description"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "photoable_id"
-    t.string   "photoable_type"
+    t.string   "photoable_type",     :limit => 20
   end
 
-  add_index "photos", ["creator_id"], :name => "index_photos_on_creator_id"
-  add_index "photos", ["photo_album_id"], :name => "index_photos_on_photo_album_id"
-  add_index "photos", ["photoable_id", "photoable_type"], :name => "index_photos_on_photoable_id_and_photoable_type"
+  add_index "photos", ["creator_id", "updated_at"], :name => "index_photos_on_creator_id_and_updated_at"
+  add_index "photos", ["photo_album_id", "updated_at"], :name => "index_photos_on_photo_album_id_and_updated_at"
+  add_index "photos", ["photoable_id", "photoable_type", "updated_at"], :name => "index_photos_on_photoable_id"
 
   create_table "places", :force => true do |t|
     t.string   "name",                                 :null => false
@@ -290,7 +261,7 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.string   "time_zone"
     t.string   "language",                            :default => "en"
     t.integer  "hometown_id"
-    t.integer  "profile_photo_offset_x", :limit => 2
+    t.integer  "profile_photo_offset_x", :limit => 2, :default => 0
     t.integer  "profile_photo_offset_y", :limit => 2, :default => 0
   end
 
@@ -307,12 +278,12 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
   add_index "regions", ["country_id"], :name => "index_regions_on_country_id"
 
   create_table "reports", :force => true do |t|
-    t.integer  "user_id",         :null => false
-    t.integer  "reportable_id",   :null => false
-    t.string   "reportable_type", :null => false
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-    t.integer  "reason",          :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "reportable_id",                 :null => false
+    t.string   "reportable_type", :limit => 20, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "reason",                        :null => false
     t.text     "comment"
   end
 
@@ -343,16 +314,16 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
   add_index "review_votes", ["user_id"], :name => "index_review_votes_on_user_id"
 
   create_table "reviews", :force => true do |t|
-    t.integer  "creator_id",      :null => false
-    t.text     "content",         :null => false
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-    t.integer  "reviewable_id",   :null => false
-    t.string   "reviewable_type", :null => false
+    t.integer  "creator_id",                    :null => false
+    t.text     "content",                       :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "reviewable_id",                 :null => false
+    t.string   "reviewable_type", :limit => 10, :null => false
   end
 
-  add_index "reviews", ["creator_id"], :name => "index_reviews_on_creator_id"
-  add_index "reviews", ["reviewable_id", "reviewable_type"], :name => "index_reviews_on_reviewable_id_and_reviewable_type"
+  add_index "reviews", ["creator_id", "updated_at"], :name => "index_reviews_on_creator_id_and_updated_at"
+  add_index "reviews", ["reviewable_id", "reviewable_type", "updated_at"], :name => "index_reviews_on_reviewable_id"
 
   create_table "shares", :force => true do |t|
     t.integer  "user_id",                         :null => false
@@ -380,6 +351,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.integer  "privacy",              :limit => 1, :default => 0
   end
 
+  add_index "trips", ["user_id"], :name => "index_trips_on_user_id"
+
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -405,7 +378,7 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.string   "authentication_token"
   end
 
-  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
+  add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
@@ -418,8 +391,8 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "visited_cities", ["city_id"], :name => "index_visited_cities_on_city_id"
-  add_index "visited_cities", ["user_id"], :name => "index_visited_cities_on_user_id"
+  add_index "visited_cities", ["city_id", "updated_at"], :name => "index_visited_cities_on_city_id_and_updated_at"
+  add_index "visited_cities", ["user_id", "updated_at"], :name => "index_visited_cities_on_user_id_and_updated_at"
 
   create_table "visited_places", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -428,7 +401,7 @@ ActiveRecord::Schema.define(:version => 20141231160710) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "visited_places", ["place_id"], :name => "index_visited_places_on_place_id"
-  add_index "visited_places", ["user_id"], :name => "index_visited_places_on_user_id"
+  add_index "visited_places", ["place_id", "updated_at"], :name => "index_visited_places_on_place_id_and_updated_at"
+  add_index "visited_places", ["user_id", "updated_at"], :name => "index_visited_places_on_user_id_and_updated_at"
 
 end

@@ -109,37 +109,37 @@ module ApplicationHelper
   # statistics helpers
 
   # user with most reviews
-  def top_reviewers
-    User.order("reviews_count DESC").includes(:profile, :profile_photo).limit(8)
-  end
+#  def top_reviewers
+#    User.order("reviews_count DESC").includes(:profile, :profile_photo).limit(8)
+#  end
 
   # user with most popular reviews
-  def popular_reviewers
-    User.limit(5).sort_by(&:total_votes).reverse
-  end
+#  def popular_reviewers
+#    User.limit(5).sort_by(&:total_votes).reverse
+#  end
 
   # most reviewed places
-  def most_reviewed_places
-    Place.order("reviews_count DESC").limit(8)
-  end
+#  def most_reviewed_places
+#    Place.order("reviews_count DESC").limit(8)
+#  end
 
-  def most_reviewed_places_in_a_week
-    Review.weekly_top_places.limit(8)
-  end
+#  def most_reviewed_places_in_a_week
+#    Review.weekly_top_places.limit(8)
+#  end
 
-  def top_reviewers_in_a_week
-    Review.weekly_top_reviewers.limit(8)
-  end
+#  def top_reviewers_in_a_week
+#    Review.weekly_top_reviewers.limit(8)
+#  end
 
   # most liked places
-  def most_popular_places
-    Place.order("favorite_places_count DESC").limit(8)
-  end
+#  def most_popular_places
+#    Place.order("favorite_places_count DESC").limit(8)
+#  end
 
   # most visited places
-  def most_visited_places
-    Place.order("visited_places_count DESC").limit(5)
-  end
+#  def most_visited_places
+#    Place.order("visited_places_count DESC").limit(5)
+#  end
 
   def share_with_facebook_url(opts)
 

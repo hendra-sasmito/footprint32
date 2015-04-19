@@ -18,7 +18,7 @@ class MessageStatus < ActiveRecord::Base
   validates :message_id, :presence => true
   validates :user_id, :presence => true
 
-  scope :undeleted, where("status != ?", DELETED)
+  scope :undeleted, where("message_statuses.status != ?", DELETED)
 
   searchable do
 #    text :subject

@@ -1,5 +1,5 @@
 class FavoritePlacesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user_from_token!, :authenticate_user!
 
   def index
     @user = User.find_by_id(params[:user_id])
@@ -45,7 +45,7 @@ class FavoritePlacesController < ApplicationController
     puts d
     
     if !@user.nil?
-      @places = @user.my_favorite_places.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:default_photo, :category, :city => [:region, :country]).order("updated_at DESC").page(params[:page]).per(50)
+      @places = @user.my_favorite_places.where("latitude > ? AND latitude < ? AND longitude > ? AND longitude < ?", params[:b1], params[:b3], params[:b2], params[:b4]).includes(:default_photo, :category, :city => [:region, :country]).page(params[:page]).per(50)
 #      @places.to_json(:include => :city)
 
       @places_list = @places.map do |u|
