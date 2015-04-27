@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150419113105) do
+ActiveRecord::Schema.define(:version => 20150426122848) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(:version => 20150419113105) do
   add_index "photos", ["creator_id", "updated_at"], :name => "index_photos_on_creator_id_and_updated_at"
   add_index "photos", ["photo_album_id", "updated_at"], :name => "index_photos_on_photo_album_id_and_updated_at"
   add_index "photos", ["photoable_id", "photoable_type", "updated_at"], :name => "index_photos_on_photoable_id"
+  add_index "photos", ["photoable_type", "photoable_id", "updated_at"], :name => "index_photos_on_photoable_type"
 
   create_table "places", :force => true do |t|
     t.string   "name",                                 :null => false
@@ -324,6 +325,7 @@ ActiveRecord::Schema.define(:version => 20150419113105) do
 
   add_index "reviews", ["creator_id", "updated_at"], :name => "index_reviews_on_creator_id_and_updated_at"
   add_index "reviews", ["reviewable_id", "reviewable_type", "updated_at"], :name => "index_reviews_on_reviewable_id"
+  add_index "reviews", ["reviewable_type", "reviewable_id", "updated_at"], :name => "index_reviews_on_reviewable_type"
 
   create_table "shares", :force => true do |t|
     t.integer  "user_id",                         :null => false

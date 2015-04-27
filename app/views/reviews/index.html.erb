@@ -1,23 +1,23 @@
-<% content_for :title, Footprint32::APP_NAME %>
-<h1>Recent reviews</h1>
+<%# content_for :title, Footprint32::APP_NAME %>
+<%#*<h1>Recent reviews</h1>%>
 
-<%= render :partial => "shared/top_reviewers" %>
-      <%= render :partial => "shared/most_reviewed_places" %>
-      <%= render :partial => "shared/top_places_template", :locals => { :title => "Most popular places", :icon => "heart-big.png", :places => most_popular_places() } %>
+<%#= render :partial => "shared/top_reviewers" %>
+      <%#= render :partial => "shared/most_reviewed_places" %>
+      <%#= render :partial => "shared/top_places_template", :locals => { :title => "Most popular places", :icon => "heart-big.png", :places => most_popular_places() } %>
       <%#= render :partial => "shared/most_reviewed_places_in_a_week" %>
-      <%= render :partial => "shared/top_reviewers_in_a_week" %>
-      <%= render :partial => "shared/friends_recent_reviews" %>
-      <%= render :partial => "shared/new_places_this_week" %>
+      <%#= render :partial => "shared/top_reviewers_in_a_week" %>
+      <%#= render :partial => "shared/friends_recent_reviews" %>
+      <%#= render :partial => "shared/new_places_this_week" %>
 
-<div id="reviews_partial">
-  <%= render :partial => 'places/reviews', :locals => {:reviews => @reviews} %>
-</div>
-<div id="paginator_review">
-  <%= paginate @reviews, :remote => true, :param_name => "page", :theme => "default" %>
-</div>
+<%#*<div id="reviews_partial">%>
+  <%#= render :partial => 'places/reviews', :locals => {:reviews => @reviews} %>
+<%#*</div>%>
+<%#*<div id="paginator_review">%>
+  <%#= paginate @reviews, :remote => true, :param_name => "page", :theme => "default" %>
+<%#*</div>%>
 
 <%#= subscribe_to "/reviews/new" %>
 
-<br />
+<%#*<br />%>
 
-<%= link_to 'New Review', new_review_path %>
+<%#= link_to 'New Review', new_review_path %>
