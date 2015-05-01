@@ -791,7 +791,7 @@ padding-right:5px;
 }
 
 .resource_container_sidebar_content {
-    padding: 10px; 
+    padding: 7px; 
 }
 
 .resource_container3 {
@@ -3109,7 +3109,7 @@ table.message tr{
 /*display:block;*/
 }
 
-table.message tr.unread{
+tr.unread td{
 background-color:white;
 }
 
