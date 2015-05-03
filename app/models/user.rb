@@ -113,11 +113,11 @@ class User < ActiveRecord::Base
   has_many :message_statuses
   has_many :messages, :through => :message_statuses, :source => :message
   has_many :unread_messages, :through => :message_statuses, :source => :message,
-    :conditions => "message_statuses.status = 'MessageStatus::UNREAD'"
+    :conditions => ["message_statuses.status = ?", MessageStatus::UNREAD]
   has_many :read_messages, :through => :message_statuses, :source => :message,
-    :conditions => "message_statuses.status == 'MessageStatus::READ'"
+    :conditions => ["message_statuses.status = ?", MessageStatus::READ]
   has_many :undeleted_messages, :through => :message_statuses, :source => :message,
-    :conditions => "message_statuses.status != 'MessageStatus::DELETED'"
+    :conditions => ["message_statuses.status != ?", MessageStatus::DELETED]
 
   has_many :activities
   has_many :shares
