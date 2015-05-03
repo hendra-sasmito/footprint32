@@ -80,7 +80,7 @@ class PlacesController < ApplicationController
         @reviews = @place.reviews.includes({:creator => [:profile, :profile_photo]}, :review_photos).order("updated_at DESC").page(params[:review_page]).per(5)
       end
 
-      @place_photos = @place.photos.joins(:photo_album).includes(:photo_album, :creator => [:profile, :profile_photo]).where("privacy = ?", Footprint32::PUBLIC).page(params[:place_photo_page]).per(5)
+      @place_photos = @place.photos.includes(:photo_album, :creator => [:profile, :profile_photo]).where("photo_albums.privacy = ?", Footprint32::PUBLIC).page(params[:place_photo_page]).per(5)
 
 #      if user_signed_in?
 #        @friends = @place.liked_users.where(id: current_user.friend_ids).includes(:profile).page(params[:friend_page]).per(5)

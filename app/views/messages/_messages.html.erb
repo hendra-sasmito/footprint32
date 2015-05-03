@@ -7,10 +7,12 @@
   <% message_statuses.each do |message_status| %>
     <% if message_status.status == MessageStatus::UNREAD %>
       <tr class="unread">
+        <%= render :partial => "messages/message", :locals => {:message_status => message_status} %>
+      </tr>
     <% else %>
       <tr>
+        <%= render :partial => "messages/message", :locals => {:message_status => message_status} %>
+      </tr>
     <% end %>
-    <%= render :partial => "messages/message", :locals => {:message_status => message_status} %>
-    </tr>
   <% end %>
 </table>

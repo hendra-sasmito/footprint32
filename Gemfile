@@ -117,5 +117,7 @@ group :development do
 end
 
 gem "query_reviewer", :github => "nesquena/query_reviewer"
+gem "pg"
+gem 'peek-pg'
 
 #gem "lol_dba"

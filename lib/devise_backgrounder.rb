@@ -15,15 +15,11 @@ class DeviseBackgrounder
 
   def initialize(method, record, token, opts = {})
     @method, @record, @token, @opts = method, record, token, opts
-    puts "--initialize"
-    puts @token
   end
 
   def deliver
     # You need to hardcode the class of the Devise mailer that you
     # actually want to use. The default is Devise::Mailer.
-    puts "--deliver"
-    puts @token
     Devise::Mailer.delay.send(@method, @record, @token, @opts)
   end
 

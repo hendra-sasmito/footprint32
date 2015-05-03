@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.integer "reviews_count",         :default => 0
   end
 
-  add_index "cities", ["country_id", "places_count"], :name => "index_cities_on_places_count"
+  add_index "cities", ["country_id", "places_count"], :name => "index_cities_on_places_count", :order => {"places_count"=>:desc}
 
   create_table "comments", :force => true do |t|
     t.text     "content",                        :null => false
@@ -112,8 +112,8 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "updated_at",                     :null => false
   end
 
-  add_index "comments", ["commentable_id", "commentable_type", "created_at"], :name => "index_comments_on_commentable_id"
-  add_index "comments", ["user_id", "created_at"], :name => "index_comments_on_user_id_and_created_at"
+  add_index "comments", ["commentable_id", "commentable_type", "created_at"], :name => "index_comments_on_commentable_id", :order => {"created_at"=>:desc}
+  add_index "comments", ["user_id", "created_at"], :name => "index_comments_on_user_id_and_created_at", :order => {"created_at"=>:desc}
 
   create_table "conversations", :force => true do |t|
     t.integer  "message_id", :null => false
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.integer  "creator_id",                              :null => false
     t.integer  "place_id",                                :null => false
     t.datetime "date",                                    :null => false
-    t.integer  "privacy",     :limit => 1, :default => 0
+    t.integer  "privacy",     :limit => 2, :default => 0
     t.text     "description"
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
@@ -153,8 +153,8 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "favorite_cities", ["city_id", "updated_at"], :name => "index_favorite_cities_on_city_id_and_updated_at"
-  add_index "favorite_cities", ["user_id", "updated_at"], :name => "index_favorite_cities_on_user_id_and_updated_at"
+  add_index "favorite_cities", ["city_id", "updated_at"], :name => "index_favorite_cities_on_city_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "favorite_cities", ["user_id", "updated_at"], :name => "index_favorite_cities_on_user_id_and_updated_at", :order => {"updated_at"=>:desc}
 
   create_table "favorite_places", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -163,8 +163,8 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "favorite_places", ["place_id", "updated_at"], :name => "index_favorite_places_on_place_id_and_updated_at"
-  add_index "favorite_places", ["user_id", "updated_at"], :name => "index_favorite_places_on_user_id_and_updated_at"
+  add_index "favorite_places", ["place_id", "updated_at"], :name => "index_favorite_places_on_place_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "favorite_places", ["user_id", "updated_at"], :name => "index_favorite_places_on_user_id_and_updated_at", :order => {"updated_at"=>:desc}
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.integer  "creator_id",                                      :null => false
     t.string   "name",                                            :null => false
     t.text     "description"
-    t.integer  "privacy",        :limit => 1,  :default => 0
+    t.integer  "privacy",        :limit => 2,  :default => 0
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
     t.boolean  "default",                      :default => false
@@ -224,10 +224,10 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.string   "photoable_type",     :limit => 20
   end
 
-  add_index "photos", ["creator_id", "updated_at"], :name => "index_photos_on_creator_id_and_updated_at"
-  add_index "photos", ["photo_album_id", "updated_at"], :name => "index_photos_on_photo_album_id_and_updated_at"
-  add_index "photos", ["photoable_id", "photoable_type", "updated_at"], :name => "index_photos_on_photoable_id"
-  add_index "photos", ["photoable_type", "photoable_id", "updated_at"], :name => "index_photos_on_photoable_type"
+  add_index "photos", ["creator_id", "updated_at"], :name => "index_photos_on_creator_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "photos", ["photo_album_id", "updated_at"], :name => "index_photos_on_photo_album_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "photos", ["photoable_id", "photoable_type", "updated_at"], :name => "index_photos_on_photoable_id", :order => {"updated_at"=>:desc}
+  add_index "photos", ["photoable_type", "photoable_id", "updated_at"], :name => "index_photos_on_photoable_type", :order => {"updated_at"=>:desc}
 
   create_table "places", :force => true do |t|
     t.string   "name",                                 :null => false
@@ -320,12 +320,12 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.integer  "reviewable_id",                 :null => false
-    t.string   "reviewable_type", :limit => 10, :null => false
+    t.string   "reviewable_type", :limit => 20, :null => false
   end
 
-  add_index "reviews", ["creator_id", "updated_at"], :name => "index_reviews_on_creator_id_and_updated_at"
-  add_index "reviews", ["reviewable_id", "reviewable_type", "updated_at"], :name => "index_reviews_on_reviewable_id"
-  add_index "reviews", ["reviewable_type", "reviewable_id", "updated_at"], :name => "index_reviews_on_reviewable_type"
+  add_index "reviews", ["creator_id", "updated_at"], :name => "index_reviews_on_creator_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "reviews", ["reviewable_id", "reviewable_type", "updated_at"], :name => "index_reviews_on_reviewable_id", :order => {"updated_at"=>:desc}
+  add_index "reviews", ["reviewable_type", "reviewable_id", "updated_at"], :name => "index_reviews_on_reviewable_type", :order => {"updated_at"=>:desc}
 
   create_table "shares", :force => true do |t|
     t.integer  "user_id",                         :null => false
@@ -350,7 +350,7 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.integer  "datalog_file_size"
     t.datetime "datalog_updated_at"
     t.boolean  "selected",                          :default => false
-    t.integer  "privacy",              :limit => 1, :default => 0
+    t.integer  "privacy",              :limit => 2, :default => 0
   end
 
   add_index "trips", ["user_id"], :name => "index_trips_on_user_id"
@@ -393,8 +393,8 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "visited_cities", ["city_id", "updated_at"], :name => "index_visited_cities_on_city_id_and_updated_at"
-  add_index "visited_cities", ["user_id", "updated_at"], :name => "index_visited_cities_on_user_id_and_updated_at"
+  add_index "visited_cities", ["city_id", "updated_at"], :name => "index_visited_cities_on_city_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "visited_cities", ["user_id", "updated_at"], :name => "index_visited_cities_on_user_id_and_updated_at", :order => {"updated_at"=>:desc}
 
   create_table "visited_places", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -403,7 +403,7 @@ ActiveRecord::Schema.define(:version => 20150426122848) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "visited_places", ["place_id", "updated_at"], :name => "index_visited_places_on_place_id_and_updated_at"
-  add_index "visited_places", ["user_id", "updated_at"], :name => "index_visited_places_on_user_id_and_updated_at"
+  add_index "visited_places", ["place_id", "updated_at"], :name => "index_visited_places_on_place_id_and_updated_at", :order => {"updated_at"=>:desc}
+  add_index "visited_places", ["user_id", "updated_at"], :name => "index_visited_places_on_user_id_and_updated_at", :order => {"updated_at"=>:desc}
 
 end
