@@ -1,5 +1,12 @@
 class City < ActiveRecord::Base
   attr_accessible :name, :latitude, :longitude, :country_id, :region_id
+
+  geocoded_by :location
+
+  def location
+    [city.name, postcode, country.name].compact.join(', ')
+  end
+  
   belongs_to :country, :inverse_of => :cities, :counter_cache => true
   belongs_to :region, :inverse_of => :cities
   has_many :places, :inverse_of => :city
