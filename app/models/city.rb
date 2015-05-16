@@ -4,7 +4,7 @@ class City < ActiveRecord::Base
   geocoded_by :location
 
   def location
-    [city.name, postcode, country.name].compact.join(', ')
+    [city.name].compact.join(', ')
   end
   
   belongs_to :country, :inverse_of => :cities, :counter_cache => true
