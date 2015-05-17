@@ -158,7 +158,6 @@ class CitiesController < ApplicationController
     city = City.near([lat, lng], 5).order("distance").first
 
     if !city.nil?
-      puts city.name
       @result = city.places.near([lat, lng], 2).order("distance").limit(10);
     else
       @result = nil
