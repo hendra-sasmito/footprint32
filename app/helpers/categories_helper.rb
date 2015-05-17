@@ -314,7 +314,7 @@ def get_category_icon(category)
     when 155
       return "markers/university.png"
     when 156
-      return "markers/doctor.png"
+      return "markers/medicine.png"
     when 157
       return "markers/chiropractor.png"
     when 158
@@ -420,7 +420,7 @@ def get_category_icon(category)
     when 208
       return "markers/radio-station-2.png"
     when 209
-      return "markers/tv.png"
+      return "markers/radio-station-2.png"
     when 210
       return "markers/atm-2.png"
     when 211
