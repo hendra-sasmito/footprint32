@@ -431,6 +431,66 @@ def get_category_icon(category)
       return "markers/townhouse.png"
     when 214
       return "markers/office-building.png"
+    when 215
+      return "markers/badminton-2.png"
+    when 216
+      return "markers/beach.png"
+    when 217
+      return "markers/canyon-2.png"
+    when 218
+      return "markers/cave-2.png"
+    when 219
+      return "markers/conference.png"
+    when 220
+      return "markers/dam.png"
+    when 221
+      return "markers/diving.png"
+    when 222
+      return "markers/ferriswheel.png"
+    when 223
+      return "markers/festival.png"
+    when 224
+      return "markers/forest2.png"
+    when 225
+      return "markers/geyser-2.png"
+    when 226
+      return "markers/glacier-2.png"
+    when 227
+      return "markers/hiking.png"
+    when 228
+      return "markers/historicalquarter.png"
+    when 229
+      return "markers/jazzclub.png"
+    when 230
+      return "markers/kiosk.png"
+    when 231
+      return "markers/lake.png"
+    when 232
+      return "markers/stripclub2.png"
+    when 233
+      return "markers/monument-historique-icon-white-22x22.png"
+    when 234
+      return "markers/mountains.png"
+    when 235
+      return "markers/movierental.png"
+    when 236
+      return "markers/observatory.png"
+    when 237
+      return "markers/pyramid.png"
+    when 238
+      return "markers/scubadiving.png"
+    when 239
+      return "markers/shipwreck.png"
+    when 240
+      return "markers/sledge.png"
+    when 241
+      return "markers/snorkeling.png"
+    when 242
+      return "markers/stadium.png"
+    when 243
+      return "markers/volcano-2.png"
+    when 244
+      return "markers/waterfall-2.png"
     else
       return "markers/pinother.png"
     end
