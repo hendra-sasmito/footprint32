@@ -157,13 +157,14 @@ class CitiesController < ApplicationController
     lng = params["lng"]
     city = City.near([lat, lng], 5).order("distance").first
 
+    result = Hash.new
     if !city.nil?
-      @result = city.places.near([lat, lng], 2).order("distance").limit(10);
+      places = city.places.near([lat, lng], 2).order("distance").limit(10);
+      result[:places] = places
     else
-      @result = nil
     end
     respond_to do |format|
-      format.json { render json: @result }
+      format.json { render json: result }
     end
   end
 
