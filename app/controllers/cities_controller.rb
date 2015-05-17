@@ -152,6 +152,22 @@ class CitiesController < ApplicationController
     end
   end
 
+  def get_places
+    lat = params["lat"]
+    lng = params["lng"]
+    city = City.near([lat, lng], 5).order("distance").first
+
+    if !city.nil?
+      puts city.name
+      @result = city.places.near([lat, lng], 2).order("distance").limit(10);
+    else
+      @result = nil
+    end
+    respond_to do |format|
+      format.json { render json: @result }
+    end
+  end
+
   # GET /cities/new
   # GET /cities/new.json
   def new
