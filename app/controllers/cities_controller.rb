@@ -1,4 +1,6 @@
 class CitiesController < ApplicationController
+  include CategoriesHelper
+
 #  before_filter :authenticate_user!, :except => [:show, :autocomplete_city_name]
   before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:show, :autocomplete_city_name]
 
@@ -63,25 +65,25 @@ class CitiesController < ApplicationController
 
       type = params[:type]
       if (type == "accomodation")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[0].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[0].children).page(params[:place_page]).per(12)
       elsif (type == "shopping")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[1].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[1].children).page(params[:place_page]).per(12)
       elsif (type == "sightseeing")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[2].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[2].children).page(params[:place_page]).per(12)
       elsif (type == "eating")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[3].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[3].children).page(params[:place_page]).per(12)
       elsif (type == "sport")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[4].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[4].children).page(params[:place_page]).per(12)
       elsif (type == "health")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[6].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[6].children).page(params[:place_page]).per(12)
       elsif (type == "bank")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[7].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[7].children).page(params[:place_page]).per(12)
       elsif (type == "other")
-        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[5].children).page(params[:place_page]).per(9)
+        @places = @city.places.includes(:city, :reviews, :default_photo).where(category_id: main_categories[5].children).page(params[:place_page]).per(12)
 #      elsif (type == "popular")
-#        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(9)
+#        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(12)
       else # default popular
-        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(9)
+        @places = @city.places.popular.includes(:city, :category, :reviews, :default_photo).page(params[:place_page]).per(12)
       end
 
       sort = params[:sort]
@@ -120,7 +122,8 @@ class CitiesController < ApplicationController
           :path => place_url(u),
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
-          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : ""
+          :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
+          :category => get_category_icon(u.category)
         }
       end
 

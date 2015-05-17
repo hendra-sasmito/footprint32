@@ -174,7 +174,7 @@
         scaledSize: new google.maps.Size(25, 25)
       };*/
 
-      image = "/assets/images/marker-icon-small.png";
+      image = "/assets/images/" + place_info["category"];
       latlng = new google.maps.LatLng(place_info["latitude"], place_info["longitude"]);
       marker = new google.maps.Marker({
         position: latlng,

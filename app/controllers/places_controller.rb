@@ -1,5 +1,6 @@
 class PlacesController < ApplicationController
   include PlacesHelper
+  include CategoriesHelper
 
   before_filter :authenticate_user_from_token!, :authenticate_user!, :except => [:show]
 #  autocomplete :place, :name, :extra_data => [:id]
@@ -103,7 +104,7 @@ class PlacesController < ApplicationController
       @review = Review.new
       #1.times { @review.review_photos.build }
       @reviewable = @place
-      @nearby_places = Place.includes({:city => [:country, :region]}, :category, :default_photo, {:reviews => {:creator => :profile}}).where("id != ?", @place.id).near([@place.latitude, @place.longitude], Footprint32::NEARBY_PLACE_DISTANCE).limit(5)
+      @nearby_places = Place.includes({:city => [:country, :region]}, :category, :default_photo, {:reviews => {:creator => :profile}}).where("id != ?", @place.id).near([@place.latitude, @place.longitude], Footprint32::NEARBY_PLACE_DISTANCE).limit(10)
       @places_list = @nearby_places.map do |u|
         image = view_context.get_small_photo_url(u.default_photo)
         {
@@ -121,7 +122,8 @@ class PlacesController < ApplicationController
           :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
           :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
           :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
-          :rate => u.favorite_places_count
+          :rate => u.favorite_places_count,
+          :category => get_category_icon(u.category)
         }
       end
 
