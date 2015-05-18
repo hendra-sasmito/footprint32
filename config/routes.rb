@@ -219,6 +219,7 @@ Footprint32::Application.routes.draw do
         post 'registrations' => 'registrations#create', :as => 'register'
 
         post 'sessions' => 'sessions#create', :as => 'login'
+        post 'passwords' => 'passwords#create', :as => 'password'
         delete 'sessions' => 'sessions#destroy', :as => 'logout'
       end
       get 'tasks' => 'tasks#index', :as => 'tasks'
