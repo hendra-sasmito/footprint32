@@ -161,8 +161,10 @@ class CitiesController < ApplicationController
     if !city.nil?
       places = city.places.near([lat, lng], 2).order("distance").limit(10);
       result[:places] = places
+      result[:city] = city
     else
       result[:places] = []
+      result[:city] = []
     end
     respond_to do |format|
       format.json { render json: result }

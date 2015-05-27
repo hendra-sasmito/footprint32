@@ -307,7 +307,8 @@ class PlacesController < ApplicationController
     respond_to do |format|
       if @place.save!
         format.html { redirect_to @place, :notice => t(:place_updated) }
-        format.json { head :no_content }
+        format.json { render :json => { :success => true,
+                      :info => "Place updated" } }
       else
         format.html { render action: "edit" }
         format.json { render json: @place.errors, status: :unprocessable_entity }

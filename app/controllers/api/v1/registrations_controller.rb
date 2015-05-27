@@ -15,12 +15,12 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
                          :description => "Profile Pictures",
                          :privacy => Footprint32::PUBLIC,
                          :default => 1)
-    resource.skip_confirmation!
+    #resource.skip_confirmation!
     if resource.save
       sign_in resource
       render :status => 200,
            :json => { :success => true,
-                      :info => "Registered",
+                      :info => "Registered, to complete the signup process, we need to confirm that you own the email address",
                       :data => { :user => resource,
                                  :auth_token => current_user.authentication_token } }
     else
