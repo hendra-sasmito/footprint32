@@ -159,7 +159,7 @@ class CitiesController < ApplicationController
 
     result = Hash.new
     if !city.nil?
-      places = city.places.near([lat, lng], 2).order("distance").limit(10);
+      places = city.places.near([lat, lng], 2).order("distance").limit(50);
       result[:places] = places
       result[:city] = city
     else

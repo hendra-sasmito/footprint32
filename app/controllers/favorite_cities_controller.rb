@@ -84,7 +84,10 @@ class FavoriteCitiesController < ApplicationController
       if is_current_user(@user)
         @city = City.find_by_id(params[:favorite_city][:city_id])
         if !@city.nil?
-          @favorite_city = @user.favorite_cities.create(:city_id => @city.id)
+          @favorite_city = @user.favorite_cities.find_by_city_id(@city.id)
+          if @favorite_city.nil?
+            @favorite_city = @user.favorite_cities.create(:city_id => @city.id)
+          end
           @city = City.find_by_id(params[:favorite_city][:city_id])
           flash[:notice] = t(:like_succeed, :username => @user.profile.full_name, :placename => @city.name)
         else
@@ -96,12 +99,24 @@ class FavoriteCitiesController < ApplicationController
     else
       flash[:notice] = t(:user_not_found)
     end
-    render :toggle
+
+    respond_to do |format|
+      if !@favorite_city.valid?
+        format.js { render :toggle }
+        format.json { render :json => { :success => false,
+                    :info => "Error" } }
+      else
+        format.js { render :toggle }
+        format.json { render :json => { :success => true,
+                    :info => "Liked" } }
+      end
+    end
   end
 
   # DELETE /favorite_cities/1
   # DELETE /favorite_cities/1.json
   def destroy
+    success = 0
     @user = User.find_by_id(params[:favorite_city][:user_id])
     if !@user.nil?
       if (is_current_user(@user))
@@ -112,6 +127,7 @@ class FavoriteCitiesController < ApplicationController
           @favorite_city.destroy
           @city = City.find_by_id(temp_city_id)
           flash[:notice] = t(:unlike_succeed, :username => @user.profile.full_name, :placename => @city.name)
+          success = 1
         else
           flash[:notice] = t(:request_fail)
         end
@@ -121,6 +137,16 @@ class FavoriteCitiesController < ApplicationController
     else
       flash[:notice] = t(:user_not_found)
     end
-    render :toggle
+    respond_to do |format|
+      if success == 0
+        format.js { render :toggle }
+        format.json { render :json => { :success => false,
+                    :info => "Error" } }
+      else
+        format.js { render :toggle }
+        format.json { render :json => { :success => true,
+                    :info => "Disliked" } }
+      end
+    end
   end
 end

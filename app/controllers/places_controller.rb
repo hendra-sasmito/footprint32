@@ -178,7 +178,8 @@ class PlacesController < ApplicationController
         :last_review => u.reviews_count > 0 ? u.reviews.last.content : "",
         :last_reviewer => u.reviews_count > 0 ? u.reviews.last.creator.profile.full_name : "",
         :last_reviewer_path => u.reviews_count > 0 ? user_profile_path(u.reviews.last.creator) : "",
-        :rate => u.favorite_places_count
+        :rate => u.favorite_places_count,
+        :category => get_category_icon(u.category)
       }
     end
 
@@ -205,6 +206,7 @@ class PlacesController < ApplicationController
   # POST /places
   # POST /places.json
   def create
+    error = 0
     @main_categories, @categories = get_categories
     
     @place = Place.new(params[:place])
@@ -228,28 +230,56 @@ class PlacesController < ApplicationController
     @city = City.find_by_id(params[:place][:city_id])
     if !@city.nil?
       @place.city_id = @city.id
-      existing_place = @city.places.find_by_name(params[:place][:name])
-      if !existing_place.nil?
-        flash[:notice] = "Place is alredy exist"
-        return redirect_to new_place_path
-        return render action: "new"
+      existing_place = @city.places.find_all_by_name_and_street(params[:place][:name], params[:place][:street])
+      if !existing_place.empty?
+#        flash[:notice] = "Place already exists"
+#        return redirect_to new_place_path
+#        return render action: "new"
+        error = 1
       end
     else
-      flash[:notice] = t(:city_blank)
-      return redirect_to new_place_path
-      return render action: "new"
+#      flash[:notice] = t(:city_blank)
+#      return redirect_to new_place_path
+#      return render action: "new"
+      error = 2
     end
 #    end
 
     respond_to do |format|
-      if @place.save
-        format.html { redirect_to(@place, :notice => t(:place_created)) }
-        format.json { render json: @place, status: :created, location: @place }
+      case error
+      when 1
+        format.html {
+          flash[:notice] = "Place already exists"
+          return redirect_to new_place_path
+        }
+        format.json { render :json => { :success => false,
+                      :info => "Place already exists" } }
+      when 2
+        format.html {
+          flash[:notice] = t(:city_blank)
+          return redirect_to new_place_path
+        }
+        format.json { render :json => { :success => false,
+                      :info => t(:city_blank) } }
       else
-        @main_categories, @categories = get_categories
-        format.html { render action: "new" }
-        format.json { render json: @place.errors, status: :unprocessable_entity }
+        if @place.save
+          format.html { redirect_to(@place, :notice => t(:place_created)) }
+          format.json { render json: @place, status: :created, location: @place }
+        else
+          @main_categories, @categories = get_categories
+          format.html { render action: "new" }
+          format.json { render json: @place.errors, status: :unprocessable_entity }
+        end
       end
+
+#      if @place.save
+#        format.html { redirect_to(@place, :notice => t(:place_created)) }
+#        format.json { render json: @place, status: :created, location: @place }
+#      else
+#        @main_categories, @categories = get_categories
+#        format.html { render action: "new" }
+#        format.json { render json: @place.errors, status: :unprocessable_entity }
+#      end
     end
   end
 
@@ -435,6 +465,20 @@ class PlacesController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @photo }
+    end
+  end
+
+  def get_like
+    result = Hash.new
+    @favorite_place = current_user.favorite_places.find_by_place_id(params[:place_id])
+    if !@favorite_place.nil?
+      result[:like] = {:value => true, :dislike => @favorite_place.id}
+    else
+      result[:like] = {:value => false, :dislike => 0}
+    end
+
+    respond_to do |format|
+      format.json { render json: result }
     end
   end
 

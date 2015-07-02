@@ -84,6 +84,7 @@ Footprint32::Application.routes.draw do
 #    get :autocomplete_place_name, :on => :collection
     get :autocomplete_place_name, :on => :collection
     get :upload_photo
+    get :get_like
   end
 
 #  resources :autocomplete_places, :only => [:index]
