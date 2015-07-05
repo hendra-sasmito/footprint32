@@ -160,8 +160,22 @@ class CitiesController < ApplicationController
     result = Hash.new
     if !city.nil?
       places = city.places.near([lat, lng], 2).order("distance").limit(50);
-      result[:places] = places
+      result[:places] = places.as_json
       result[:city] = city
+
+      count = 0
+      places.each do |place|
+        favorite_place = current_user.favorite_places.find_by_place_id(place.id)
+        if !favorite_place.nil?
+          result[:places][count][:like] = true
+          result[:places][count][:dislike] = favorite_place.id
+        else
+          result[:places][count][:like] = false
+          result[:places][count][:dislike] = 0
+        end
+        count = count + 1
+      end
+
     else
       result[:places] = []
       result[:city] = []
