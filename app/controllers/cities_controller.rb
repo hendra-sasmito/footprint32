@@ -316,4 +316,19 @@ class CitiesController < ApplicationController
       format.json { render json: @photo }
     end
   end
+
+  def get_like
+    result = Hash.new
+    @favorite_city = current_user.favorite_cities.find_by_city_id(params[:city_id])
+    if !@favorite_city.nil?
+      result[:like] = {:value => true, :dislike => @favorite_city.id}
+    else
+      result[:like] = {:value => false, :dislike => 0}
+    end
+
+    respond_to do |format|
+      format.json { render json: result }
+    end
+  end
+
 end

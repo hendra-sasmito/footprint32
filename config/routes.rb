@@ -53,6 +53,7 @@ Footprint32::Application.routes.draw do
     get :autocomplete_city_name, :on => :collection
     get :upload_photo
     get :get_places, :on => :collection
+    get :get_like
   end
 
   resources :comments, :only => [:show, :create, :edit, :update, :destroy] do
