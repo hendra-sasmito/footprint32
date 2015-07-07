@@ -19,8 +19,10 @@ class ReportsController < ApplicationController
   end
 
   def create
+    error = 0
     @report = current_user.reports.find_by_reportable_type_and_reportable_id_and_reason(params[:report][:reportable_type], params[:report][:reportable_id], params[:report][:reason])
     if !@report.nil?
+      error = 1
       flash[:notice] = "You have reported this item"
     else
       @report = current_user.reports.new()
@@ -31,6 +33,7 @@ class ReportsController < ApplicationController
       if @report.save
         flash[:notice] = "Report was successfully sent"
       else
+        error = 2
         flash[:notice] = "Can't report problem"
       end
     end
@@ -46,6 +49,17 @@ class ReportsController < ApplicationController
 #      end
 #      format.js
       format.html { redirect_back_or_default }
+      case error
+      when 1
+        format.json { render :json => { :success => false,
+                      :info => "Already reported" } }
+      when 2
+        format.json { render :json => { :success => false,
+                      :info => "Fail to report" } }
+      else
+        format.json { render :json => { :success => true,
+                      :info => "Report sent" } }
+      end
     end
   end
 
