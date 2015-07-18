@@ -215,6 +215,14 @@ class HomeController < ApplicationController
 
     count = 0
     profiles.each do |profile|
+      if profile.show_anonymous == true
+        result[:users][count][:first_name] = "user"
+        result[:users][count][:last_name] = "anonymous"
+      end
+      if profile.share_location == false
+        result[:users][count][:latitude] = 0
+        result[:users][count][:longitude] = 0
+      end
       result[:users][count][:user_id] = profile.user.id
       result[:users][count][:email] = profile.user.email
       count = count + 1

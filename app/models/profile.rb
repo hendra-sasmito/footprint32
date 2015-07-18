@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
   belongs_to :location, :class_name => "Place", :foreign_key => "location_id"
   belongs_to :hometown, :class_name => "City", :foreign_key => "hometown_id"
 
-  attr_accessible :about, :birthdate, :first_name, :gender, :last_name, :time_zone, :language, :location_id, :profile_photo_id, :hometown_id, :share_location, :latitude, :longitude #, :cover_photo_id
+  attr_accessible :about, :birthdate, :first_name, :gender, :last_name, :time_zone, :language, :location_id, :profile_photo_id, :hometown_id, :share_location, :latitude, :longitude, :show_anonymous #, :cover_photo_id
 
   VALID_GENDER = %w(m f u M F U)
 
