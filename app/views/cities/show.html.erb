@@ -264,6 +264,13 @@
                                
 
               <% end %>
+              <div class="float_button small_text"><%= link_to fa_icon("info", :class => "whitecolor mediumsize") + " " + "Info", "#city_info", :class=>"fancybox-simple general_white as_button" %></div>
+
+              <div class="hidden">
+                <div id="city_info">
+                  <%= @city.info %>
+                </div>
+              </div>
               <div class="clear_float"></div>
             </div>
 

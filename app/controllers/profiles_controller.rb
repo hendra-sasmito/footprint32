@@ -41,6 +41,15 @@ class ProfilesController < ApplicationController
       @comment = Comment.new
       #@location = @user.location
 
+      #json
+      result = Hash.new
+      result[:profile] = @profile
+      result[:favorite_places] = @favorite_places.size
+      result[:visited_places] = @visited_places.size
+      result[:favorite_cities] = @favorite_cities.size
+      result[:visited_cities] = @visited_cities.size
+      result[:email] = @user.email
+
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      polymorphic_association_includes @activities, :target, {
@@ -63,7 +72,7 @@ class ProfilesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @profile }
+      format.json { render json: result }
       format.js
     end
   end
@@ -105,7 +114,8 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       if @profile.update_attributes(params[:profile])
         format.html { redirect_to user_profile_path(current_user), :notice => t(:profile_updated) }
-        format.json { head :no_content }
+        format.json { render :json => { :success => true,
+                      :info => "Profile updated" } }
       else
         format.html { render action: "edit" }
         format.json { render json: @profile.errors, status: :unprocessable_entity }

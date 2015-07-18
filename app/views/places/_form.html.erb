@@ -289,6 +289,9 @@
   <div class="field">
     <%= f.text_field :description, :placeholder => t('.description_placeholder') %>
   </div>
+  <div class="field">
+    <%= f.text_area :info, :placeholder => "Info about this place", :class => "sidebar_textarea" %>
+  </div>
   <div class="actions">
     <%= f.submit t('.submit'), :class => "general-button btn" %> 
     <% if !@place.new_record? %>

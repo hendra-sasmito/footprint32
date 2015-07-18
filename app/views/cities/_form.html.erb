@@ -99,6 +99,10 @@
     <%= f.text_field :longitude, :placeholder => t("activerecord.attributes.city.longitude"), :readonly => "readonly" %>
   </div>
   <div class="field">
+    <%= f.label :info %><br />
+    <%= f.text_area :info, :placeholder => "Info about this city", :class => "sidebar_textarea" %>
+  </div>
+  <div class="field">
     <%= f.label :region %><br />
     <% if @city.new_record? == true %>
       <%= f.select :region_id, options_from_collection_for_select(@country.regions, "id", "name") %>

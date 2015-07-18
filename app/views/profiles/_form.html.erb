@@ -66,6 +66,9 @@
     <% end %>
     <%= text_field_tag :term, params[:term], :class => "auto_complete_cities", :placeholder => "Hometown" %>
   </div>
+  <div class="field">
+    <%= f.check_box :share_location %> <%= f.label :share_location %>
+  </div>
   <div class="actions">
     <%= f.submit t('.submit'), :class => "general-button" %>
   </div>

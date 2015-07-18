@@ -264,7 +264,13 @@
                   <span class="wordwrap"><%= link_to @place.city.name, city_path(@place.city), :class => "general_white" if @place.city %></span> <span class=""><%= @place.postcode if @place.postcode %></span><br/>
                   <span class="wordwrap"><%= @place.city.region.name if @place.city.region %></span><br/>
                   <span class="wordwrap"><%= link_to @place.country.name, country_path(@place.country), :class => "general_white" if @place.country %></span><br/>
-                  <%= link_to "Show on map", "", :'data-index' => -1, :class => "general_white show_on_map" %>
+                  <%= link_to fa_icon("map-marker", :class => "whitecolor mediumsize") + " " + "Show on map", "", :'data-index' => -1, :class => "general_white show_on_map" %><br/>
+                  <%= link_to fa_icon("info", :class => "whitecolor mediumsize") + " " + "Info", "#place_info", :class=>"fancybox-simple general_white" %>
+                </div>
+                <div class="hidden">
+                  <div id="place_info">
+                    <%= @place.info %>
+                  </div>
                 </div>
                 <div class="place_page_description light_grey_text small_text">
                   <span class="wordwrap"><%= @place.description %></span>

@@ -1,6 +1,6 @@
 class Place < ActiveRecord::Base
   
-  attr_accessible :latitude, :longitude, :name, :postcode, :street, :city_id, :description, :category_id
+  attr_accessible :latitude, :longitude, :name, :postcode, :street, :city_id, :description, :category_id, :info
 
   geocoded_by :address
 #  after_validation :geocode

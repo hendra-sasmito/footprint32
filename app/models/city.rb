@@ -1,5 +1,5 @@
 class City < ActiveRecord::Base
-  attr_accessible :name, :latitude, :longitude, :country_id, :region_id
+  attr_accessible :name, :latitude, :longitude, :country_id, :region_id, :info
 
   geocoded_by :location
 

@@ -95,11 +95,13 @@ Footprint32::Application.routes.draw do
   get "home/index"
   get "home/news_feed"
   get "home/updates"
+  get "home/users"
 
   #devise_for :users
 #  ActiveAdmin.routes(self)
 
   devise_for :users, :controllers => {:registrations => "registrations", :sessions => "sessions", :omniauth_callbacks => "users/omniauth_callbacks" }
+    
 #  devise_scope :user do
 #    resource :registration,
 #      only: [:new, :create, :edit, :update],

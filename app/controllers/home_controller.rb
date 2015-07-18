@@ -205,5 +205,24 @@ class HomeController < ApplicationController
       format.html
     end
   end
-  
+
+  def users
+    lat = params["lat"]
+    lng = params["lng"]
+    profiles = Profile.includes(:user).near([lat, lng], 5).order("distance").limit(50);
+    result = Hash.new
+    result[:users] = profiles.as_json
+
+    count = 0
+    profiles.each do |profile|
+      result[:users][count][:user_id] = profile.user.id
+      result[:users][count][:email] = profile.user.email
+      count = count + 1
+    end
+    
+    respond_to do |format|
+      format.json { render json: result }
+    end
+  end
+
 end

@@ -497,6 +497,10 @@ def get_category_icon(category)
       return "markers/office-building.png"
     when 247
       return "markers/citywalls.png"
+    when 248
+      return "markers/forest.png"
+    when 249
+      return "markers/milk_and_cookies.png"
     else
       return "markers/pinother.png"
     end
