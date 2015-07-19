@@ -52,7 +52,7 @@ class CitiesController < ApplicationController
 
     if !@city.nil?
       # find major categories
-      main_categories = Category.where("parent_id is ?", nil).all
+      main_categories = Category.where("parent_id is ?", nil).order(:id).all
 
 #      accomodation = Category.find_by_id(Category::ACCOMODATION)
 #      shopping = Category.find_by_id(Category::SHOPPING)
