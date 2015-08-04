@@ -5,4 +5,6 @@ class FavoritePlace < ActiveRecord::Base
 
   validates :user, :presence => true
   validates :place, :presence => true
+
+  has_many :activities, :as => :target, :dependent => :destroy
 end

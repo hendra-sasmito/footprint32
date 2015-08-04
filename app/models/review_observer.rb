@@ -5,7 +5,7 @@ class ReviewObserver < ActiveRecord::Observer
   end
 
   def before_destroy(review)
-    Activity.destroy_all(:activity_type => Activity::CREATE_REVIEW, :target_id => review.id)
+#    Activity.destroy_all(:activity_type => Activity::CREATE_REVIEW, :target_id => review.id)
   end
 
 end

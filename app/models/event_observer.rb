@@ -4,6 +4,6 @@ class EventObserver < ActiveRecord::Observer
   end
 
   def before_destroy(event)
-    Activity.destroy_all(:activity_type => Activity::CREATE_EVENT,:target_id => event.id)
+#    Activity.destroy_all(:activity_type => Activity::CREATE_EVENT,:target_id => event.id)
   end
 end

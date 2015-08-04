@@ -6,4 +6,6 @@ class VisitedCity < ActiveRecord::Base
 
   validates :user, :presence => true
   validates :city, :presence => true
+
+  has_many :activities, :as => :target, :dependent => :destroy
 end
