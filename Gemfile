@@ -73,7 +73,7 @@ gem "cocaine", "= 0.3.2"
 gem 'private_pub'
 gem 'thin'
 gem 'bullet', group: :development
-gem 'activeadmin', '0.6.6'
+gem 'activeadmin'
 gem 'country-select'
 gem "koala"
 gem "jqcloud-rails"
