@@ -44,6 +44,8 @@ Footprint32::Application.routes.draw do
 
   resources :regions, only: [:index, :show]
 
+  resources :activities, only: [:index, :show]
+
   resources :countries, :only => [:show, :index] do
     get :autocomplete_country_name, :on => :collection
   end
