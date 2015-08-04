@@ -67,13 +67,15 @@ module Footprint32
 
     # Add additional load paths for your own custom dirs
     config.active_record.observers =
-      :review_observer,
-      :photo_observer,
-      :event_observer
+#      :review_observer,
+#      :photo_observer,
+#      :event_observer
 #      :comment_observer
 #      :profile_photo_observer,
-#      :favorite_place_observer,
-#      :visited_place_observer,
+      :favorite_place_observer,
+      :visited_place_observer,
+      :favorite_city_observer,
+      :visited_city_observer
 #      :review_vote_observer,
 #      :friendship_observer
 
