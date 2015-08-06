@@ -3,6 +3,9 @@ class ActivitiesController < ApplicationController
   def index
     result = Hash.new
     @user = current_user
+    if @user.nil?
+      @user = User.find_by_id(params[:user_id]) 
+    end
     if !@user.nil?
       activities = @user.activities.includes(:target).order("created_at DESC").page(params[:page]).per(20)
       polymorphic_association_includes activities, :target, {

@@ -44,10 +44,10 @@ class ProfilesController < ApplicationController
       #json
       result = Hash.new
       result[:profile] = @profile
-      result[:favorite_places] = @favorite_places.size
-      result[:visited_places] = @visited_places.size
-      result[:favorite_cities] = @favorite_cities.size
-      result[:visited_cities] = @visited_cities.size
+      result[:favorite_places] = @user.favorite_places.size
+      result[:visited_places] = @user.visited_places.size
+      result[:favorite_cities] = @user.favorite_cities.size
+      result[:visited_cities] = @user.visited_cities.size
       result[:email] = @user.email
 
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
