@@ -42,14 +42,26 @@ class ProfilesController < ApplicationController
       #@location = @user.location
 
       #json
-      result = Hash.new
-      result[:profile] = @profile
-      result[:favorite_places] = @user.favorite_places.size
-      result[:visited_places] = @user.visited_places.size
-      result[:favorite_cities] = @user.favorite_cities.size
-      result[:visited_cities] = @user.visited_cities.size
-      result[:email] = @user.email
+      if request.path_parameters[:format] == 'json'
+        result = Hash.new
+        result[:profile] = @profile
+        result[:favorite_places] = @user.favorite_places.size
+        result[:visited_places] = @user.visited_places.size
+        result[:favorite_cities] = @user.favorite_cities.size
+        result[:visited_cities] = @user.visited_cities.size
+        result[:email] = @user.email
 
+        profile_photo = get_user_normal_profile_photo_url(@user)
+        if profile_photo == 'Transparent.png'
+          data = ActiveSupport::Base64.encode64(File.read(Rails.root+"app/assets/images/"+profile_photo)).gsub("\n", '')
+          uri  = "data:image/png;base64,#{data}"
+        else
+          data = ActiveSupport::Base64.encode64(Paperclip.io_adapters.for(@user.profile_photo.image).read).gsub("\n", '')
+          uri  = "data:"+@user.profile_photo.image_content_type+";base64,#{data}"
+        end
+        result[:profile_photo] = uri
+      end
+      
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      polymorphic_association_includes @activities, :target, {
