@@ -56,6 +56,7 @@ Footprint32::Application.routes.draw do
     get :upload_photo
     get :get_places, :on => :collection
     get :get_like
+    get :get_visited
   end
 
   resources :comments, :only => [:show, :create, :edit, :update, :destroy] do
@@ -88,6 +89,7 @@ Footprint32::Application.routes.draw do
     get :autocomplete_place_name, :on => :collection
     get :upload_photo
     get :get_like
+    get :get_visited
   end
 
 #  resources :autocomplete_places, :only => [:index]
