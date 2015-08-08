@@ -155,7 +155,13 @@ class CitiesController < ApplicationController
   def get_places
     lat = params["lat"]
     lng = params["lng"]
-    city = City.near([lat, lng], 5).order("distance").first
+
+    if params["radius"]
+      radius = params["radius"].to_i
+    else
+      radius = 5
+    end
+    city = City.near([lat, lng], radius).order("distance").first
 
     result = Hash.new
     if !city.nil?

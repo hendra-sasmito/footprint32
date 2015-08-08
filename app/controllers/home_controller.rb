@@ -209,7 +209,12 @@ class HomeController < ApplicationController
   def users
     lat = params["lat"]
     lng = params["lng"]
-    profiles = Profile.includes(:user).near([lat, lng], 5).order("distance").limit(50);
+    if params["radius"]
+      radius = params["radius"].to_i
+    else
+      radius = 5
+    end
+    profiles = Profile.includes(:user).near([lat, lng], radius).order("distance").limit(50);
     result = Hash.new
     result[:users] = profiles.as_json
 
