@@ -163,6 +163,12 @@ class CitiesController < ApplicationController
     end
     city = City.near([lat, lng], radius).order("distance").first
 
+    if params[:user_email]
+      user = User.find_by_email(params[:user_email])
+    else
+      user = current_user
+    end
+
     result = Hash.new
     if !city.nil?
       places = city.places.near([lat, lng], 2).order("distance").limit(50);
@@ -171,13 +177,21 @@ class CitiesController < ApplicationController
 
       count = 0
       places.each do |place|
-        favorite_place = current_user.favorite_places.find_by_place_id(place.id)
+        favorite_place = user.favorite_places.find_by_place_id(place.id)
         if !favorite_place.nil?
           result[:places][count][:like] = true
           result[:places][count][:dislike] = favorite_place.id
         else
           result[:places][count][:like] = false
           result[:places][count][:dislike] = 0
+        end
+        visited_place = user.visited_places.find_by_place_id(place.id)
+        if !visited_place.nil?
+          result[:places][count][:visited] = true
+          result[:places][count][:visited_id] = visited_place.id
+        else
+          result[:places][count][:visited] = false
+          result[:places][count][:visited_id] = 0
         end
         count = count + 1
       end
@@ -325,11 +339,43 @@ class CitiesController < ApplicationController
 
   def get_like
     result = Hash.new
-    @favorite_city = current_user.favorite_cities.find_by_city_id(params[:city_id])
-    if !@favorite_city.nil?
-      result[:like] = {:value => true, :dislike => @favorite_city.id}
+    if params[:user_email]
+      user = User.find_by_email(params[:user_email])
+    else
+      user = current_user
+    end
+    if !user.nil?
+      @favorite_city = user.favorite_cities.find_by_city_id(params[:city_id])
+      if !@favorite_city.nil?
+        result[:like] = {:value => true, :dislike => @favorite_city.id}
+      else
+        result[:like] = {:value => false, :dislike => 0}
+      end
     else
       result[:like] = {:value => false, :dislike => 0}
+    end
+
+    respond_to do |format|
+      format.json { render json: result }
+    end
+  end
+
+  def get_visited
+    result = Hash.new
+    if params[:user_email]
+      user = User.find_by_email(params[:user_email])
+    else
+      user = current_user
+    end
+    if !user.nil?
+      @visited_city = user.visited_cities.find_by_city_id(params[:city_id])
+      if !@visited_city.nil?
+        result[:visited] = {:value => true, :visited_id => @visited_city.id}
+      else
+        result[:visited] = {:value => false, :visited_id => 0}
+      end
+    else
+      result[:visited] = {:value => false, :visited_id => 0}
     end
 
     respond_to do |format|

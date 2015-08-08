@@ -470,11 +470,43 @@ class PlacesController < ApplicationController
 
   def get_like
     result = Hash.new
-    @favorite_place = current_user.favorite_places.find_by_place_id(params[:place_id])
-    if !@favorite_place.nil?
-      result[:like] = {:value => true, :dislike => @favorite_place.id}
+    if params[:user_email]
+      user = User.find_by_email(params[:user_email])
     else
-      result[:like] = {:value => false, :dislike => 0}
+      user = current_user
+    end
+    if !user.nil?
+      @favorite_place = user.favorite_places.find_by_place_id(params[:place_id])
+      if !@favorite_place.nil?
+        result[:like] = {:value => true, :dislike => @favorite_place.id}
+      else
+        result[:like] = {:value => false, :dislike => 0}
+      end
+    else
+      result[:visited] = {:value => false, :dislike => 0}
+    end
+
+    respond_to do |format|
+      format.json { render json: result }
+    end
+  end
+
+  def get_visited
+    result = Hash.new
+    if params[:user_email]
+      user = User.find_by_email(params[:user_email])
+    else
+      user = current_user
+    end
+    if !user.nil?
+      @visited_place = user.visited_places.find_by_place_id(params[:place_id])
+      if !@visited_place.nil?
+        result[:visited] = {:value => true, :visited_id => @visited_place.id}
+      else
+        result[:visited] = {:value => false, :visited_id => 0}
+      end
+    else
+      result[:visited] = {:value => false, :visited_id => 0}
     end
 
     respond_to do |format|

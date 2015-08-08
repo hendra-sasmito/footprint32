@@ -106,7 +106,7 @@ class VisitedCitiesController < ApplicationController
       else
         format.js { render :toggle }
         format.json { render :json => { :success => true,
-                    :info => "Liked", :dislike => @favorite_city.id } }
+                    :info => "Visited", :visited_id => @visited_city.id } }
       end
     end
   end
@@ -141,7 +141,7 @@ class VisitedCitiesController < ApplicationController
       else
         format.js { render :toggle }
         format.json { render :json => { :success => true,
-                    :info => "Disliked", :dislike => 0 } }
+                    :info => "Delete visited", :visited_id => 0 } }
       end
     end
   end
