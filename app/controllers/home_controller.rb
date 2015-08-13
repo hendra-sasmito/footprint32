@@ -223,13 +223,17 @@ class HomeController < ApplicationController
       if profile.show_anonymous == true
         result[:users][count][:first_name] = "user"
         result[:users][count][:last_name] = "anonymous"
+        result[:users][count][:user_id] = 0
+        result[:users][count][:email] = "anonymous"
+      else
+        result[:users][count][:user_id] = profile.user.id
+        result[:users][count][:email] = profile.user.email
       end
       if profile.share_location == false
         result[:users][count][:latitude] = 0
         result[:users][count][:longitude] = 0
       end
-      result[:users][count][:user_id] = profile.user.id
-      result[:users][count][:email] = profile.user.email
+      
       count = count + 1
     end
     
