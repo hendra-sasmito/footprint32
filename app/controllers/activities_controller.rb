@@ -1,5 +1,7 @@
 class ActivitiesController < ApplicationController
 
+  before_filter :authenticate_user_from_token!, :authenticate_user!
+  
   def index
     result = Hash.new
     if params[:user_id]
@@ -22,18 +24,18 @@ class ActivitiesController < ApplicationController
       activities.each do |activity|
 
         case activity.activity_type
-        when Activity::ADD_FAVORITE_CITY
-          result[:activities][count][:city] = activity.target.city
+#        when Activity::ADD_FAVORITE_CITY
+#          result[:activities][count][:city] = activity.target.city
         when Activity::ADD_VISITED_CITY
           result[:activities][count][:city] = activity.target.city
         when Activity::ADD_FAVORITE_PLACE
           result[:activities][count][:place] = activity.target.place
-        when Activity::ADD_VISITED_PLACE
-          result[:activities][count][:place] = activity.target.place
-        when Activity::UPLOAD_PHOTO
-          result[:activities][count][:photo] = activity.target
-        when Activity::CREATE_REVIEW
-          result[:activities][count][:review] = activity.target
+#        when Activity::ADD_VISITED_PLACE
+#          result[:activities][count][:place] = activity.target.place
+#        when Activity::UPLOAD_PHOTO
+#          result[:activities][count][:photo] = activity.target
+#        when Activity::CREATE_REVIEW
+#          result[:activities][count][:review] = activity.target
         else
 
         end

@@ -73,8 +73,8 @@ module Footprint32
 #      :comment_observer
 #      :profile_photo_observer,
       :favorite_place_observer,
-      :visited_place_observer,
-      :favorite_city_observer,
+#      :visited_place_observer,
+#      :favorite_city_observer,
       :visited_city_observer
 #      :review_vote_observer,
 #      :friendship_observer
