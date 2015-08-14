@@ -127,6 +127,30 @@ class PlacesController < ApplicationController
         }
       end
 
+      #json
+      if request.path_parameters[:format] == 'json'
+        place = Hash.new
+        place = @place
+        if params[:user_email]
+          user = User.find_by_email(params[:user_email])
+        else
+          user = current_user
+        end
+        if !user.nil?
+          favorite_place = user.favorite_places.find_by_place_id(@place.id)
+          if !favorite_place.nil?
+            place[:like] = true
+            place[:dislike] = favorite_place.id
+          else
+            place[:like] = false
+            place[:dislike] = 0
+          end
+        else
+          place[:like] = false
+          place[:dislike] = 0
+        end
+      end
+
 #      @activities = Activity.includes(:target, :user).page(params[:page]).per(10)
 #      polymorphic_association_includes @activities, :target, {
 #        Photo => [:photoable, {:creator => :profile_photo}, :photo_album],
@@ -137,7 +161,7 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @place }
+      format.json { render json: place }
       format.js
     end
   end
